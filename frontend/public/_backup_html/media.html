@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media | UNION</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="UNION-icon.png">
+    <script defer src="scripts/header-loader.js"></script>
+    <script defer src="scripts/footer-loader.js"></script>
+    <script defer src="scripts/media.js"></script>
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        /* メディアページ固有のスタイル */
+        .channel-tab.active {
+            font-weight: 500;
+        }
+        .channel-content {
+            display: none;
+        }
+        .channel-content.active {
+            display: block;
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .platform-link {
+            transition: all 0.3s ease;
+        }
+        .platform-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .hero-section {
+            position: relative;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1481142889578-dda440dacfe1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 7rem 0;
+            margin-bottom: 3rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 4rem 0 2rem;
+        }
+        .section-divider-line {
+            height: 2px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+            flex-grow: 1;
+        }
+        .section-divider-text {
+            padding: 0 1.5rem;
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+        /* 強制的に3列グリッドレイアウトを適用するスタイル */
+        .three-col-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 1.5rem !important;
+            width: 100% !important;
+        }
+        
+        .three-col-grid > * {
+            min-width: 0 !important;
+            max-width: 100% !important;
+        }
+        
+        @media (max-width: 768px) {
+            .three-col-grid {
+                grid-template-columns: repeat(3, 1fr) !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <div id="header-include"></div>
+    
+    <!-- ヒーロセクション -->
+    <section class="hero-section">
+        <div class="hero-content max-w-5xl mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">UNION Media</h1>
+            <p class="text-xl max-w-3xl mx-auto leading-relaxed">
+                学生の声を社会に届けるメディアプラットフォーム。<br class="hidden md:block">
+                Podcast、動画、SNSなど多様なチャンネルで、学生の価値観と挑戦を発信します。
+            </p>
+            <div class="mt-8">
+                <a href="#media-section" class="inline-block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-8 py-3 rounded-full transition duration-300">
+                    詳しく見る
+                    <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <main class="max-w-5xl mx-auto px-4 pb-16" id="media-section">
+        <section class="mb-12">
+            <div class="section-divider">
+                <div class="section-divider-line"></div>
+                <h2 class="section-divider-text">UNIONのメディア活動</h2>
+                <div class="section-divider-line"></div>
+            </div>
+            
+            <p class="text-gray-700 mb-8 text-lg">UNIONは学生の声を社会に届けるため、さまざまなメディア活動を展開しています。Podcast、YouTube、SNSなど多様なチャンネルで情報発信を行っています。</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-sm p-4 text-center card-hover border border-gray-100">
+                    <div class="text-4xl mb-2 text-blue-500 flex items-center justify-center h-16">
+                        <span class="fa-stack fa-2x">
+                            <i class="fas fa-circle fa-stack-2x text-blue-500" style="opacity: 0.2;"></i>
+                            <i class="fas fa-podcast fa-stack-1x"></i>
+                        </span>
+                    </div>
+                    <h3 class="font-bold">Podcast</h3>
+                    <p class="text-sm text-gray-600">複数の番組を配信中</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-4 text-center card-hover border border-gray-100">
+                    <div class="text-4xl mb-2 text-red-500 flex items-center justify-center h-16">
+                        <span class="fa-stack fa-2x">
+                            <i class="fas fa-circle fa-stack-2x text-red-500" style="opacity: 0.2;"></i>
+                            <i class="fab fa-youtube fa-stack-1x"></i>
+                        </span>
+                    </div>
+                    <h3 class="font-bold">YouTube</h3>
+                    <p class="text-sm text-gray-600">音声+映像コンテンツ</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-4 text-center card-hover border border-gray-100">
+                    <div class="text-4xl mb-2 text-pink-500 flex items-center justify-center h-16">
+                        <span class="fa-stack fa-2x">
+                            <i class="fas fa-circle fa-stack-2x text-pink-500" style="opacity: 0.2;"></i>
+                            <i class="fab fa-instagram fa-stack-1x"></i>
+                        </span>
+                    </div>
+                    <h3 class="font-bold">SNS</h3>
+                    <p class="text-sm text-gray-600">日々の活動を発信</p>
+                </div>
+            </div>
+            
+            <h3 class="text-xl font-bold mb-6">配信チャンネル</h3>
+            <!-- 配信チャンネルのUI（タブ切り替え） -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+                <div class="bg-gradient-primary text-white py-4 px-6">
+                    <h4 class="text-xl font-bold">配信プラットフォーム</h4>
+                    <p class="text-sm opacity-80">お好みのプラットフォームでUNIONのコンテンツをお楽しみください</p>
+                </div>
+                
+                <!-- タブナビゲーション -->
+                <div class="flex border-b border-gray-200">
+                    <button class="channel-tab active py-3 px-6 text-blue-600 border-b-2 border-blue-600 font-medium" data-target="podcast">
+                        <i class="fas fa-podcast mr-2"></i>Podcast
+                    </button>
+                    <button class="channel-tab py-3 px-6 text-gray-500 hover:text-gray-700" data-target="video">
+                        <i class="fab fa-youtube mr-2"></i>動画
+                    </button>
+                    <button class="channel-tab py-3 px-6 text-gray-500 hover:text-gray-700" data-target="social">
+                        <i class="fas fa-hashtag mr-2"></i>SNS
+                    </button>
+                </div>
+
+                <!-- Podcastチャンネル -->
+                <div id="podcast-channels" class="channel-content active p-6">
+                    <div class="three-col-grid">
+                        <a href="https://podcasts.apple.com/jp/podcast/学生団体unionのユニラジ/id1773603325" target="_blank" class="platform-link flex flex-col bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 overflow-hidden h-full">
+                            <div class="p-6 bg-blue-50 flex items-center justify-center">
+                                <i class="fab fa-apple fa-2x text-blue-600"></i>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="font-bold text-lg mb-2">Apple Podcast</h3>
+                                <p class="text-gray-600 mb-auto">ユニラジ、ここみゆの夢ぐらし他</p>
+                                <span class="inline-block mt-3 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">人気</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://open.spotify.com/show/4Y81Zf6xXvgd8vdKr5R25c" target="_blank" class="platform-link flex flex-col bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 overflow-hidden h-full">
+                            <div class="p-6 bg-green-50 flex items-center justify-center">
+                                <i class="fab fa-spotify fa-2x text-green-600"></i>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="font-bold text-lg mb-2">Spotify</h3>
+                                <p class="text-gray-600 mb-auto">全番組配信中</p>
+                                <span class="inline-block mt-3 bg-green-100 text-green-800 text-xs px-2 py-1 rounded">無料</span>
+                            </div>
+                        </a>
+                        
+                        <div class="platform-link flex flex-col bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden opacity-70 h-full">
+                            <div class="p-6 bg-yellow-50 flex items-center justify-center">
+                                <i class="fab fa-amazon fa-2x text-yellow-700"></i>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="font-bold text-lg mb-2">Amazon Music</h3>
+                                <p class="text-gray-600 mb-auto">準備中</p>
+                                <div class="flex items-center mt-3">
+                                    <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mr-2">Prime会員無料</span>
+                                    <span class="text-yellow-600 text-xs font-semibold">Coming Soon</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 動画チャンネル -->
+                <div id="video-channels" class="channel-content p-6">
+                    <div class="three-col-grid">
+                        <a href="https://www.youtube.com/playlist?list=PLTtd12wBPw0TF7cUSGN_QSK56pnV4Ryld" target="_blank" class="platform-link flex flex-col bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 overflow-hidden h-full">
+                            <div class="p-6 bg-red-50 flex items-center justify-center">
+                                <i class="fab fa-youtube fa-2x text-red-600"></i>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="font-bold text-lg mb-2">YouTube</h3>
+                                <p class="text-gray-600 mb-auto">ユニラジ配信、イベント映像など</p>
+                                <span class="inline-block mt-3 bg-red-100 text-red-800 text-xs px-2 py-1 rounded">チャンネル登録者募集中</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.tiktok.com/@gakusei.union.226" target="_blank" class="platform-link flex flex-col bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 overflow-hidden h-full">
+                            <div class="p-6 bg-gray-100 flex items-center justify-center">
+                                <i class="fab fa-tiktok fa-2x text-gray-900"></i>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="font-bold text-lg mb-2">TikTok</h3>
+                                <p class="text-gray-600 mb-auto">ショート動画コンテンツ</p>
+                                <span class="inline-block mt-3 bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded">トレンド</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- SNSチャンネル -->
+                <div id="social-channels" class="channel-content p-6">
+                    <div class="three-col-grid">
+                        <a href="https://www.instagram.com/gakusei.union" target="_blank" class="platform-link flex flex-col bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 overflow-hidden h-full">
+                            <div class="p-6 bg-pink-50 flex items-center justify-center">
+                                <i class="fab fa-instagram fa-2x text-pink-600"></i>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="font-bold text-lg mb-2">Instagram</h3>
+                                <p class="text-gray-600 mb-auto">最新情報・イベント案内</p>
+                                <span class="inline-block mt-3 bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded">フォロワー急増中</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://twitter.com/UNION_gakusei26" target="_blank" class="platform-link flex flex-col bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 overflow-hidden h-full">
+                            <div class="p-6 bg-blue-50 flex items-center justify-center">
+                                <i class="fab fa-twitter fa-2x text-blue-600"></i>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="font-bold text-lg mb-2">X / Twitter</h3>
+                                <p class="text-gray-600 mb-auto">イベント・活動報告</p>
+                                <span class="inline-block mt-3 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">タイムリー更新</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://lin.ee/CVuq44t" target="_blank" class="platform-link flex flex-col bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 overflow-hidden h-full">
+                            <div class="p-6 bg-green-50 flex items-center justify-center">
+                                <i class="fab fa-line fa-2x text-green-600"></i>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="font-bold text-lg mb-2">LINE</h3>
+                                <p class="text-gray-600 mb-auto">公式LINEで最新情報</p>
+                                <span class="inline-block mt-3 bg-green-100 text-green-800 text-xs px-2 py-1 rounded">友だち募集中</span>
+                            </div>
+                        </a>
+                        
+                        <a href="https://linktr.ee/gakusei.union" target="_blank" class="platform-link flex flex-col bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 overflow-hidden h-full">
+                            <div class="p-6 bg-purple-50 flex items-center justify-center">
+                                <i class="fas fa-link fa-2x text-purple-600"></i>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="font-bold text-lg mb-2">Linktree</h3>
+                                <p class="text-gray-600 mb-auto">全SNSまとめリンク</p>
+                                <span class="inline-block mt-3 bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">便利にリンク集約</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 番組紹介セクション -->
+        <section>
+            <h2 class="text-2xl font-bold mb-8 text-center">番組紹介</h2>
+            
+            <!-- 番組カード：ユニラジ -->
+            <div class="program-card bg-white rounded-xl shadow-lg border border-gray-100 mb-12 p-6 md:flex gap-8 items-center">
+                <div class="md:w-1/3 mb-4 md:mb-0 flex-shrink-0">
+                    <img src="Cover art/yuniraji.JPG" alt="ユニラジ" class="w-full rounded-lg mb-4">
+                    <div class="flex justify-between">
+                        <a href="https://podcasts.apple.com/jp/podcast/学生団体unionのユニラジ/id1773603325" target="_blank" class="text-blue-600 hover:text-blue-800">
+                            <i class="fab fa-apple fa-lg"></i>
+                        </a>
+                        <a href="https://open.spotify.com/show/4Y81Zf6xXvgd8vdKr5R25c" target="_blank" class="text-green-600 hover:text-green-800">
+                            <i class="fab fa-spotify fa-lg"></i>
+                        </a>
+                        <a href="https://www.youtube.com/playlist?list=PLTtd12wBPw0TF7cUSGN_QSK56pnV4Ryld" target="_blank" class="text-red-600 hover:text-red-800">
+                            <i class="fab fa-youtube fa-lg"></i>
+                        </a>
+                        <a href="https://www.instagram.com/uniradibyunion/" target="_blank" class="text-pink-600 hover:text-pink-800">
+                            <i class="fab fa-instagram fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-2/3">
+                    <button class="accordion-toggle w-full text-left focus:outline-none" onclick="toggleAccordion(this)">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold">ユニラジ</span>
+                            <svg class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                    </button>
+                    <div class="accordion-content hidden mt-4">
+                        <h3 class="text-2xl font-bold mb-1">ユニラジ</h3>
+                        <p class="text-lg text-gray-700 mb-2">"学生のリアルな声が、社会を動かす。"</p>
+                        <h4 class="text-xl font-bold mb-2">コンセプト</h4>
+                        <p class="text-gray-700 mb-4">学生団体や課外活動に真剣に取り組む学生の"声"を社会に届ける音声番組。双子パーソナリティ「あんりん」が、多種多様な学生の価値観・行動・葛藤をインタビュー形式で深掘り。</p>
+                        <h4 class="text-xl font-bold mb-2">ターゲット</h4>
+                        <ul class="list-disc pl-6 text-gray-700 mb-4">
+                            <li>学生団体に所属する学生</li>
+                            <li>自分のやりたいことを模索している大学生・高校生</li>
+                            <li>Z世代のリアルを知りたい企業・社会人</li>
+                        </ul>
+                        <h4 class="text-xl font-bold mb-2">番組の想い</h4>
+                        <blockquote class="border-l-4 border-blue-500 pl-4 italic text-gray-700 mb-4">
+                            「自分の活動が誰かの一歩になるように」<br>
+                            声が届かない寂しさを知っているパーソナリティが、同世代の挑戦に光を当てる。
+                        </blockquote>
+                        <h4 class="text-xl font-bold mb-2">メインパーソナリティ</h4>
+                        <p class="text-gray-700 mb-4">双子姉妹：あんな・りんな（あんりん）</p>
+                        <h4 class="text-xl font-bold mb-2">コーナー構成</h4>
+                        <ul class="list-disc pl-6 text-gray-700">
+                            <li>明日のユニコーン：注目学生のインタビュー</li>
+                            <li>あんりんと：悩み相談への回答</li>
+                            <li>課外活動掲示板：イベント告知</li>
+                            <li>メールコーナー：リスナー投稿紹介</li>
+                        </ul>
+                        <div class="mt-6 text-center">
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOQutZeoIiVYSASMeWjbkzZFpd4VSzIliJjB2xsIVYAOU8LQ/viewform?usp=sf_link" target="_blank" class="bg-gradient-primary text-white px-6 py-3 rounded-full inline-block hover:opacity-90 transition">
+                                🎤 出演を希望する
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 番組カード：ここみゆの夢ぐらし -->
+            <div class="program-card bg-white rounded-xl shadow-lg border border-gray-100 mb-12 p-6 md:flex gap-8 items-center">
+                <div class="md:w-1/3 mb-4 md:mb-0 flex-shrink-0">
+                    <img src="Cover art/cocomiyu.jpg" alt="ここみゆの夢ぐらし" class="w-full rounded-lg mb-4">
+                    <div class="flex justify-between">
+                        <a href="https://podcasts.apple.com/jp/podcast/ここみゆの夢ぐらし/id1806841907" target="_blank" class="text-blue-600 hover:text-blue-800">
+                            <i class="fab fa-apple fa-lg"></i>
+                        </a>
+                        <a href="https://open.spotify.com/show/3Hhp09NBFgXh3fR5e3sLCn" target="_blank" class="text-green-600 hover:text-green-800">
+                            <i class="fab fa-spotify fa-lg"></i>
+                        </a>
+                        <a href="https://www.youtube.com/playlist?list=PLTtd12wBPw0S2FfzzPpQa9chH-P_O3j7q" target="_blank" class="text-red-600 hover:text-red-800">
+                            <i class="fab fa-youtube fa-lg"></i>
+                        </a>
+                        <a href="https://www.instagram.com/cocomiyu.life/" target="_blank" class="text-pink-600 hover:text-pink-800">
+                            <i class="fab fa-instagram fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-2/3">
+                    <button class="accordion-toggle w-full text-left focus:outline-none" onclick="toggleAccordion(this)">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold">ここみゆの夢ぐらし</span>
+                            <svg class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                    </button>
+                    <div class="accordion-content hidden mt-4">
+                        <h3 class="text-2xl font-bold mb-1">ここみゆの夢ぐらし</h3>
+                        <p class="text-lg text-gray-700 mb-2">"私たちのペースで社会を歩く"</p>
+                        <h4 class="text-xl font-bold mb-2">コンセプト</h4>
+                        <p class="text-gray-700 mb-4">夢を追いかけるZ世代女子ふたりが、「日常×社会」をテーマにゆるっと語るトーク番組。時に真面目に、時に感情のままに、"今を生きる学生"の姿を等身大で届けます。</p>
+                        <h4 class="text-xl font-bold mb-2">ターゲット</h4>
+                        <ul class="list-disc pl-6 text-gray-700 mb-4">
+                            <li>普通の大学生、高校生</li>
+                            <li>"何かしてみたいけど一歩が踏み出せない"学生</li>
+                            <li>共感できる"学生の暮らし"を探しているリスナー</li>
+                        </ul>
+                        <h4 class="text-xl font-bold mb-2">番組の想い</h4>
+                        <blockquote class="border-l-4 border-pink-500 pl-4 italic text-gray-700 mb-4">
+                            「夢に向かって、私たちのペースで一歩ずつ」<br>
+                            背伸びしない"ありのまま"の発信で、誰かの小さな勇気につなげたい。
+                        </blockquote>
+                        <h4 class="text-xl font-bold mb-2">パーソナリティ</h4>
+                        <p class="text-gray-700 mb-4">- 白須湖々美（ここみ）：弁論・社会問題の探求者<br>- 杉山美唯（みゆ）：映像クリエイター＆元FMパーソナリティ</p>
+                        <h4 class="text-xl font-bold mb-2">コーナー構成</h4>
+                        <ul class="list-disc pl-6 text-gray-700">
+                            <li>二人回：日常や夢、悩みについて自由に語る</li>
+                            <li>ゲスト回：挑戦する若者や企業の方と本音トーク</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 番組カード：ジェネポリ -->
+            <div class="program-card bg-white rounded-xl shadow-lg border border-gray-100 mb-12 p-6 md:flex gap-8 items-center">
+                <div class="md:w-1/3 mb-4 md:mb-0 flex-shrink-0">
+                    <img src="https://placehold.co/400x400/066ff2/FFFFFF?text=ジェネポリ" alt="ジェネポリ" class="w-full rounded-lg mb-4">
+                    <div class="flex justify-between">
+                        <a href="#" target="_blank" class="text-blue-600 hover:text-blue-800">
+                            <i class="fab fa-apple fa-lg"></i>
+                        </a>
+                        <a href="#" target="_blank" class="text-green-600 hover:text-green-800">
+                            <i class="fab fa-spotify fa-lg"></i>
+                        </a>
+                        <a href="#" target="_blank" class="text-red-600 hover:text-red-800">
+                            <i class="fab fa-youtube fa-lg"></i>
+                        </a>
+                        <a href="#" target="_blank" class="text-pink-600 hover:text-pink-800">
+                            <i class="fab fa-instagram fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-2/3">
+                    <button class="accordion-toggle w-full text-left focus:outline-none" onclick="toggleAccordion(this)">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold">ジェネポリ</span>
+                            <svg class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                    </button>
+                    <div class="accordion-content hidden mt-4">
+                        <h3 class="text-2xl font-bold mb-1">ジェネポリ</h3>
+                        <p class="text-lg text-gray-700 mb-2">"政治って、私が作るんだ"</p>
+                        <h4 class="text-xl font-bold mb-2">コンセプト</h4>
+                        <p class="text-gray-700 mb-4">17歳の学生たちが政治・社会を語り合うPodcast。難しくなりがちなテーマを、若者ならではの視点で身近に。"政治は他人事じゃない"を実感できる番組。</p>
+                        <h4 class="text-xl font-bold mb-2">ターゲット</h4>
+                        <ul class="list-disc pl-6 text-gray-700 mb-4">
+                            <li>10代〜20代の若者（U22層）</li>
+                            <li>政治に「なんとなく関心はある」けど、詳しく知らない学生</li>
+                            <li>教育関係者・社会人のサブ視聴層</li>
+                        </ul>
+                        <h4 class="text-xl font-bold mb-2">番組の想い</h4>
+                        <blockquote class="border-l-4 border-blue-500 pl-4 italic text-gray-700 mb-4">
+                            「政治を"学ぶ"のではなく、"考えられるようになる"場を」<br>
+                            自分たちの声と視点で、社会との接点を作りたい。
+                        </blockquote>
+                        <h4 class="text-xl font-bold mb-2">パーソナリティ</h4>
+                        <p class="text-gray-700 mb-4">- 東坂明憲（N/S高・政治部）<br>- 横濱奏恵（U17・アクティビスト）</p>
+                        <h4 class="text-xl font-bold mb-2">コーナー構成</h4>
+                        <ul class="list-disc pl-6 text-gray-700">
+                            <li>今週の言葉：政治用語解説</li>
+                            <li>若者の声：リスナー投稿×パーソナリティトーク</li>
+                            <li>ゲスト対談（政治家・教育者・記者など）</li>
+                        </ul>
+                        <h4 class="text-xl font-bold mb-2">キャッチコピー</h4>
+                        <p class="text-gray-700">"これからの日本、つくってみた！"</p>
+                    </div>
+                </div>
+            </div>
+            <!-- 番組カード：キャリアみっけ隊 -->
+            <div class="program-card bg-white rounded-xl shadow-lg border border-gray-100 mb-12 p-6 md:flex gap-8 items-center">
+                <div class="md:w-1/3 mb-4 md:mb-0 flex-shrink-0">
+                    <img src="https://placehold.co/400x400/ec4faf/FFFFFF?text=キャリアみっけ隊" alt="キャリアみっけ隊" class="w-full rounded-lg mb-4">
+                    <div class="flex justify-between">
+                        <a href="#" target="_blank" class="text-blue-600 hover:text-blue-800">
+                            <i class="fab fa-apple fa-lg"></i>
+                        </a>
+                        <a href="#" target="_blank" class="text-green-600 hover:text-green-800">
+                            <i class="fab fa-spotify fa-lg"></i>
+                        </a>
+                        <a href="#" target="_blank" class="text-red-600 hover:text-red-800">
+                            <i class="fab fa-youtube fa-lg"></i>
+                        </a>
+                        <a href="#" target="_blank" class="text-pink-600 hover:text-pink-800">
+                            <i class="fab fa-instagram fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-2/3">
+                    <button class="accordion-toggle w-full text-left focus:outline-none" onclick="toggleAccordion(this)">
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold">キャリアみっけ隊</span>
+                            <svg class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                    </button>
+                    <div class="accordion-content hidden mt-4">
+                        <h3 class="text-2xl font-bold mb-1">キャリアみっけ隊</h3>
+                        <p class="text-lg text-gray-700 mb-2">"キャリアは、"見つける"ものじゃなくて、"つくる"もの。"</p>
+                        <h4 class="text-xl font-bold mb-2">コンセプト</h4>
+                        <p class="text-gray-700 mb-4">「やりたいことがわからない」学生に向けた、キャリア探求Podcast。社会に出る前の"迷い"や"ヒント"を、ゲストトークとパートナー企業の対話でお届け。</p>
+                        <h4 class="text-xl font-bold mb-2">ターゲット</h4>
+                        <ul class="list-disc pl-6 text-gray-700 mb-4">
+                            <li>首都圏私大の大学2年生（S-γ層）</li>
+                            <li>就活・留学で迷っている層</li>
+                            <li>経済・IT・AIなどに関心がある情報感度の高い学生</li>
+                        </ul>
+                        <h4 class="text-xl font-bold mb-2">番組の想い</h4>
+                        <blockquote class="border-l-4 border-pink-500 pl-4 italic text-gray-700 mb-4">
+                            「"知る"から"動ける"へ。人生を自分のものにするヒントを届けたい」<br>
+                            キャリア選択が"未来を作る楽しさ"になるよう、対話と体験のきっかけを提供。
+                        </blockquote>
+                        <h4 class="text-xl font-bold mb-2">パーソナリティ</h4>
+                        <p class="text-gray-700 mb-4">- 三島大毅（立教大学／UNION代表）<br>- 井上幹太（ZEN大学／UNION CTO）</p>
+                        <h4 class="text-xl font-bold mb-2">コーナー構成</h4>
+                        <ul class="list-disc pl-6 text-gray-700 mb-4">
+                            <li>ゲスト回：キャリア相談室／業界インサイト</li>
+                            <li>パートナー回：業界深掘りOneTopic／キャリア語り／パンドラの未来</li>
+                        </ul>
+                        <h4 class="text-xl font-bold mb-2">パートナー企業</h4>
+                        <p class="text-gray-700">- 株式会社　翼ホールディングス</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Podcast出演カードの直後に追加 -->
+            <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                <div class="h-24 bg-gradient-to-r from-blue-400 to-pink-400 p-6 flex items-center">
+                    <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-blue-500">
+                        <i class="fas fa-broadcast-tower text-2xl"></i>
+                    </div>
+                    <h3 class="ml-4 text-xl font-bold text-blue-900">学生団体ニュース</h3>
+                </div>
+                <div class="p-6">
+                    <p class="mb-4 text-gray-700">
+                        学生の声を社会へ届ける。UNIONでは、加盟団体や全国の学生団体の活動を縦型動画コンテンツとして発信するニュース企画を立ち上げました。毎週のショートニュースとして、若者のリアルな挑戦やアクションを社会とつなぎます。
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">#ニュース</span>
+                        <span class="bg-pink-100 text-pink-800 text-xs px-3 py-1 rounded-full">#動画</span>
+                        <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">#学生団体</span>
+                    </div>
+                    <a href="news-project.html" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                        プロジェクト詳細
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div id="footer-include"></div>
+    <script>
+    function toggleAccordion(btn) {
+        const content = btn.nextElementSibling;
+        content.classList.toggle('hidden');
+        btn.querySelector('svg').classList.toggle('rotate-180');
+    }
+    </script>
+</body>
+</html> 

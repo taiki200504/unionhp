@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | UNION</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="UNION-icon.png">
+    <script defer src="scripts/header-loader.js"></script>
+    <script defer src="scripts/footer-loader.js"></script>
+    <script defer src="scripts/services.js"></script>
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        /* サービスページ固有のスタイル */
+        .service-tab {
+            position: relative;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            background: transparent !important;
+            background-color: transparent !important;
+            border: 1px solid transparent;
+        }
+        .service-tab.active {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%) !important;
+            color: white;
+            box-shadow: 0 5px 15px rgba(6, 111, 242, 0.2);
+            border: none;
+        }
+        .service-category {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .service-category.active {
+            display: block;
+        }
+        .hero-pattern {
+            background-color: #f9fafb;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23066ff2' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        /* アニメーション */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .service-card {
+            transition: transform 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        .service-icon {
+            transition: transform 0.3s ease;
+        }
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+        }
+        .hero-section {
+            position: relative;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1522071901873-411886a10004?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 7rem 0;
+            margin-bottom: 3rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 4rem 0 2rem;
+        }
+        .section-divider-line {
+            height: 2px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+            flex-grow: 1;
+        }
+        .section-divider-text {
+            padding: 0 1.5rem;
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <div id="header-include"></div>
+
+    <!-- ヒーローセクション -->
+    <section class="hero-section">
+        <div class="hero-content max-w-5xl mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">UNION Services</h1>
+            <p class="text-xl max-w-3xl mx-auto leading-relaxed">
+                UNIONは多様な学生団体との連携を通じて、<br class="hidden md:block">
+                学生の声を社会に響かせるための様々なサービスを提供しています
+            </p>
+            <div class="mt-8">
+                <a href="#services-section" class="inline-block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-8 py-3 rounded-full transition duration-300">
+                    詳しく見る
+                    <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="services-section">
+        <!-- サービスタブ -->
+        <div class="flex flex-wrap justify-center gap-4 md:gap-10 mb-12 bg-transparent">
+            <div class="service-tab active py-3 px-5 text-lg" data-target="students" style="background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>学生・学生団体向け</span>
+                </div>
+            </div>
+            <div class="service-tab py-3 px-5 text-lg bg-transparent" data-target="companies" style="background-color: transparent;">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-building"></i>
+                    <span>企業・パートナー向け</span>
+                </div>
+            </div>
+            <div class="service-tab py-3 px-5 text-lg bg-transparent" data-target="media" style="background-color: transparent;">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-podcast"></i>
+                    <span>メディア事業</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- カテゴリーコンテナ -->
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- 学生・学生団体向けサービス -->
+            <div id="students" class="service-category active mb-20">
+                <!-- サービス紹介セクション -->
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-6">学生・学生団体向けサービス</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        UNIONは学生の声を届け、活動を支援するためのサービスを提供しています。<br>
+                        加盟団体は以下のサポートを受けることができます。
+                    </p>
+                </div>
+
+                <!-- サービスカード -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- メディア出演・告知支援 -->
+                    <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                        <div class="h-24 bg-gradient-to-r from-blue-500 to-blue-400 p-6 flex items-center">
+                            <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-blue-500">
+                                <i class="fas fa-microphone text-2xl"></i>
+                            </div>
+                            <h3 class="ml-4 text-xl font-bold text-blue-900">Podcast出演</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">
+                                学生団体や個人の活動・思いを音声メディアで発信。Apple Podcast / Spotify / YouTubeで配信されるユニラジに出演できます。
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">#Podcast</span>
+                                <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">#加盟団体無料</span>
+                            </div>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOQutZeoIiVYSASMeWjbkzZFpd4VSzIliJjB2xsIVYAOU8LQ/viewform?usp=sf_link" target="_blank" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                                出演申込
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Podcast出演カードの直後に追加 -->
+                    <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                        <div class="h-24 bg-gradient-to-r from-blue-400 to-pink-400 p-6 flex items-center">
+                            <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-blue-500">
+                                <i class="fas fa-broadcast-tower text-2xl"></i>
+                            </div>
+                            <h3 class="ml-4 text-xl font-bold text-blue-900">学生団体ニュース</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">
+                                学生の声を社会へ届ける。UNIONでは、加盟団体や全国の学生団体の活動を縦型動画コンテンツとして発信するニュース企画を立ち上げました。毎週のショートニュースとして、若者のリアルな挑戦やアクションを社会とつなぎます。
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">#ニュース</span>
+                                <span class="bg-pink-100 text-pink-800 text-xs px-3 py-1 rounded-full">#動画</span>
+                                <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">#学生団体</span>
+                            </div>
+                            <a href="news-project.html" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                                プロジェクト詳細
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- SNS・メディアでの告知サポート -->
+                    <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                        <div class="h-24 bg-gradient-to-r from-pink-500 to-pink-400 p-6 flex items-center">
+                            <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-pink-500">
+                                <i class="fas fa-bullhorn text-2xl"></i>
+                            </div>
+                            <h3 class="ml-4 text-xl font-bold text-pink-900">告知サポート</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">
+                                Instagram / Note / X（旧Twitter）などでイベント・取り組みの広報。フォームから依頼可能です。加盟団体の活動をUNIONのSNSでシェア。
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-pink-100 text-pink-800 text-xs px-3 py-1 rounded-full">#SNS広報</span>
+                                <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">#イベント告知</span>
+                            </div>
+                            <a href="https://forms.gle/9czvypxEcyi7BxS1A" target="_blank" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                                告知依頼
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Slackコミュニティ参加 -->
+                    <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                        <div class="h-24 bg-gradient-to-r from-purple-500 to-purple-400 p-6 flex items-center">
+                            <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-purple-500">
+                                <i class="fab fa-slack text-2xl"></i>
+                            </div>
+                            <h3 class="ml-4 text-xl font-bold text-purple-900">学生オンリーSlack</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">
+                                情報交換・募集告知・交流のハブ。月1回の団体代表ミーティングやイベント情報の共有、他団体との連携を促進します。
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">#コミュニティ</span>
+                                <span class="bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full">#情報交換</span>
+                            </div>
+                            <a href="https://join.slack.com/t/union-finschool/shared_invite/zt-2s6iy0dj5-ttUUdbA2MrY2XJf~cou81A" target="_blank" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                                Slack参加
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 1on1カウンセリング -->
+                    <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                        <div class="h-24 bg-gradient-to-r from-green-500 to-green-400 p-6 flex items-center">
+                            <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-green-500">
+                                <i class="fas fa-comments text-2xl"></i>
+                            </div>
+                            <h3 class="ml-4 text-xl font-bold text-green-900">1on1カウンセリング</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">
+                                リーダー専用サポート窓口。組織運営や悩みの個別相談。人事・法務・広報のプロフェッショナルが対応します。
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">#リーダー支援</span>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">#組織運営</span>
+                            </div>
+                            <a href="contact.html" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                                相談予約
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- マッチング・イベント連携 -->
+                    <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                        <div class="h-24 bg-gradient-to-r from-indigo-500 to-indigo-400 p-6 flex items-center">
+                            <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-indigo-500">
+                                <i class="fas fa-handshake text-2xl"></i>
+                            </div>
+                            <h3 class="ml-4 text-xl font-bold text-indigo-900">コラボレーション</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">
+                                他団体や企業との協業機会提供。「UNION Lab」等のプロジェクト共有スペース活用。イベント連携も促進します。
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full">#マッチング</span>
+                                <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">#共創</span>
+                            </div>
+                            <a href="contact.html" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                                問い合わせ
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- インターン・プロジェクト紹介 -->
+                    <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                        <div class="h-24 bg-gradient-to-r from-red-500 to-red-400 p-6 flex items-center">
+                            <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-red-500">
+                                <i class="fas fa-briefcase text-2xl"></i>
+                            </div>
+                            <h3 class="ml-4 text-xl font-bold text-red-900">インターン紹介</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">
+                                協賛企業とのインターン紹介。Slack・個別DMにて学生に紹介。メディア運営や制作に関わるOJTのチャンスも提供。
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full">#キャリア</span>
+                                <span class="bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full">#インターン</span>
+                            </div>
+                            <a href="contact.html" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                                問い合わせ
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 協賛企業・パートナー向けサービス -->
+            <div id="companies" class="service-category mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-6">協賛企業・パートナー向けサービス</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        UNIONは企業・団体と学生をつなぎ、<br>
+                        新しい価値を共創するためのサービスを提供しています。
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- メディア広告・スポンサー -->
+                    <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                        <div class="h-24 bg-gradient-to-r from-blue-600 to-blue-500 p-6 flex items-center">
+                            <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-blue-600">
+                                <i class="fas fa-ad text-2xl"></i>
+                            </div>
+                            <h3 class="ml-4 text-xl font-bold text-blue-900">メディア広告・スポンサー</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">
+                                YouTube/PodcastでのCM挿入・タイアップ企画、SNS広告掲載。Z世代へのリーチに最適なチャネルを提供します。
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">#広告</span>
+                                <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">#スポンサー</span>
+                            </div>
+                            <a href="https://union-information.notion.site/1f223f8602bf80d58355c76d2fac2086?pvs=105" target="_blank" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                                協賛相談
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 共創プロジェクト -->
+                    <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                        <div class="h-24 bg-gradient-to-r from-purple-600 to-purple-500 p-6 flex items-center">
+                            <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-purple-600">
+                                <i class="fas fa-lightbulb text-2xl"></i>
+                            </div>
+                            <h3 class="ml-4 text-xl font-bold text-purple-900">共創プロジェクト</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">
+                                UNIONがハブとなり学生団体と企業の架け橋に。若者の視点を取り入れた企画立案、イベント共催などが可能です。
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">#共創</span>
+                                <span class="bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full">#イベント</span>
+                            </div>
+                            <a href="https://union-information.notion.site/1f223f8602bf80d58355c76d2fac2086?pvs=105" target="_blank" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                                お問い合わせ
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 学生マッチング -->
+                    <div class="service-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
+                        <div class="h-24 bg-gradient-to-r from-green-600 to-green-500 p-6 flex items-center">
+                            <div class="service-icon w-14 h-14 bg-white rounded-full flex items-center justify-center text-green-600">
+                                <i class="fas fa-users-cog text-2xl"></i>
+                            </div>
+                            <h3 class="ml-4 text-xl font-bold text-green-900">学生マッチング</h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">
+                                インターンシップや採用に向けた優秀な学生とのマッチング。プロジェクトベースの協業も可能です。
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">#採用</span>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">#インターン</span>
+                            </div>
+                            <a href="https://union-information.notion.site/1f223f8602bf80d58355c76d2fac2086?pvs=105" target="_blank" class="inline-block bg-gradient-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition text-center">
+                                相談する
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- メディア事業 -->
+            <div id="media" class="service-category mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-6">メディア事業</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        UNIONは学生の声を社会に届けるため、<br>
+                        様々なメディアチャネルを運営しています。
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-10 shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-primary opacity-5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                    
+                    <div class="relative z-10 mb-10">
+                        <h3 class="text-2xl font-bold mb-4 text-gradient-primary">メディア展開</h3>
+                        <p class="text-gray-700 mb-6">
+                            UNIONは、Podcast、YouTube、SNSなど複数のメディアチャネルを運営し、学生の声と活動を広く社会に発信しています。
+                            各チャネルの詳細は「メディア詳細」ページでご確認いただけます。
+                        </p>
+                        
+                        <div class="grid md:grid-cols-3 gap-6 mt-8">
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 transform transition hover:-translate-y-1 hover:shadow-md">
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-podcast text-blue-500 text-2xl mr-3"></i>
+                                    <h4 class="text-xl font-bold">Podcast</h4>
+                                </div>
+                                <p class="text-gray-700 mb-3">学生団体や若者の声を音声メディアで配信</p>
+                            </div>
+                            
+                            <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-6 transform transition hover:-translate-y-1 hover:shadow-md">
+                                <div class="flex items-center mb-4">
+                                    <i class="fab fa-youtube text-red-500 text-2xl mr-3"></i>
+                                    <h4 class="text-xl font-bold">YouTube</h4>
+                                </div>
+                                <p class="text-gray-700 mb-3">学生インタビューや活動紹介の動画コンテンツ</p>
+                            </div>
+                            
+                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 transform transition hover:-translate-y-1 hover:shadow-md">
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-hashtag text-purple-500 text-2xl mr-3"></i>
+                                    <h4 class="text-xl font-bold">SNS</h4>
+                                </div>
+                                <p class="text-gray-700 mb-3">日々の活動やイベント情報のリアルタイム発信</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-8">
+                        <a href="media.html" class="inline-flex items-center px-6 py-3 bg-gradient-primary text-white rounded-full hover:opacity-90 transition shadow-sm">
+                            <span>メディア詳細を見る</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="footer-include"></div>
+</body>
+</html> 

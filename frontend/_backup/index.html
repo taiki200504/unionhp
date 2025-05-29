@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生団体連合UNION - 学生の声を社会に響かせる</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <script defer src="script.js"></script>
+    <script defer src="scripts/header-loader.js"></script>
+    <link rel="icon" type="image/png" href="UNION-icon.png">
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .counter-section {
+            background-color: #0a0a0a;
+            color: white;
+            padding: 4rem 0;
+        }
+        .counter-number {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .counter-label {
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <!-- ヘッダーをインクルード -->
+    <div id="header-include"></div>
+
+    <!-- ヒーローセクション -->
+    <section class="pt-24 pb-12 md:pt-32 md:pb-20 bg-gradient-to-b from-white to-blue-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                    学生の声を届ける<br>
+                    <span class="text-gradient-primary">学生メディア＆連合コミュニティ</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 mb-8">
+                    「学生のリアルな声を届ける」を軸に立ち上がった学生団体
+                </p>
+                <div class="flex flex-col md:flex-row justify-center gap-4">
+                    <a href="join.html" class="bg-gradient-primary text-white px-8 py-3 rounded-full hover:opacity-90 transition">
+                        加盟する
+                    </a>
+                    <a href="contact.html" class="bg-white text-gray-800 border-2 border-gray-300 px-8 py-3 rounded-full hover:bg-gray-100 transition">
+                        お問い合わせ
+                    </a>
+                </div>
+            </div>
+        </div>
+        </section>
+
+    <!-- カウンターセクション -->
+    <section class="counter-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="counter-item">
+                    <div class="counter-number" data-count="28">0</div>
+                    <div class="counter-label">加盟団体数</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-number" data-count="512">0</div>
+                    <div class="counter-label">加盟学生数</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-number" data-count="9">0</div>
+                    <div class="counter-label">提携企業数</div>
+                </div>
+            </div>
+        </div>
+        </section>
+
+    <!-- About セクション -->
+    <section id="about" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">About us</h2>
+            
+            <div class="bg-gradient-to-r from-blue-50 to-pink-50 rounded-3xl p-8 md:p-12 mb-12 shadow-sm">
+                <div class="text-center max-w-3xl mx-auto mb-8">
+                    <h3 class="text-3xl font-bold mb-6">
+                        <span class="text-gradient-primary">学生から熱狂を生み出せる世界を作る</span>
+                    </h3>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        UNIONは、「学生の声を社会に響かせる」をミッションに掲げ、<br class="hidden md:block">
+                        学生団体と企業・社会をつなぐ架け橋となります。
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-xl p-6 shadow-sm transform transition hover:-translate-y-1 hover:shadow-md">
+                        <div class="text-4xl text-gradient-primary mb-4">
+                            <i class="fas fa-podcast"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">メディア発信</h4>
+                        <p class="text-gray-600">
+                            Podcast、YouTube、SNSなど複数の媒体を通じて学生の活動や思いを発信します。
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-6 shadow-sm transform transition hover:-translate-y-1 hover:shadow-md">
+                        <div class="text-4xl text-gradient-primary mb-4">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">コミュニティ形成</h4>
+                        <p class="text-gray-600">
+                            学生団体間の連携促進や交流の場を提供し、学生同士のつながりを創出します。
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-6 shadow-sm transform transition hover:-translate-y-1 hover:shadow-md">
+                        <div class="text-4xl text-gradient-primary mb-4">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-2">社会連携</h4>
+                        <p class="text-gray-600">
+                            企業・団体と学生をつなぎ、社会に学生の声を届けるハブ機能を果たします。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                <div class="md:w-1/2">
+                    <h3 class="text-2xl font-bold text-gradient-primary mb-6">UNIONの目指す未来</h3>
+                    <p class="text-gray-700 mb-4 leading-relaxed">
+                        今の日本社会は自分の行動で、国や社会を変えられると思える若者が少ない状況にあります。しかし、学生団体は社会を動かすタネを秘めています。
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        UNIONは学生活動の旗振り役・広告塔として、学生のサポートを行うことで、<span class="font-bold">学生から変えようとする空気感・世界観を作り出す</span>未来を目指します。
+                    </p>
+                    <div class="mt-6">
+                        <a href="about.html" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+                            理念・ビジョンの詳細を見る <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 relative">
+                    <div class="relative overflow-hidden rounded-xl shadow-lg bg-white min-h-[320px]">
+                        <img src="photo/union.about.png" alt="UNIONの目指す未来" class="w-full block min-h-[240px] md:min-h-[320px] object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-60 z-20 pointer-events-none"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 z-30 flex flex-col">
+                            <div class="font-bold text-xl mb-2 text-white drop-shadow">学生の声を社会の力に</div>
+                            <p class="text-white text-sm mb-4 drop-shadow">学生発のムーブメントを、次の時代の原動力に</p>
+                            <a href="about.html" class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm hover:bg-white/30 transition">
+                                <span>ビジョンを詳しく見る</span>
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+
+    <!-- メディアセクション -->
+    <section id="media" class="py-16 bg-gradient-to-b from-gray-50 to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Media</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    UNIONが運営する複数のメディアチャネルを通じて、<br class="hidden md:block">
+                    学生の声を社会に届けています
+                </p>
+            </div>
+
+            <!-- メディアコンテンツ -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- ユニラジ -->
+                <div class="group">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-sm transform transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-lg h-full flex flex-col">
+                        <div class="relative overflow-hidden">
+                            <div class="bg-gradient-to-r from-blue-500 to-pink-500 aspect-video flex items-center justify-center p-8">
+                                <i class="fas fa-podcast text-white text-5xl"></i>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-50 transition-opacity"></div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <h3 class="text-xl font-bold mb-3 text-gradient-primary">ユニラジ</h3>
+                            <p class="text-gray-600 mb-4">ちょっと先をいく先輩、学生団体の活動や思いを双子姉妹のあんりんが対話を通じて発信するUNIONのPodcast番組です。</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">#Podcast</span>
+                                <span class="bg-pink-100 text-pink-800 text-xs px-3 py-1 rounded-full">#学生団体</span>
+                                <span class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">#インタビュー</span>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-gray-100 grid grid-cols-2 gap-2">
+                            <a href="https://podcasts.apple.com/jp/podcast/学生団体unionのユニラジ/id1773603325" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-apple text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">Apple</span>
+                            </a>
+                            <a href="https://open.spotify.com/show/4Y81Zf6xXvgd8vdKr5R25c" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-spotify text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">Spotify</span>
+                            </a>
+                            <a href="https://www.youtube.com/playlist?list=PLTtd12wBPw0TF7cUSGN_QSK56pnV4Ryld" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-youtube text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">YouTube</span>
+                            </a>
+                            <a href="https://www.instagram.com/uniradibyunion/" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-instagram text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ここみゆの夢ぐらし -->
+                <div class="group">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-sm transform transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-lg h-full flex flex-col">
+                        <div class="relative overflow-hidden">
+                            <div class="bg-gradient-to-r from-pink-500 to-purple-500 aspect-video flex items-center justify-center p-8">
+                                <i class="fas fa-microphone-alt text-white text-5xl"></i>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-50 transition-opacity"></div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <h3 class="text-xl font-bold mb-3 text-gradient-primary">ここみゆの夢ぐらし</h3>
+                            <p class="text-gray-600 mb-4">夢を追いかける学生の生き方や挑戦を紹介するインタビュー形式のポッドキャスト番組です。</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">#Podcast</span>
+                                <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">#夢追い人</span>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">#ライフスタイル</span>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-gray-100 grid grid-cols-2 gap-2">
+                            <a href="https://podcasts.apple.com/jp/podcast/ここみゆの夢ぐらし/id1806841907" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-apple text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">Apple</span>
+                            </a>
+                            <a href="https://open.spotify.com/show/3Hhp09NBFgXh3fR5e3sLCn" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-spotify text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">Spotify</span>
+                            </a>
+                            <a href="https://youtu.be/JWIAruyvTLg" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-youtube text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">YouTube</span>
+                            </a>
+                            <a href="https://www.instagram.com/cocomiyu.life/" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-instagram text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UNION SNS -->
+                <div class="group">
+                    <div class="bg-white rounded-xl overflow-hidden shadow-sm transform transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-lg h-full flex flex-col">
+                        <div class="relative overflow-hidden">
+                            <div class="bg-gradient-to-r from-blue-600 to-blue-400 aspect-video flex items-center justify-center p-8">
+                                <i class="fas fa-hashtag text-white text-5xl"></i>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-50 transition-opacity"></div>
+                        </div>
+                        <div class="p-6 flex-grow">
+                            <h3 class="text-xl font-bold mb-3 text-gradient-primary">UNION SNS</h3>
+                            <p class="text-gray-600 mb-4">UNIONや加盟団体の最新情報、イベント案内、学生団体の活動をSNSで発信しています。</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">#SNS</span>
+                                <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">#情報発信</span>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">#イベント案内</span>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-gray-100 grid grid-cols-2 gap-2">
+                            <a href="https://www.instagram.com/gakusei.union" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-instagram text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">Instagram</span>
+                            </a>
+                            <a href="https://twitter.com/UNION_gakusei26" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-twitter text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">X / Twitter</span>
+                            </a>
+                            <a href="https://www.tiktok.com/@gakusei.union.226" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-tiktok text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">TikTok</span>
+                            </a>
+                            <a href="https://lin.ee/CVuq44t" target="_blank" class="flex items-center justify-center p-2 rounded-lg hover:bg-gray-50 transition">
+                                <i class="fab fa-line text-gray-700 mr-2"></i>
+                                <span class="text-sm font-medium">LINE</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- メディア詳細ページへのリンク -->
+            <div class="text-center">
+                <a href="media.html" class="inline-flex items-center px-6 py-3 bg-white border border-gray-300 rounded-full shadow-sm text-base font-medium text-gray-700 hover:bg-gray-50 transition-all hover:shadow">
+                    <span>メディア詳細を見る</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+        </section>
+
+    <main class="max-w-4xl mx-auto p-4">
+        <h2 class="text-2xl font-bold mb-6">NEWS</h2>
+        <div id="newsCarousel" class="mb-8 relative">
+            <!-- カルーセルコンテナ -->
+            <div class="overflow-hidden">
+                <div class="flex transition-transform duration-500 ease-in-out" id="newsSlider">
+                    <!-- ニュースアイテム (動的に読み込まれる) -->
+                </div>
+            </div>
+            
+            <!-- カルーセルコントロール -->
+            <button id="prevBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md z-10 text-gray-700 hover:bg-gray-100">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="nextBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md z-10 text-gray-700 hover:bg-gray-100">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <!-- インジケーター -->
+            <div class="flex justify-center mt-4 space-x-2" id="newsIndicators">
+            </div>
+        </div>
+        
+        <div class="text-center mb-12">
+            <a href="news.html" class="inline-flex items-center px-6 py-3 bg-white border border-gray-300 rounded-full shadow-sm text-base font-medium text-gray-700 hover:bg-gray-50 transition-all hover:shadow">
+                <span>ニュース一覧を見る</span>
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </main>
+
+    <div id="footer-include"></div>
+    <script>
+        fetch('footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-include').innerHTML = html;
+        });
+
+        // カウンターアニメーション
+        function animateCounter() {
+            const counters = document.querySelectorAll('.counter-number');
+            const speed = 200; // アニメーションの速度（数値が小さいほど速い）
+
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-count');
+                const count = +counter.innerText;
+                const increment = Math.ceil(target / speed);
+
+                if (count < target) {
+                    counter.innerText = Math.min(count + increment, target);
+                    setTimeout(() => animateCounter(), 1);
+                } else {
+                    counter.innerText = target;
+                }
+            });
+        }
+
+        // ニュースカルーセル用のデータ（News.htmlから取得）
+        const newsData = [
+            {
+                id: 1,
+                title: "春の加盟団体交流会を開催しました",
+                date: "2024.05.20",
+                image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "event",
+                url: "news-detail.html?id=1"
+            },
+            {
+                id: 2,
+                title: "新規パートナー企業とのコラボイベント開催決定",
+                date: "2024.04.30",
+                image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "pressrelease",
+                url: "news-detail.html?id=2"
+            },
+            {
+                id: 3,
+                title: "UNIONメディアチームがインタビュープロジェクトを開始",
+                date: "2024.04.10",
+                image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "notice",
+                url: "news-detail.html?id=3"
+            },
+            {
+                id: 4,
+                title: "夏のインターンシップ情報を追加しました",
+                date: "2024.03.25",
+                image: "",
+                category: "notice",
+                url: "news-detail.html?id=4"
+            },
+            {
+                id: 5,
+                title: "冬季休業のお知らせ",
+                date: "2024.11.25",
+                image: "",
+                category: "notice",
+                url: "news-detail.html?id=5"
+            },
+            {
+                id: 6,
+                title: "新番組「学生キャリアラボ」配信開始のお知らせ",
+                date: "2024.10.15",
+                image: "",
+                category: "service",
+                url: "news-detail.html?id=6"
+            }
+        ];
+
+        // ニュースカルーセル機能
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.getElementById('newsSlider');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicators = document.getElementById('newsIndicators');
+            
+            // カルーセルのサイズを設定
+            const carouselContainer = document.getElementById('newsCarousel');
+            const carouselWidth = carouselContainer.offsetWidth;
+            const newsItemWidth = carouselWidth / 3; // 3項目表示
+            
+            // ニュースアイテムの生成
+            newsData.forEach((news, index) => {
+                // ニュースアイテムの作成
+                const newsItem = document.createElement('div');
+                newsItem.className = 'flex-shrink-0';
+                newsItem.style.width = `${newsItemWidth}px`;
+                newsItem.style.padding = '0 8px'; // 左右にパディングを追加
+                
+                const cardContent = document.createElement('div');
+                cardContent.className = 'bg-white rounded-lg shadow-sm border border-gray-100 h-full flex flex-col overflow-hidden';
+                
+                // 画像部分
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'relative w-full aspect-video overflow-hidden';
+                
+                if (news.image) {
+                    const img = document.createElement('img');
+                    img.src = news.image;
+                    img.alt = news.title;
+                    img.className = 'w-full h-full object-cover';
+                    imageContainer.appendChild(img);
+                } else {
+                    // 画像がない場合はUNIONロゴを表示
+                    imageContainer.className = 'relative w-full aspect-video overflow-hidden bg-gray-100 flex items-center justify-center';
+                    const logo = document.createElement('img');
+                    logo.src = 'UNION-icon.png';
+                    logo.alt = 'UNION';
+                    logo.className = 'w-1/3 h-1/3 object-contain';
+                    imageContainer.appendChild(logo);
+                }
+                
+                cardContent.appendChild(imageContainer);
+                
+                // テキスト部分
+                const textContainer = document.createElement('div');
+                textContainer.className = 'p-4 flex-grow flex flex-col';
+                
+                // 日付
+                const date = document.createElement('p');
+                date.className = 'text-sm text-gray-600 mb-2';
+                date.textContent = news.date;
+                textContainer.appendChild(date);
+                
+                // タイトル
+                const title = document.createElement('h3');
+                title.className = 'text-lg font-bold mb-2 hover:text-blue-600 line-clamp-2';
+                title.textContent = news.title;
+                textContainer.appendChild(title);
+                
+                const linkWrapper = document.createElement('a');
+                linkWrapper.href = news.url;
+                linkWrapper.className = 'mt-auto inline-flex items-center text-blue-600 hover:text-blue-800 text-sm';
+                linkWrapper.innerHTML = '詳細を読む <i class="fas fa-arrow-right ml-1"></i>';
+                textContainer.appendChild(linkWrapper);
+                
+                cardContent.appendChild(textContainer);
+                newsItem.appendChild(cardContent);
+                slider.appendChild(newsItem);
+                
+                // インジケーターの追加
+                const indicator = document.createElement('button');
+                indicator.className = index === 0 ? 'w-3 h-3 rounded-full bg-blue-500' : 'w-3 h-3 rounded-full bg-gray-300';
+                indicator.dataset.index = index;
+                indicators.appendChild(indicator);
+                
+                // インジケーターのクリックイベント
+                indicator.addEventListener('click', () => {
+                    goToSlide(index);
+                });
+            });
+            
+            let currentIndex = 0;
+            const slideCount = newsData.length;
+            
+            // スライドを移動する関数
+            function goToSlide(index) {
+                currentIndex = index;
+                
+                // インデックスが範囲外の場合、循環させる
+                if (currentIndex < 0) currentIndex = slideCount - 1;
+                if (currentIndex >= slideCount) currentIndex = 0;
+                
+                const offset = -currentIndex * newsItemWidth;
+                slider.style.transform = `translateX(${offset}px)`;
+                
+                // インジケーターの更新
+                const allIndicators = indicators.querySelectorAll('button');
+                allIndicators.forEach((indicator, i) => {
+                    indicator.classList.toggle('bg-blue-500', i === currentIndex);
+                    indicator.classList.toggle('bg-gray-300', i !== currentIndex);
+                });
+            }
+            
+            // 前へボタン
+            prevBtn.addEventListener('click', () => {
+                goToSlide(currentIndex - 1);
+            });
+            
+            // 次へボタン
+            nextBtn.addEventListener('click', () => {
+                goToSlide(currentIndex + 1);
+            });
+            
+            // ウィンドウサイズ変更時の処理
+            window.addEventListener('resize', () => {
+                // カルーセルの幅を再計算
+                const newCarouselWidth = carouselContainer.offsetWidth;
+                const newNewsItemWidth = newCarouselWidth / 3;
+                
+                // 各ニュースアイテムの幅を更新
+                const newsItems = slider.querySelectorAll('div.flex-shrink-0');
+                newsItems.forEach(item => {
+                    item.style.width = `${newNewsItemWidth}px`;
+                });
+                
+                // スライダーの位置を調整
+                goToSlide(currentIndex);
+            });
+            
+            // 自動スライド
+            setInterval(() => {
+                goToSlide(currentIndex + 1);
+            }, 5000);
+            
+            // 初回表示
+            goToSlide(0);
+        });
+
+        // ページ読み込み時にカウンターアニメーションを開始
+        window.addEventListener('load', animateCounter);
+    </script>
+</body>
+</html> 

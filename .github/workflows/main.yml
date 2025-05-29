@@ -1,0 +1,145 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install Dependencies
+      run: |
+        cd backend && npm install
+        cd ../frontend && npm install
+    
+    - name: Run Backend Tests
+      run: |
+        cd backend
+        npm run test
+      env:
+        MONGODB_URI: mongodb://localhost:27017/test
+        JWT_SECRET: test-secret
+    
+    - name: Run Frontend Tests
+      run: |
+        cd frontend
+        npm run test
+    
+    - name: Upload Test Coverage
+      uses: codecov/codecov-action@v3
+      with:
+        directory: ./coverage
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: true
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install Dependencies
+      run: |
+        cd backend && npm install
+        cd ../frontend && npm install
+    
+    - name: Run ESLint
+      run: |
+        cd backend && npm run lint
+        cd ../frontend && npm run lint
+
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install Dependencies
+      run: |
+        cd backend && npm install
+        cd ../frontend && npm install
+    
+    - name: Run Security Tests
+      run: |
+        cd backend && npm run test:security
+        cd ../frontend && npm run test:security
+
+  deploy:
+    needs: [test, lint, security]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install Dependencies
+      run: |
+        cd backend && npm install
+        cd ../frontend && npm install
+    
+    - name: Build Frontend
+      run: |
+        cd frontend
+        npm run build
+      env:
+        VITE_API_URL: ${{ secrets.API_URL }}
+    
+    - name: Deploy Backend
+      run: |
+        cd backend
+        npm run deploy
+      env:
+        DEPLOY_KEY: ${{ secrets.BACKEND_DEPLOY_KEY }}
+        DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        DEPLOY_PATH: ${{ secrets.BACKEND_DEPLOY_PATH }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    
+    - name: Deploy Frontend
+      run: |
+        cd frontend
+        npm run deploy
+      env:
+        DEPLOY_KEY: ${{ secrets.FRONTEND_DEPLOY_KEY }}
+        DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        DEPLOY_PATH: ${{ secrets.FRONTEND_DEPLOY_PATH }}
+        PUBLIC_URL: ${{ secrets.PUBLIC_URL }} 

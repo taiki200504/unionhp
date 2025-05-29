@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>掲示板詳細 | UNION</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="UNION-icon.png">
+    <script defer src="scripts/header-loader.js"></script>
+    <script defer src="scripts/footer-loader.js"></script>
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .post-header {
+            position: relative;
+            padding: 6rem 0 3rem;
+            background-color: #f8f9fa;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .post-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .post-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .post-body p {
+            margin-bottom: 1.5rem;
+        }
+        .post-body h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 2rem 0 1rem;
+            color: #333;
+        }
+        .post-body h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 1.5rem 0 1rem;
+            color: #444;
+        }
+        .post-body ul, .post-body ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .post-body ul li, .post-body ol li {
+            margin-bottom: 0.5rem;
+        }
+        .post-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+        }
+        .post-body a {
+            color: #066ff2;
+            text-decoration: underline;
+        }
+        .post-body a:hover {
+            color: #ec4faf;
+        }
+        .post-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .post-meta > div {
+            margin-right: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .post-meta i {
+            margin-right: 0.5rem;
+        }
+        .category-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            color: #000;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-left: 4px solid #066ff2;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            color: #066ff2;
+        }
+        /* 画像スタイリングを統一 */
+        .board-image-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9のアスペクト比 */
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+        .board-image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .default-board-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+        }
+        /* 関連記事スタイリングを統一 */
+        .related-card {
+            transition: all 0.3s ease;
+            height: 100%;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+        }
+        .related-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body>
+    <div id="header-include"></div>
+
+    <!-- 掲示板詳細ヘッダー -->
+    <div class="post-header">
+        <div class="max-w-4xl mx-auto px-4">
+            <div id="post-category-tags" class="mb-3">
+                <!-- カテゴリタグが動的に入ります -->
+            </div>
+            <h1 id="post-title" class="text-3xl md:text-4xl font-bold mb-4">
+                <!-- タイトルが動的に入ります -->
+            </h1>
+            <div class="post-meta">
+                <div>
+                    <i class="far fa-calendar-alt"></i>
+                    <span id="post-date"><!-- 日付が動的に入ります --></span>
+                </div>
+                <div>
+                    <i class="far fa-user"></i>
+                    <span id="post-author"><!-- 団体名が動的に入ります --></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 pb-16">
+        <!-- メイン画像 -->
+        <div id="post-image" class="mb-8 rounded-xl overflow-hidden">
+            <!-- 画像またはUNIONロゴが動的に入ります -->
+        </div>
+
+        <!-- 詳細情報ボックス -->
+        <div id="post-info-box" class="info-box">
+            <h3 class="text-xl font-bold mb-3">詳細情報</h3>
+            <div id="post-details">
+                <!-- 詳細情報が動的に入ります -->
+            </div>
+        </div>
+
+        <!-- 本文 -->
+        <div id="post-content" class="post-body">
+            <!-- 本文が動的に入ります -->
+        </div>
+
+        <!-- 問い合わせ・申し込み情報 -->
+        <div class="bg-gradient-to-r from-blue-50 to-pink-50 rounded-lg p-6 mt-8">
+            <h3 class="text-xl font-bold mb-3 text-gradient-primary">お問い合わせ・申し込み</h3>
+            <p class="mb-4">こちらの掲示板に関するお問い合わせや申し込みは、以下の連絡先までお願いします。</p>
+            <div id="post-contact" class="font-medium">
+                <!-- 連絡先情報が動的に入ります -->
+            </div>
+        </div>
+
+        <!-- 関連記事 -->
+        <div class="mt-12">
+            <h3 class="text-xl font-bold mb-6 border-b pb-2">関連掲示板</h3>
+            <div id="related-posts" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- 関連記事が動的に入ります -->
+            </div>
+        </div>
+
+        <!-- 戻るボタン -->
+        <div class="mt-12 flex justify-between">
+            <a href="board.html" class="inline-flex items-center px-6 py-3 bg-white border border-gray-300 rounded-full shadow-sm text-base font-medium text-gray-700 hover:bg-gray-50 transition">
+                <i class="fas fa-arrow-left mr-2"></i>
+                掲示板一覧に戻る
+            </a>
+        </div>
+    </div>
+
+    <div id="footer-include"></div>
+
+    <script>
+        // 記事詳細を取得するための関数
+        async function fetchPostDetail() {
+            // URLからIDを取得
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+            
+            if (!postId) {
+                // IDがない場合は一覧に戻る
+                window.location.href = 'board.html';
+                return;
+            }
+            
+            try {
+                // APIからデータを取得（実装時はここを変更）
+                const apiBaseUrl = '/api';
+                const response = await fetch(`${apiBaseUrl}/board/${postId}`);
+                
+                if (!response.ok) {
+                    throw new Error('記事の取得に失敗しました');
+                }
+                
+                const postData = await response.json();
+                
+                // APIデータをUIに適した形式に変換
+                const formattedData = {
+                    id: postData.id,
+                    title: postData.title,
+                    date: formatDate(postData.published_at),
+                    author: postData.author_name,
+                    image: postData.featured_image || '',
+                    category: postData.category_slug,
+                    group: postData.group_slug,
+                    content: postData.content,
+                    details: Object.entries(postData.details || {}).map(([key, value]) => ({
+                        label: key,
+                        value: value
+                    })),
+                    contact: postData.contact || {}
+                };
+                
+                // データを表示
+                displayPostData(formattedData);
+                
+                // 関連記事を取得して表示
+                fetchRelatedPosts(formattedData.category, formattedData.group, formattedData.id);
+                
+                // タイトルを設定
+                document.title = `${formattedData.title} | UNION掲示板`;
+                
+                // OGP情報を設定（SEO対策）
+                updateMetaTags(formattedData);
+                
+            } catch (error) {
+                console.error('記事データの取得中にエラーが発生しました:', error);
+                
+                // エラー時はフォールバックとしてサンプルデータを使用
+                console.log('サンプルデータにフォールバックします');
+                const postData = await getPostData(postId);
+                
+                if (!postData) {
+                    // サンプルデータもない場合は一覧に戻る
+                    window.location.href = 'board.html';
+                    return;
+                }
+                
+                // データを表示
+                displayPostData(postData);
+                
+                // 関連記事を表示
+                displayRelatedPosts(postData.category, postData.group, postId);
+                
+                // タイトルを設定
+                document.title = `${postData.title} | UNION掲示板`;
+            }
+        }
+        
+        // 日付フォーマット関数
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+        }
+        
+        // メタタグ更新関数（SEO対策）
+        function updateMetaTags(postData) {
+            // OGP画像
+            let metaOgImage = document.querySelector('meta[property="og:image"]');
+            if (!metaOgImage) {
+                metaOgImage = document.createElement('meta');
+                metaOgImage.setAttribute('property', 'og:image');
+                document.head.appendChild(metaOgImage);
+            }
+            metaOgImage.setAttribute('content', postData.image || 'UNION-icon.png');
+            
+            // OGPタイトル
+            let metaOgTitle = document.querySelector('meta[property="og:title"]');
+            if (!metaOgTitle) {
+                metaOgTitle = document.createElement('meta');
+                metaOgTitle.setAttribute('property', 'og:title');
+                document.head.appendChild(metaOgTitle);
+            }
+            metaOgTitle.setAttribute('content', `${postData.title} | UNION掲示板`);
+            
+            // OGP説明
+            let metaOgDescription = document.querySelector('meta[property="og:description"]');
+            if (!metaOgDescription) {
+                metaOgDescription = document.createElement('meta');
+                metaOgDescription.setAttribute('property', 'og:description');
+                document.head.appendChild(metaOgDescription);
+            }
+            
+            // HTMLタグを除去してプレーンテキストに変換
+            const plainText = postData.content.replace(/<[^>]*>/g, '');
+            metaOgDescription.setAttribute('content', plainText.substring(0, 160));
+            
+            // meta description
+            let metaDescription = document.querySelector('meta[name="description"]');
+            if (!metaDescription) {
+                metaDescription = document.createElement('meta');
+                metaDescription.setAttribute('name', 'description');
+                document.head.appendChild(metaDescription);
+            }
+            metaDescription.setAttribute('content', plainText.substring(0, 160));
+        }
+        
+        // 関連記事を取得して表示する関数
+        async function fetchRelatedPosts(category, group, currentId) {
+            try {
+                // APIから関連記事を取得
+                const apiBaseUrl = '/api';
+                const params = new URLSearchParams();
+                params.append('category', category);
+                params.append('group', group);
+                params.append('exclude', currentId);
+                params.append('limit', 3); // 最大3件
+                
+                const response = await fetch(`${apiBaseUrl}/board/related?${params.toString()}`);
+                
+                if (!response.ok) {
+                    throw new Error('関連記事の取得に失敗しました');
+                }
+                
+                const data = await response.json();
+                
+                // 関連記事を表示
+                displayRelatedPostsData(data.posts);
+                
+            } catch (error) {
+                console.error('関連記事の取得中にエラーが発生しました:', error);
+                // エラー時はフォールバック処理
+                displayRelatedPosts(category, group, currentId);
+            }
+        }
+        
+        // APIから取得した関連記事を表示
+        function displayRelatedPostsData(relatedPosts) {
+            const relatedPostsContainer = document.getElementById('related-posts');
+            relatedPostsContainer.innerHTML = '';
+            
+            if (relatedPosts && relatedPosts.length > 0) {
+                relatedPosts.forEach(post => {
+                    const relatedPostCard = document.createElement('div');
+                    relatedPostCard.className = 'related-card h-full flex flex-col';
+                    
+                    let cardHTML = `
+                        <div class="board-image-container">
+                    `;
+                    
+                    if (post.featured_image && post.featured_image !== '') {
+                        cardHTML += `<img src="${post.featured_image}" alt="${post.title}" class="w-full h-full object-cover">`;
+                    } else {
+                        // 画像がない場合はUNIONロゴを表示
+                        cardHTML += `
+                            <div class="default-board-image">
+                                <img src="UNION-icon.png" alt="UNION" style="max-width: 50%; max-height: 50%; object-fit: contain;">
+                            </div>
+                        `;
+                    }
+                    
+                    cardHTML += `
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <div class="flex gap-2 mb-2">
+                                <span class="category-tag ${getCategoryBgColor(post.category_slug)} text-xs">${getCategoryLabel(post.category_slug)}</span>
+                                <span class="category-tag ${getGroupBgColor(post.group_slug)} text-xs">${getGroupLabel(post.group_slug)}</span>
+                            </div>
+                            <h3 class="font-bold text-lg mb-2 line-clamp-2">${post.title}</h3>
+                            <p class="text-sm text-gray-500 mb-auto">${formatDate(post.published_at)} | ${post.author_name}</p>
+                            <a href="board-detail.html?id=${post.id}" class="mt-2 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm">
+                                詳細を見る <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    `;
+                    
+                    relatedPostCard.innerHTML = cardHTML;
+                    relatedPostsContainer.appendChild(relatedPostCard);
+                });
+            } else {
+                // 関連記事がない場合
+                relatedPostsContainer.innerHTML = '<p class="col-span-3 text-center text-gray-500">関連する掲示板がありません。</p>';
+            }
+        }
+        
+        // サンプルデータ (実際の実装ではサーバーから取得します)
+        async function getPostData(postId) {
+            // サンプルデータ
+            const samplePosts = {
+                'event1': {
+                    id: 'event1',
+                    title: '学生環境フォーラム2025開催のお知らせ',
+                    date: '2025年5月20日',
+                    author: 'グリーンキャンパスプロジェクト',
+                    image: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
+                    category: 'event',
+                    group: 'environment',
+                    details: [
+                        { label: '開催日時', value: '2025年6月15日(日) 13:00-17:00' },
+                        { label: '場所', value: '東京都内会議ホール（詳細は後日発表）' },
+                        { label: '参加費', value: '無料' },
+                        { label: '定員', value: '100名' }
+                    ],
+                    contact: {
+                        email: 'green-campus@example.com',
+                        phone: '03-1234-5678',
+                        website: 'https://example.com/green-campus'
+                    },
+                    content: `
+                        <p>持続可能な環境に関心のある学生が集まり、環境問題の解決策やアイデアを議論する「学生環境フォーラム2025」を開催します。全国の大学から環境活動に取り組む学生団体や個人が集結し、パネルディスカッションやワークショップを実施予定です。</p>
+                        
+                        <h2>フォーラムの目的</h2>
+                        <p>本フォーラムは、以下の目的で開催されます：</p>
+                        <ul>
+                            <li>環境問題に取り組む学生団体の活動共有</li>
+                            <li>団体間の連携促進とネットワーキング</li>
+                            <li>専門家からのフィードバックと知見獲得</li>
+                            <li>新たな環境プロジェクトの立ち上げ</li>
+                        </ul>
+                        
+                        <h2>プログラム内容</h2>
+                        <p>フォーラムでは、以下のようなプログラムを予定しています：</p>
+                        <ul>
+                            <li>基調講演：環境専門家による講演</li>
+                            <li>パネルディスカッション：「学生が取り組む環境活動の未来」</li>
+                            <li>ワークショップ：地域連携による環境プロジェクト立案</li>
+                            <li>ポスターセッション：各団体の活動紹介</li>
+                            <li>交流会：参加団体・個人の交流</li>
+                        </ul>
+                        
+                        <h2>参加方法</h2>
+                        <p>参加を希望される方は、以下のいずれかの方法でお申し込みください：</p>
+                        <ul>
+                            <li>Webサイトからの申し込み</li>
+                            <li>メールでの申し込み</li>
+                            <li>SNSからの申し込み</li>
+                        </ul>
+                        
+                        <p>環境問題に関心を持つ学生の皆様、ぜひご参加ください！</p>
+                    `
+                },
+                'recruit1': {
+                    id: 'recruit1',
+                    title: '学生起業家コミュニティ「StartupCampus」メンバー募集中',
+                    date: '2025年5月15日',
+                    author: 'StartupCampus',
+                    image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
+                    category: 'recruit',
+                    group: 'startup',
+                    details: [
+                        { label: '募集人数', value: '5名程度' },
+                        { label: '応募期限', value: '2025年6月10日' },
+                        { label: '活動頻度', value: '週1回のミーティング + 自主活動' },
+                        { label: '活動場所', value: '都内コワーキングスペース + オンライン' }
+                    ],
+                    contact: {
+                        email: 'startupcampus@example.com',
+                        phone: '03-5678-1234',
+                        website: 'https://example.com/startup-campus'
+                    },
+                    content: `
+                        <p>学生起業家を支援するコミュニティ「StartupCampus」では、新メンバーを募集しています。ビジネスアイデアの実現や起業に関心のある学生、マーケティングやエンジニアリングなどのスキルを活かしたい方を歓迎します。毎週のミーティングやワークショップを通じて、実践的なスキルを身につけることができます。</p>
+                        
+                        <h2>募集対象</h2>
+                        <p>以下のような学生を募集しています：</p>
+                        <ul>
+                            <li>起業に関心がある学生</li>
+                            <li>ビジネスアイデアを実現したい学生</li>
+                            <li>マーケティング、エンジニアリング、デザインなどのスキルを持つ学生</li>
+                            <li>スタートアップ業界に興味がある学生</li>
+                        </ul>
+                        
+                        <h2>活動内容</h2>
+                        <p>StartupCampusでは、以下のような活動を行っています：</p>
+                        <ul>
+                            <li>週1回の定例ミーティング</li>
+                            <li>ビジネスモデルの検討ワークショップ</li>
+                            <li>プロトタイプ開発</li>
+                            <li>ピッチコンテストへの参加</li>
+                            <li>起業家や投資家とのネットワーキング</li>
+                        </ul>
+                        
+                        <h2>メンバー特典</h2>
+                        <p>メンバーには以下の特典があります：</p>
+                        <ul>
+                            <li>コワーキングスペースの利用</li>
+                            <li>先輩起業家からのメンタリング</li>
+                            <li>投資家とのマッチング機会</li>
+                            <li>スタートアップイベントへの優先参加</li>
+                        </ul>
+                        
+                        <p>起業に興味がある方、自分のスキルを実践で活かしたい方、ぜひご応募ください！</p>
+                    `
+                },
+                'collab1': {
+                    id: 'collab1',
+                    title: '学園祭に向けたコラボレーション団体を募集します',
+                    date: '2025年5月10日',
+                    author: 'アートファクトリー',
+                    image: '',
+                    category: 'collab',
+                    group: 'culture',
+                    details: [
+                        { label: '学園祭開催日', value: '2025年7月20日-21日' },
+                        { label: '応募期限', value: '2025年6月1日' },
+                        { label: '対象', value: '音楽、ダンス、演劇などの団体' }
+                    ],
+                    contact: {
+                        email: 'artfactory@example.com',
+                        phone: '03-9876-5432',
+                        website: 'https://example.com/art-factory'
+                    },
+                    content: `
+                        <p>夏の学園祭に向けて、共同でイベントやワークショップを開催する団体を募集しています。アートファクトリーは主に創作活動（絵画、写真、デザインなど）を行う団体ですが、音楽、ダンス、演劇などの団体とコラボレーションし、総合的な文化イベントを企画したいと考えています。</p>
+                        
+                        <h2>コラボレーションの内容</h2>
+                        <p>以下のようなコラボレーションを考えています：</p>
+                        <ul>
+                            <li>合同パフォーマンスの実施</li>
+                            <li>アート×音楽/ダンス/演劇のワークショップ</li>
+                            <li>来場者参加型の創作イベント</li>
+                            <li>合同展示会やショーケース</li>
+                        </ul>
+                        
+                        <h2>募集団体</h2>
+                        <p>以下のような団体との協働を希望しています：</p>
+                        <ul>
+                            <li>音楽サークル・バンド</li>
+                            <li>ダンスサークル</li>
+                            <li>演劇サークル</li>
+                            <li>映像制作サークル</li>
+                            <li>その他のパフォーミングアーツ団体</li>
+                        </ul>
+                        
+                        <h2>提供できるもの</h2>
+                        <p>アートファクトリーからは、以下のものを提供できます：</p>
+                        <ul>
+                            <li>展示スペースの共有</li>
+                            <li>ビジュアルデザイン・装飾</li>
+                            <li>告知物のデザイン</li>
+                            <li>写真・映像撮影</li>
+                        </ul>
+                        
+                        <p>文化的な交流に興味のある団体の方々、一緒に素敵な学園祭イベントを作りましょう！</p>
+                    `
+                },
+                'intern1': {
+                    id: 'intern1',
+                    title: '夏季インターンシッププログラム参加者募集',
+                    date: '2025年5月5日',
+                    author: 'テックイノベーション学生連盟',
+                    image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
+                    category: 'intern',
+                    group: 'startup',
+                    details: [
+                        { label: '期間', value: '2025年8月1日〜8月31日' },
+                        { label: '応募締切', value: '2025年6月30日' },
+                        { label: '対象', value: '大学生・大学院生（学年不問）' },
+                        { label: '給与', value: '時給1,200円〜（企業により異なる）' }
+                    ],
+                    contact: {
+                        email: 'techinnovation@example.com',
+                        phone: '03-1234-9876',
+                        website: 'https://example.com/techinnovation'
+                    },
+                    content: `
+                        <p>IT企業と連携した夏季インターンシッププログラムの参加者を募集しています。プログラミング、デザイン、マーケティングなど様々な職種での実務経験を積むことができます。プログラム修了後は、参加企業への推薦状発行も可能です。</p>
+                        
+                        <h2>インターンシップの特徴</h2>
+                        <p>当プログラムは以下のような特徴があります：</p>
+                        <ul>
+                            <li>実務に即した実践的な経験ができる</li>
+                            <li>現役エンジニア・デザイナーからの直接指導</li>
+                            <li>複数の企業から自分に合った職種を選択可能</li>
+                            <li>学生同士のネットワーキング機会</li>
+                        </ul>
+                        
+                        <h2>募集職種</h2>
+                        <p>以下の職種でインターンを募集しています：</p>
+                        <ul>
+                            <li>Webエンジニア（フロントエンド/バックエンド）</li>
+                            <li>モバイルアプリ開発者（iOS/Android）</li>
+                            <li>UIUXデザイナー</li>
+                            <li>グラフィックデザイナー</li>
+                            <li>マーケティング</li>
+                            <li>ビジネス企画</li>
+                        </ul>
+                        
+                        <h2>応募条件</h2>
+                        <ul>
+                            <li>大学生または大学院生（学年不問）</li>
+                            <li>週3日以上、1ヶ月以上の参加が可能な方</li>
+                            <li>基本的なPC操作スキル</li>
+                            <li>各職種に関連する基礎知識があると望ましい（未経験でも熱意ある方は歓迎）</li>
+                        </ul>
+                        
+                        <h2>応募方法</h2>
+                        <p>以下の書類を電子メールでお送りください：</p>
+                        <ul>
+                            <li>履歴書</li>
+                            <li>志望動機（400字程度）</li>
+                            <li>希望職種と参加可能期間</li>
+                        </ul>
+                        
+                        <p>ご応募お待ちしております！</p>
+                    `
+                },
+                'report1': {
+                    id: 'report1',
+                    title: '春季地域清掃活動の実施報告',
+                    date: '2025年4月30日',
+                    author: '学生地域貢献隊',
+                    image: 'https://images.unsplash.com/photo-1536749342509-4f7cb6de631b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
+                    category: 'report',
+                    group: 'volunteer',
+                    details: [
+                        { label: '活動日', value: '2025年4月15日' },
+                        { label: '参加人数', value: '53名' },
+                        { label: '活動場所', value: '中央公園および隣接河川敷' }
+                    ],
+                    contact: {
+                        email: 'student-volunteer@example.com',
+                        phone: '03-5432-1098',
+                        website: 'https://example.com/student-volunteer'
+                    },
+                    content: `
+                        <p>4月15日に実施した春季地域清掃活動について報告します。今回は、50名を超える学生ボランティアが参加し、地域の公園と河川敷の清掃を行いました。地域住民の方々からも感謝の声をいただき、地域との絆を深めることができました。</p>
+                        
+                        <h2>活動の目的</h2>
+                        <p>この活動は以下の目的で実施しました：</p>
+                        <ul>
+                            <li>地域環境の美化</li>
+                            <li>地域住民との交流促進</li>
+                            <li>学生の社会貢献意識の向上</li>
+                            <li>環境保全の重要性の啓発</li>
+                        </ul>
+                        
+                        <h2>活動内容</h2>
+                        <p>主な活動内容は以下の通りです：</p>
+                        <ul>
+                            <li>公園内のゴミ拾いと分別</li>
+                            <li>河川敷の清掃活動</li>
+                            <li>落書き除去作業</li>
+                            <li>地域住民との交流会</li>
+                        </ul>
+                        
+                        <h2>成果</h2>
+                        <p>今回の活動で得られた成果：</p>
+                        <ul>
+                            <li>ゴミ回収量：45袋（可燃ゴミ30袋、不燃ゴミ15袋）</li>
+                            <li>参加者数：学生53名、地域住民15名</li>
+                            <li>地域メディアでの活動紹介：地域新聞2紙</li>
+                        </ul>
+                        
+                        <h2>参加者の声</h2>
+                        <p>「普段利用している公園をきれいにすることで、地域に貢献できて嬉しかった」（経済学部2年）</p>
+                        <p>「地域の方々と一緒に活動することで、大学と地域の繋がりの大切さを実感した」（工学部3年）</p>
+                        
+                        <h2>今後の展望</h2>
+                        <p>今回の活動の成功を受け、今後は定期的な清掃活動を計画するとともに、環境教育ワークショップなど活動の幅を広げていきたいと考えています。</p>
+                        
+                        <p>次回の活動は夏季清掃（7月中旬予定）を予定しています。参加希望の方は下記の連絡先までご連絡ください。</p>
+                    `
+                },
+                'announcement1': {
+                    id: 'announcement1',
+                    title: '国際学生交流プログラム 参加申込受付開始',
+                    date: '2025年4月25日',
+                    author: 'グローバル学生ネットワーク',
+                    image: '',
+                    category: 'announcement',
+                    group: 'international',
+                    details: [
+                        { label: '申込期間', value: '2025年4月25日〜5月31日' },
+                        { label: 'プログラム実施', value: '2025年7月〜12月' },
+                        { label: '参加費', value: '1万円（オンラインのみは5,000円）' },
+                        { label: '定員', value: '50名（先着順）' }
+                    ],
+                    contact: {
+                        email: 'global-network@example.com',
+                        phone: '03-6789-4321',
+                        website: 'https://example.com/global-network'
+                    },
+                    content: `
+                        <p>今年度の国際学生交流プログラムの参加申込受付を開始しました。オンラインと対面のハイブリッド形式で実施し、世界各国の学生との交流機会を提供します。語学力向上や異文化理解に興味のある学生は、ぜひご参加ください。</p>
+                        
+                        <h2>プログラム概要</h2>
+                        <p>国際学生交流プログラムは、以下のような内容で実施されます：</p>
+                        <ul>
+                            <li>オンライン語学交換（週1回、6ヶ月間）</li>
+                            <li>国際交流イベント（月1回、オンライン/オフライン）</li>
+                            <li>文化理解ワークショップ（隔月）</li>
+                            <li>国際協力プロジェクト（グループワーク）</li>
+                        </ul>
+                        
+                        <h2>参加メリット</h2>
+                        <ul>
+                            <li>語学力の向上（英語、中国語、フランス語、スペイン語など）</li>
+                            <li>異文化理解力の向上</li>
+                            <li>国際的な人脈形成</li>
+                            <li>グローバルな視点の獲得</li>
+                            <li>修了証の発行</li>
+                        </ul>
+                        
+                        <h2>対象国・地域</h2>
+                        <p>以下の国・地域の学生と交流する予定です：</p>
+                        <ul>
+                            <li>アジア：中国、韓国、タイ、マレーシア、ベトナム</li>
+                            <li>北米：アメリカ、カナダ</li>
+                            <li>ヨーロッパ：イギリス、フランス、ドイツ、スペイン</li>
+                            <li>オセアニア：オーストラリア、ニュージーランド</li>
+                        </ul>
+                        
+                        <h2>応募方法</h2>
+                        <p>以下の方法でお申し込みください：</p>
+                        <ul>
+                            <li>オンラインフォームからの申し込み（推奨）</li>
+                            <li>メールでの申し込み</li>
+                        </ul>
+                        
+                        <p>グローバルな視野を広げたい方、異文化交流に興味のある方、お待ちしております！</p>
+                    `
+                },
+                'event2': {
+                    id: 'event2',
+                    title: '学術シンポジウム「AI時代の倫理と社会」開催',
+                    date: '2025年4月20日',
+                    author: '未来研究会',
+                    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
+                    category: 'event',
+                    group: 'academic',
+                    details: [
+                        { label: '開催日時', value: '2025年6月5日(木) 14:00-17:00' },
+                        { label: '会場', value: '大学中央講堂' },
+                        { label: '参加費', value: '無料（要事前申込）' },
+                        { label: '定員', value: '200名' }
+                    ],
+                    contact: {
+                        email: 'future-research@example.com',
+                        phone: '03-3456-7890',
+                        website: 'https://example.com/future-research'
+                    },
+                    content: `
+                        <p>人工知能技術の発展に伴う倫理的課題と社会的影響を考える学術シンポジウムを開催します。AI研究者、哲学者、社会学者をパネリストに招き、技術発展と人間社会の関係性について多角的に議論します。学部・学科を問わず、関心のある学生の参加を歓迎します。</p>
+                        
+                        <h2>シンポジウムの趣旨</h2>
+                        <p>AI技術の急速な発展は、社会に大きな変革をもたらしています。一方で、その倫理的な課題や社会的影響については十分な議論がなされていません。本シンポジウムでは、以下のような問いを通じて、AI時代における私たちの社会のあり方を考えます。</p>
+                        <ul>
+                            <li>AIの意思決定はどこまで信頼できるのか</li>
+                            <li>AIによる創作物の著作権はどう扱うべきか</li>
+                            <li>AIの発展によって失われる仕事と新しく生まれる仕事</li>
+                            <li>AIと人間の共存はどのような形で実現できるのか</li>
+                        </ul>
+                        
+                        <h2>プログラム</h2>
+                        <p>シンポジウムは以下のようなプログラムで進行します：</p>
+                        <ul>
+                            <li>14:00-14:10 開会挨拶</li>
+                            <li>14:10-14:40 基調講演「AI技術の現在と未来」</li>
+                            <li>14:50-16:20 パネルディスカッション「AI時代の倫理と社会」</li>
+                            <li>16:20-16:50 質疑応答</li>
+                            <li>16:50-17:00 閉会挨拶</li>
+                        </ul>
+                        
+                        <h2>登壇者</h2>
+                        <p>以下の専門家を招いてディスカッションを行います：</p>
+                        <ul>
+                            <li>山田太郎教授（AI研究）</li>
+                            <li>鈴木花子准教授（技術倫理学）</li>
+                            <li>佐藤次郎氏（AIスタートアップCEO）</li>
+                            <li>田中三郎教授（社会学）</li>
+                        </ul>
+                        
+                        <h2>参加申し込み</h2>
+                        <p>参加を希望される方は、以下のいずれかの方法でお申し込みください：</p>
+                        <ul>
+                            <li>Webサイトからの申し込み</li>
+                            <li>メールでの申し込み</li>
+                        </ul>
+                        
+                        <p>AI時代の社会について共に考える機会に、ぜひご参加ください。</p>
+                    `
+                },
+                'recruit2': {
+                    id: 'recruit2',
+                    title: 'デジタルアート制作チーム 新メンバー募集',
+                    date: '2025年4月15日',
+                    author: 'デジタルクリエイティブラボ',
+                    image: 'https://images.unsplash.com/photo-1560421683-6856ea585c78?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
+                    category: 'recruit',
+                    group: 'art',
+                    details: [
+                        { label: '募集人数', value: '10名程度' },
+                        { label: '応募締切', value: '2025年5月15日' },
+                        { label: '活動頻度', value: '週1〜2回（オンライン/オフライン）' },
+                        { label: '必要スキル', value: '特になし（興味があれば初心者歓迎）' }
+                    ],
+                    contact: {
+                        email: 'digital-art@example.com',
+                        phone: '03-2345-6789',
+                        website: 'https://example.com/digital-art'
+                    },
+                    content: `
+                        <p>デジタルアートの制作・発表活動を行うサークル「デジタルクリエイティブラボ」では、新メンバーを募集しています。イラスト、3DCG、モーションデザイン、サウンドデザインなど様々な分野の学生を歓迎します。初心者も経験者も、創作に情熱を持つ方をお待ちしています。</p>
+                        
+                        <h2>活動内容</h2>
+                        <p>当サークルでは以下のような活動を行っています：</p>
+                        <ul>
+                            <li>デジタルイラスト、3DCG、アニメーションなどの制作</li>
+                            <li>技術共有ワークショップの開催</li>
+                            <li>作品展示会の企画・運営</li>
+                            <li>デジタルアートプロジェクトの企画・実施</li>
+                            <li>外部コンテストへの出展</li>
+                        </ul>
+                        
+                        <h2>募集分野</h2>
+                        <p>以下の分野に興味のある方を募集しています：</p>
+                        <ul>
+                            <li>デジタルイラスト</li>
+                            <li>3DCGモデリング・アニメーション</li>
+                            <li>モーショングラフィックス</li>
+                            <li>サウンドデザイン・作曲</li>
+                            <li>UIUXデザイン</li>
+                            <li>ゲーム制作</li>
+                        </ul>
+                        
+                        <h2>活動環境</h2>
+                        <p>以下の環境を用意しています：</p>
+                        <ul>
+                            <li>創作活動用PC・タブレット（貸出可）</li>
+                            <li>各種クリエイティブソフトウェアライセンス</li>
+                            <li>制作スペース（週3日開放）</li>
+                            <li>オンライン作業環境</li>
+                        </ul>
+                        
+                        <h2>今年度の予定</h2>
+                        <p>以下のようなイベント・プロジェクトを予定しています：</p>
+                        <ul>
+                            <li>夏季デジタルアート展示会（7月）</li>
+                            <li>全国学生デジタルアートコンテスト参加（9月）</li>
+                            <li>プロジェクションマッピングプロジェクト（11月）</li>
+                            <li>冬季合同作品展（1月）</li>
+                        </ul>
+                        
+                        <p>創作活動に興味のある方、デジタル技術を使った表現に挑戦したい方、お待ちしています！</p>
+                    `
+                },
+                'report2': {
+                    id: 'report2',
+                    title: '全国学生ビジネスコンテストで優勝しました',
+                    date: '2025年4月10日',
+                    author: 'イノベーションサークル',
+                    image: 'https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80',
+                    category: 'report',
+                    group: 'startup',
+                    details: [
+                        { label: 'コンテスト', value: '第10回全国学生ビジネスコンテスト' },
+                        { label: '受賞', value: '最優秀賞・企業賞' },
+                        { label: '開催日', value: '2025年4月1日' },
+                        { label: '参加チーム', value: '全国から87チーム' }
+                    ],
+                    contact: {
+                        email: 'innovation-circle@example.com',
+                        phone: '03-8765-4321',
+                        website: 'https://example.com/innovation-circle'
+                    },
+                    content: `
+                        <p>先日開催された全国学生ビジネスコンテストにおいて、本団体のプロジェクトチームが優勝しました。地域の高齢者と学生をマッチングするアプリケーションのアイデアが高く評価され、今後は実際の開発・リリースに向けて進めていきます。</p>
+                        
+                        <h2>受賞プロジェクト概要</h2>
+                        <p>「ジェネコネクト」は、以下のような特徴を持つプラットフォームです：</p>
+                        <ul>
+                            <li>高齢者と学生のスキル交換マッチングシステム</li>
+                            <li>高齢者は経験・知識を提供し、学生は技術サポートやサービスを提供</li>
+                            <li>ポイント制度によるインセンティブ設計</li>
+                            <li>地域コミュニティの活性化を目指す</li>
+                        </ul>
+                        
+                        <h2>評価ポイント</h2>
+                        <p>審査員からは以下のような点が評価されました：</p>
+                        <ul>
+                            <li>社会課題（高齢化・孤立）と若者のスキル開発を同時に解決する点</li>
+                            <li>持続可能なビジネスモデル設計</li>
+                            <li>地域資源の有効活用の視点</li>
+                            <li>実装の現実性と拡張性</li>
+                        </ul>
+                        
+                        <h2>受賞メンバー</h2>
+                        <p>以下のメンバーが本プロジェクトに参加しました：</p>
+                        <ul>
+                            <li>山口大輔（経済学部3年）：プロジェクトリーダー</li>
+                            <li>木村美咲（情報工学部2年）：システム設計</li>
+                            <li>高橋直樹（社会学部4年）：マーケットリサーチ</li>
+                            <li>林 健太（デザイン学部3年）：UIUXデザイン</li>
+                            <li>中村彩香（経営学部2年）：ビジネスモデル設計</li>
+                        </ul>
+                        
+                        <h2>今後の展開</h2>
+                        <p>今回の受賞を受け、以下のようなステップで実用化を進めていく予定です：</p>
+                        <ul>
+                            <li>プロトタイプ開発（5月〜7月）</li>
+                            <li>地域と連携したフィールドテスト（8月〜10月）</li>
+                            <li>アプリの改善とベータ版リリース（11月〜12月）</li>
+                            <li>正式リリースとマーケティング（来年1月〜）</li>
+                        </ul>
+                        
+                        <p>興味を持たれた方、プロジェクトに参加したい方は、ぜひご連絡ください。一緒に社会課題の解決に取り組みましょう！</p>
+                    `
+                }
+            };
+            
+            return samplePosts[postId] || null;
+        }
+        
+        // 記事データを表示する関数
+        function displayPostData(postData) {
+            // タイトル
+            document.getElementById('post-title').textContent = postData.title;
+            
+            // 日付
+            document.getElementById('post-date').textContent = postData.date;
+            
+            // 著者
+            document.getElementById('post-author').textContent = postData.author;
+            
+            // カテゴリータグ
+            const categoryTagsContainer = document.getElementById('post-category-tags');
+            categoryTagsContainer.innerHTML = '';
+            
+            // カテゴリータグ
+            const categoryTag = document.createElement('span');
+            categoryTag.className = `category-tag ${getCategoryBgColor(postData.category)}`;
+            categoryTag.textContent = getCategoryLabel(postData.category);
+            categoryTagsContainer.appendChild(categoryTag);
+            
+            // グループタグ
+            const groupTag = document.createElement('span');
+            groupTag.className = `category-tag ${getGroupBgColor(postData.group)}`;
+            groupTag.textContent = getGroupLabel(postData.group);
+            categoryTagsContainer.appendChild(groupTag);
+            
+            // 画像
+            const imageContainer = document.getElementById('post-image');
+            if (postData.image && postData.image !== '') {
+                imageContainer.innerHTML = `<div class="board-image-container"><img src="${postData.image}" alt="${postData.title}" class="w-full h-full object-cover"></div>`;
+            } else {
+                // 画像がない場合はUNIONロゴを表示
+                imageContainer.innerHTML = `
+                    <div class="board-image-container">
+                        <div class="default-board-image">
+                            <img src="UNION-icon.png" alt="UNION" style="max-width: 50%; max-height: 50%; object-fit: contain;">
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 詳細情報
+            const detailsContainer = document.getElementById('post-details');
+            detailsContainer.innerHTML = '';
+            
+            if (postData.details && postData.details.length > 0) {
+                const detailsList = document.createElement('dl');
+                detailsList.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
+                
+                postData.details.forEach(detail => {
+                    const dt = document.createElement('dt');
+                    dt.className = 'font-bold text-gray-700';
+                    dt.textContent = detail.label;
+                    
+                    const dd = document.createElement('dd');
+                    dd.textContent = detail.value;
+                    
+                    detailsList.appendChild(dt);
+                    detailsList.appendChild(dd);
+                });
+                
+                detailsContainer.appendChild(detailsList);
+            } else {
+                // 詳細情報がない場合
+                detailsContainer.innerHTML = '<p>詳細情報はありません。</p>';
+            }
+            
+            // 本文
+            document.getElementById('post-content').innerHTML = postData.content;
+            
+            // 連絡先情報
+            const contactContainer = document.getElementById('post-contact');
+            contactContainer.innerHTML = '';
+            
+            if (postData.contact) {
+                const contactList = document.createElement('ul');
+                contactList.className = 'space-y-2';
+                
+                if (postData.contact.email) {
+                    contactList.innerHTML += `
+                        <li>
+                            <i class="fas fa-envelope text-blue-600 mr-2"></i>
+                            <a href="mailto:${postData.contact.email}" class="hover:underline">${postData.contact.email}</a>
+                        </li>
+                    `;
+                }
+                
+                if (postData.contact.phone) {
+                    contactList.innerHTML += `
+                        <li>
+                            <i class="fas fa-phone text-blue-600 mr-2"></i>
+                            <a href="tel:${postData.contact.phone}" class="hover:underline">${postData.contact.phone}</a>
+                        </li>
+                    `;
+                }
+                
+                if (postData.contact.website) {
+                    contactList.innerHTML += `
+                        <li>
+                            <i class="fas fa-globe text-blue-600 mr-2"></i>
+                            <a href="${postData.contact.website}" target="_blank" class="hover:underline">${postData.contact.website}</a>
+                        </li>
+                    `;
+                }
+                
+                contactContainer.appendChild(contactList);
+            } else {
+                // 連絡先情報がない場合
+                contactContainer.innerHTML = '<p>連絡先情報はありません。</p>';
+            }
+        }
+        
+        // カテゴリーのスタイル情報
+        function getCategoryBgColor(category) {
+            const colors = {
+                'event': 'bg-blue-100',
+                'recruit': 'bg-purple-100',
+                'report': 'bg-green-100',
+                'collab': 'bg-red-100',
+                'intern': 'bg-yellow-100',
+                'announcement': 'bg-gray-100'
+            };
+            return colors[category] || 'bg-gray-100';
+        }
+        
+        function getCategoryLabel(category) {
+            const labels = {
+                'event': 'イベント情報',
+                'recruit': 'メンバー募集',
+                'report': '実績報告',
+                'collab': 'コラボ募集',
+                'intern': 'インターン情報',
+                'announcement': 'お知らせ'
+            };
+            return labels[category] || 'その他';
+        }
+        
+        function getGroupBgColor(group) {
+            const colors = {
+                'academic': 'bg-blue-100',
+                'environment': 'bg-green-100',
+                'volunteer': 'bg-red-100',
+                'culture': 'bg-pink-100',
+                'startup': 'bg-yellow-100',
+                'art': 'bg-purple-100',
+                'international': 'bg-indigo-100',
+                'other': 'bg-gray-100'
+            };
+            return colors[group] || 'bg-gray-100';
+        }
+        
+        function getGroupLabel(group) {
+            const labels = {
+                'academic': '学術系団体',
+                'environment': '環境系団体',
+                'volunteer': 'ボランティア系',
+                'culture': '文化系団体',
+                'startup': '起業系団体',
+                'art': 'アート系団体',
+                'international': '国際交流系',
+                'other': 'その他'
+            };
+            return labels[group] || 'その他';
+        }
+        
+        // ページ読み込み時に記事詳細を取得
+        document.addEventListener('DOMContentLoaded', fetchPostDetail);
+        
+        // 管理モードの検出と切り替え
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true') {
+                // 管理者モード表示
+                const adminBar = document.createElement('div');
+                adminBar.className = 'bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8';
+                adminBar.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-lock text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                管理者モードで表示しています。この表示は一般ユーザーには見えません。
+                            </p>
+                        </div>
+                        <div class="ml-auto">
+                            <a href="admin/posts/edit/${urlParams.get('id')}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700 transition ease-in-out duration-150">
+                                <i class="fas fa-edit mr-2"></i>この記事を編集
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                // 管理者モードバーを追加（メインコンテンツの先頭）
+                const mainContent = document.querySelector('.max-w-4xl.mx-auto.px-4.pb-16');
+                if (mainContent) {
+                    mainContent.insertBefore(adminBar, mainContent.firstChild);
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

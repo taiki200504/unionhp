@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* カスタムクラス */
+@layer components {
+  .bg-gradient-primary {
+    @apply bg-gradient-to-r from-blue-600 to-pink-500;
+  }
+  
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent;
+  }
+  
+  .counter-section {
+    @apply bg-gray-900 text-white py-16;
+  }
+  
+  .counter-number {
+    @apply text-4xl lg:text-6xl font-bold mb-2 bg-gradient-to-r from-blue-500 to-pink-500 bg-clip-text text-transparent;
+  }
+  
+  .counter-label {
+    @apply text-lg text-gray-300;
+  }
+  
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-center mb-12;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-blue-600 to-pink-500 text-white px-6 py-3 rounded-full hover:opacity-90 transition;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-gray-800 border-2 border-gray-300 px-6 py-3 rounded-full hover:bg-gray-100 transition;
+  }
+}
+
+/* アニメーション */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* スクロールバーのカスタマイズ */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+} 

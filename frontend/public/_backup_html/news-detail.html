@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ニュース詳細 | UNION</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="UNION-icon.png">
+    <script defer src="scripts/header-loader.js"></script>
+    <script defer src="scripts/footer-loader.js"></script>
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .news-banner {
+            height: 300px;
+            background-position: center;
+            background-size: cover;
+            position: relative;
+        }
+        .news-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+            z-index: 1;
+        }
+        .news-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+        }
+        .news-content p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+        }
+        .news-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1e40af;
+        }
+        .news-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #2563eb;
+        }
+        .news-content ul, .news-content ol {
+            margin-left: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .news-content li {
+            margin-bottom: 0.5rem;
+        }
+        .news-content a {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+        .news-content a:hover {
+            color: #1e40af;
+        }
+        .news-content blockquote {
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin-left: 0;
+            margin-right: 0;
+            font-style: italic;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <div id="header-include"></div>
+    
+    <main class="max-w-5xl mx-auto px-4 py-12">
+        <!-- ページナビゲーション -->
+        <div class="mb-6">
+            <nav class="flex text-sm text-gray-500" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="index.html" class="hover:text-blue-600 hover:underline">
+                            <i class="fas fa-home mr-1"></i>ホーム
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-xs mx-1"></i>
+                            <a href="news.html" class="hover:text-blue-600 hover:underline">ニュース</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-xs mx-1"></i>
+                            <span id="news-title-breadcrumb" class="truncate max-w-[200px]">ニュース詳細</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        
+        <!-- ニュース情報ヘッダー -->
+        <div id="news-header" class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span id="news-category" class="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">カテゴリ</span>
+                <time id="news-date" datetime="2025-05-01" class="text-gray-500">2025年5月1日</time>
+            </div>
+            <h1 id="news-title" class="text-3xl md:text-4xl font-bold leading-tight mb-6">ニュースタイトルがここに表示されます</h1>
+        </div>
+        
+        <!-- ニュースバナー画像 -->
+        <div id="news-banner" class="news-banner rounded-xl overflow-hidden mb-10"></div>
+        
+        <!-- ニュース本文 -->
+        <article class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-10">
+            <div id="news-content" class="news-content prose max-w-none">
+                <!-- ニュース本文はJSで動的に挿入 -->
+                <p>コンテンツを読み込んでいます...</p>
+            </div>
+        </article>
+        
+        <!-- 関連情報・ニュース -->
+        <div class="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-10">
+            <h2 class="text-xl font-bold mb-4 text-gradient-primary">関連ニュース</h2>
+            <div id="related-news" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- 関連ニュースはJSで動的に挿入 -->
+            </div>
+        </div>
+        
+        <!-- 戻るボタン -->
+        <div class="flex justify-between items-center">
+            <a href="news.html" class="inline-flex items-center text-blue-600 hover:underline">
+                <i class="fas fa-arrow-left mr-2"></i> ニュース一覧に戻る
+            </a>
+            <div class="flex space-x-4">
+                <a href="#" onclick="shareNews('twitter')" class="text-gray-500 hover:text-blue-400">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" onclick="shareNews('facebook')" class="text-gray-500 hover:text-blue-600">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" onclick="shareNews('line')" class="text-gray-500 hover:text-green-500">
+                    <i class="fab fa-line"></i>
+                </a>
+                <button onclick="copyPageUrl()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-link"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+    
+    <div id="footer-include"></div>
+    
+    <script>
+        // ニュースデータ（サンプル）- 実際には外部APIやバックエンドから取得
+        const newsData = [
+            {
+                id: 1,
+                title: "新たな加盟団体を迎えました",
+                date: "2025年5月1日",
+                datetime: "2025-05-01",
+                category: "お知らせ",
+                categoryClass: "bg-blue-100 text-blue-700",
+                image: "photo/news1.jpg",
+                content: `
+                    <p>3つの新しい学生団体がUNIONに加盟しました。環境保全活動「Green Campus」、プログラミング教育「Code for Students」、芸術活動「Art Connect」です。</p>
+                    
+                    <h2>各団体の紹介</h2>
+                    
+                    <h3>Green Campus</h3>
+                    <p>大学キャンパス内での環境保全活動を行う団体です。学内の緑化活動、ごみ削減キャンペーン、エコイベントの開催など、環境意識を高める取り組みを行っています。今後はUNIONのネットワークを活用し、複数キャンパスでの連携したプロジェクトを計画しています。</p>
+                    
+                    <h3>Code for Students</h3>
+                    <p>プログラミング教育の普及を目指す団体です。初心者向けのワークショップ、ハッカソン、技術勉強会などを定期的に開催。特に、テクノロジーに触れる機会が少ない学部の学生向けにわかりやすいコンテンツを提供しています。UNIONの加盟団体と連携し、各団体のデジタル化やウェブ発信もサポートする予定です。</p>
+                    
+                    <h3>Art Connect</h3>
+                    <p>芸術を通じて学生の自己表現や交流を促進する団体です。絵画、写真、音楽、パフォーマンスなど、ジャンルを超えた芸術活動を展開。定期的に展示会やパフォーマンスイベントを開催し、学生の創作活動を応援しています。UNION加盟を機に、他団体とのコラボレーション企画も進行中です。</p>
+                    
+                    <h2>今後の展望</h2>
+                    <p>新たな3団体の加盟により、UNIONの活動分野がさらに多様化しました。環境、技術、芸術という異なる視点が加わることで、これまでにない形の連携や企画が生まれることを期待しています。各団体の詳細な活動や参加方法については、今後のニュースレターや公式SNSで随時お知らせいたします。</p>
+                    
+                    <blockquote>
+                        「異なる専門性を持つ団体同士が交わることで、新たな発想や解決策が生まれる。それこそがUNIONの目指す学生コミュニティの形だ」 - UNION代表
+                    </blockquote>
+                `,
+                relatedIds: [2, 3, 5]
+            },
+            {
+                id: 2,
+                title: "学生団体合同フェスティバルを開催しました",
+                date: "2025年4月15日",
+                datetime: "2025-04-15",
+                category: "サービスニュース",
+                categoryClass: "bg-pink-100 text-pink-700",
+                image: "photo/news2.jpg",
+                content: `
+                    <p>4月10日に「UNION Festival 2025」を開催しました。加盟団体によるブース出展、パネルディスカッションなど多彩な企画が実施されました。このイベントでは学生間の交流が活発に行われ、参加者からは「視野が広がった」「新たな繋がりができた」との声が多く寄せられました。</p>
+                    
+                    <h2>開催概要</h2>
+                    <p>日時：2025年4月10日(土) 11:00〜18:00<br>
+                    場所：中央大学多目的ホール<br>
+                    参加者数：約500名（学生、教職員、一般参加者）</p>
+                    
+                    <h2>主なプログラム</h2>
+                    
+                    <h3>団体紹介ブース</h3>
+                    <p>全15の加盟団体がそれぞれ個性的なブースを設置。活動紹介や体験コーナー、作品展示など多彩な形で来場者と交流しました。特に人気だったのは、バーチャル留学体験コーナーとSDGsアクションゲームでした。</p>
+                    
+                    <h3>パネルディスカッション</h3>
+                    <p>テーマ：「学生発信で社会を変える」<br>
+                    登壇者：各分野で活躍する団体代表や卒業生、企業メンターなど<br>
+                    内容：学生団体の社会的インパクトについて議論。実際の成功事例や課題、今後の展望などについて活発な意見交換が行われました。</p>
+                    
+                    <h3>ワークショップ</h3>
+                    <p>「企画立案の基礎」「効果的な情報発信」「チームビルディング」など、学生団体運営に役立つテーマでワークショップを実施。参加学生からは「すぐに活動に取り入れたい」との反応が多く寄せられました。</p>
+                    
+                    <h2>参加者の声</h2>
+                    <ul>
+                        <li>「異なる分野の団体の話を聞くことで、自分たちの活動の新しいアイデアが浮かんだ」（工学部3年）</li>
+                        <li>「同じ課題に取り組む他大学の団体と知り合えて、今後の連携につながりそう」（経済学部2年）</li>
+                        <li>「学生の熱量と行動力に驚いた。今後の活動がますます楽しみ」（企業メンター）</li>
+                    </ul>
+                    
+                    <h2>今後について</h2>
+                    <p>本フェスティバルの成功を受け、秋には規模を拡大して第2回開催を予定しています。また、フェスティバルをきっかけに生まれた団体間の連携企画も複数進行中です。詳細は決まり次第、改めてお知らせいたします。</p>
+                `,
+                relatedIds: [1, 3, 4]
+            },
+            {
+                id: 3,
+                title: "新番組「キャリアみっけ隊」配信開始のお知らせ",
+                date: "2025年4月1日",
+                datetime: "2025-04-01",
+                category: "プレスリリース",
+                categoryClass: "bg-purple-100 text-purple-700",
+                image: "photo/news3.jpg",
+                content: `
+                    <p>UNION新番組「キャリアみっけ隊」の配信がスタートしました。学生のキャリア選択をサポートする番組です。第一線で活躍する社会人ゲストをお招きし、様々な業界の実態や求められるスキルについて深掘りします。初回ゲストはIT企業役員の田中氏を予定しています。</p>
+                    
+                    <h2>番組コンセプト</h2>
+                    <p>「キャリアは、"見つける"ものじゃなくて、"つくる"もの。」をコンセプトに、多様な働き方や業界の実態を学生目線で掘り下げます。インターネットでは見つけられない「リアル」な情報や、キャリア構築のヒントを提供していきます。</p>
+                    
+                    <h2>番組内容</h2>
+                    
+                    <h3>放送形式</h3>
+                    <p>・配信媒体：Apple Podcast、Spotify、YouTube<br>
+                    ・配信頻度：月2回（第2・第4水曜日）<br>
+                    ・時間：各回45分〜60分程度</p>
+                    
+                    <h3>パーソナリティ</h3>
+                    <p>・三島大毅（立教大学／UNION代表）<br>
+                    ・井上幹太（ZEN大学／UNION CTO）</p>
+                    
+                    <h3>番組構成</h3>
+                    <ol>
+                        <li>オープニングトーク（5分）：テーマ・ゲスト紹介</li>
+                        <li>ゲストインタビュー（30分）：キャリアパス、仕事内容、業界動向など</li>
+                        <li>リスナー質問コーナー（10分）：事前に集めた学生からの質問に回答</li>
+                        <li>まとめ・次回予告（5分）</li>
+                    </ol>
+                    
+                    <h2>4〜6月の放送予定</h2>
+                    <ul>
+                        <li>第1回：「テック業界のキャリアパス」ゲスト：IT企業役員 田中様</li>
+                        <li>第2回：「コンサル業界の実態」ゲスト：外資系コンサルタント 佐藤様</li>
+                        <li>第3回：「ベンチャー起業の舞台裏」ゲスト：スタートアップCEO 鈴木様</li>
+                        <li>第4回：「マスコミ業界の変遷」ゲスト：テレビプロデューサー 高橋様</li>
+                        <li>第5回：「フリーランスという働き方」ゲスト：フリーランスデザイナー 山本様</li>
+                        <li>第6回：「グローバルキャリアの構築法」ゲスト：海外勤務経験者 中村様</li>
+                    </ul>
+                    
+                    <h2>学生参加について</h2>
+                    <p>「キャリアみっけ隊」では、番組制作に関わる学生スタッフも募集しています。取材、編集、SNS運用など、媒体制作に興味のある方はUNION公式サイトの応募フォームからご連絡ください。また、番組内で取り上げてほしい業界やゲストのリクエストも随時受け付けています。</p>
+                    
+                    <p>詳細な情報や番組へのアクセス方法は、UNION公式SNSをご確認ください。</p>
+                `,
+                relatedIds: [2, 4, 5]
+            },
+            {
+                id: 4,
+                title: "企業連携プログラムを拡大します",
+                date: "2025年3月20日",
+                datetime: "2025-03-20",
+                category: "お知らせ",
+                categoryClass: "bg-green-100 text-green-700",
+                image: "photo/news4.jpg",
+                content: `
+                    <p>学生と企業をつなぐ連携プログラムを拡大します。新たに3社との提携が決定しました。学生には企業訪問や短期インターンの機会が提供され、実務経験を積むことができます。また企業側には若い感性に触れる機会となります。詳細は5月に発表予定です。</p>
+                    
+                    <h2>企業連携プログラムとは</h2>
+                    <p>UNION企業連携プログラムは、加盟学生団体と企業が様々な形で協働するプラットフォームです。単なるインターンシップやイベント協賛に留まらず、学生と企業が「共創」することで、双方に価値ある成果を生み出すことを目指しています。</p>
+                    
+                    <h2>新規提携企業</h2>
+                    <p>今回、新たに提携が決定した企業は以下の3社です。各社の特色を活かした連携プログラムを展開していきます。</p>
+                    
+                    <h3>株式会社テクノフューチャー</h3>
+                    <p>AI・ロボティクス分野の先端企業。技術ワークショップの開催や学生プロジェクトへの技術サポートを予定しています。特に理工系の学生にとって、最先端技術に触れる貴重な機会となるでしょう。</p>
+                    
+                    <h3>グローバルマーケティング株式会社</h3>
+                    <p>国際マーケティングを専門とする企業。海外展開を目指す学生団体のブランディングやマーケティング戦略をサポート。インターナショナルな視点を持った企画立案を学ぶ機会を提供します。</p>
+                    
+                    <h3>フューチャーメディア株式会社</h3>
+                    <p>次世代メディアプラットフォームを運営する企業。学生の情報発信力強化を目的としたメディアラボの設立や、学生団体の活動を社会に発信するメディア連携を計画しています。</p>
+                    
+                    <h2>連携プログラムの内容（予定）</h2>
+                    <ul>
+                        <li><strong>企業訪問プログラム</strong>：各企業のオフィス訪問、社員との交流、ワークショップなど</li>
+                        <li><strong>短期実践インターン</strong>：1-2週間の実務体験。実際のプロジェクトに参加</li>
+                        <li><strong>メンターシッププログラム</strong>：企業の若手社員が学生団体の活動をサポート</li>
+                        <li><strong>共同プロジェクト</strong>：学生団体と企業が協働で社会課題解決プロジェクトを実施</li>
+                        <li><strong>スキルアップセミナー</strong>：各企業の専門分野に関するセミナーやワークショップ</li>
+                    </ul>
+                    
+                    <h2>今後のスケジュール</h2>
+                    <p>5月中旬：プログラム詳細発表<br>
+                    5月下旬：参加学生・団体募集開始<br>
+                    6月上旬：説明会開催<br>
+                    7月：プログラム開始</p>
+                    
+                    <p>詳細は、5月に公式サイトおよびSNSで発表します。多くの学生・団体の参加をお待ちしています。</p>
+                `,
+                relatedIds: [1, 2, 3]
+            },
+            {
+                id: 5,
+                title: "Slackコミュニティが500名を突破",
+                date: "2025年3月1日",
+                datetime: "2025-03-01",
+                category: "受賞・認定",
+                categoryClass: "bg-yellow-100 text-yellow-700",
+                image: "photo/news5.jpg",
+                content: `
+                    <p>UNIONが運営するSlackコミュニティの参加者が500名を突破しました。このコミュニティでは学生間の情報交換や交流が活発に行われており、就活情報や技術共有、勉強会の告知など多岐にわたる話題で盛り上がっています。今後も様々なチャンネルを追加し、学生の交流を促進していきます。</p>
+                    
+                    <h2>UNIONコミュニティの成長</h2>
+                    <p>2023年9月に立ち上げたUNION Slackコミュニティは、当初は加盟団体の連絡手段として始まりました。しかし、そのオープンな雰囲気と実用的な情報交換の場としての価値が評価され、加盟団体以外の学生も多く参加するようになりました。2025年2月末には参加者数が500名を突破し、学生間の重要なネットワークプラットフォームとなっています。</p>
+                    
+                    <h2>人気チャンネルと活用例</h2>
+                    
+                    <h3>#就活情報</h3>
+                    <p>最も活発なチャンネルの一つ。インターン情報、ES添削、面接対策など、就職活動に関する情報交換が活発に行われています。OB・OGからのアドバイスも定期的に投稿され、実際の内定獲得につながったケースも多数報告されています。</p>
+                    
+                    <h3>#技術共有</h3>
+                    <p>プログラミング、デザイン、動画編集など、様々な技術的トピックについて議論・質問・共有が行われています。特に「初心者質問歓迎」の姿勢が評価され、技術習得を始めたばかりの学生も積極的に参加しています。</p>
+                    
+                    <h3>#イベント告知</h3>
+                    <p>勉強会、ワークショップ、交流会など、様々なイベント情報が共有されています。UNION加盟団体のイベントはもちろん、外部の有益なイベント情報も多く投稿されており、参加者の活動範囲拡大に貢献しています。</p>
+                    
+                    <h3>#プロジェクト相談</h3>
+                    <p>新規プロジェクトのアイデア出しや、進行中のプロジェクトの課題相談など、実践的な議論の場となっています。異なる専門性を持つ学生間のコラボレーションも多く生まれています。</p>
+                    
+                    <h2>今後の展開</h2>
+                    <p>参加者500名突破を記念して、以下の新しい取り組みを開始します。</p>
+                    
+                    <ul>
+                        <li><strong>業界別チャンネル</strong>：IT、マスコミ、NPOなど、業界別の情報交換チャンネルを増設</li>
+                        <li><strong>定期オンラインイベント</strong>：月1回のオンライン交流会や勉強会を開催</li>
+                        <li><strong>専門家Q&Aセッション</strong>：各分野の専門家を招いた質問会を定期開催</li>
+                        <li><strong>コミュニティマネージャー制度</strong>：学生によるチャンネル運営体制の強化</li>
+                    </ul>
+                    
+                    <h2>参加方法</h2>
+                    <p>UNION Slackコミュニティは、学生であれば誰でも参加できます。公式サイトの「コミュニティに参加する」ボタンから登録フォームにアクセスしてください。承認後、招待リンクが送られます。</p>
+                    
+                    <p>今後も学生同士が知識や経験を共有し、互いに成長できるコミュニティづくりを続けていきます。</p>
+                `,
+                relatedIds: [1, 3, 4]
+            }
+        ];
+        
+        // ページ読み込み時の処理
+        document.addEventListener('DOMContentLoaded', function() {
+            // URLからニュースIDを取得
+            const urlParams = new URLSearchParams(window.location.search);
+            const newsId = parseInt(urlParams.get('id'));
+            
+            if (newsId && !isNaN(newsId)) {
+                // IDに対応するニュースデータを検索
+                const newsItem = newsData.find(item => item.id === newsId);
+                
+                if (newsItem) {
+                    // ニュース詳細を表示
+                    displayNewsDetail(newsItem);
+                    // 関連ニュースを表示
+                    displayRelatedNews(newsItem.relatedIds);
+                    // タイトルを更新
+                    document.title = `${newsItem.title} | UNION`;
+                } else {
+                    // ニュースが見つからない場合
+                    displayNotFound();
+                }
+            } else {
+                // IDが指定されていない場合
+                displayNotFound();
+            }
+        });
+        
+        // ニュース詳細を表示する関数
+        function displayNewsDetail(newsItem) {
+            // ヘッダー情報
+            document.getElementById('news-title-breadcrumb').textContent = newsItem.title;
+            document.getElementById('news-title').textContent = newsItem.title;
+            document.getElementById('news-date').textContent = newsItem.date;
+            document.getElementById('news-date').setAttribute('datetime', newsItem.datetime);
+            
+            // カテゴリー
+            const categoryElem = document.getElementById('news-category');
+            categoryElem.textContent = newsItem.category;
+            categoryElem.className = `px-3 py-1 ${newsItem.categoryClass} text-sm font-medium rounded-full`;
+            
+            // バナー画像
+            document.getElementById('news-banner').style.backgroundImage = `url(${newsItem.image})`;
+            
+            // 本文
+            document.getElementById('news-content').innerHTML = newsItem.content;
+        }
+        
+        // 関連ニュースを表示する関数
+        function displayRelatedNews(relatedIds) {
+            const container = document.getElementById('related-news');
+            container.innerHTML = '';
+            
+            // 最大3件の関連ニュースを表示
+            relatedIds.slice(0, 3).forEach(id => {
+                const newsItem = newsData.find(item => item.id === id);
+                if (newsItem) {
+                    const card = document.createElement('div');
+                    card.className = 'bg-gray-50 rounded-lg overflow-hidden border border-gray-200 transition hover:shadow-md';
+                    card.innerHTML = `
+                        <a href="news-detail.html?id=${newsItem.id}">
+                            <div class="h-32 overflow-hidden">
+                                <img src="${newsItem.image}" alt="${newsItem.title}" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs ${newsItem.categoryClass} px-2 py-0.5 rounded-sm">${newsItem.category}</span>
+                                    <time class="text-xs text-gray-500">${newsItem.date}</time>
+                                </div>
+                                <h3 class="font-bold text-sm line-clamp-2">${newsItem.title}</h3>
+                            </div>
+                        </a>
+                    `;
+                    container.appendChild(card);
+                }
+            });
+            
+            // 関連ニュースがない場合
+            if (relatedIds.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center col-span-3">関連ニュースはありません</p>';
+            }
+        }
+        
+        // ニュースが見つからない場合の表示
+        function displayNotFound() {
+            document.getElementById('news-title').textContent = 'ニュースが見つかりません';
+            document.getElementById('news-content').innerHTML = `
+                <div class="text-center py-10">
+                    <i class="fas fa-newspaper text-gray-300 text-6xl mb-4"></i>
+                    <p class="text-gray-600">お探しのニュース記事は見つかりませんでした。</p>
+                    <a href="news.html" class="mt-4 inline-block px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">ニュース一覧に戻る</a>
+                </div>
+            `;
+            document.getElementById('news-banner').style.display = 'none';
+            document.getElementById('related-news').innerHTML = '';
+        }
+        
+        // SNSシェア機能
+        function shareNews(platform) {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.getElementById('news-title').textContent);
+            
+            let shareUrl = '';
+            
+            switch (platform) {
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+                    break;
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                    break;
+                case 'line':
+                    shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}`;
+                    break;
+            }
+            
+            if (shareUrl) {
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            }
+        }
+        
+        // URLコピー機能
+        function copyPageUrl() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URLをクリップボードにコピーしました');
+            }).catch(err => {
+                console.error('URLのコピーに失敗しました', err);
+            });
+        }
+    </script>
+</body>
+</html> 

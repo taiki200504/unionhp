@@ -1,0 +1,100 @@
+                    `;
+                    
+                    newsItem.innerHTML = newsHTML;
+                    
+                    // ニュースコンテナに追加
+                    const newsContainer = document.getElementById('news-container');
+                    newsContainer.appendChild(newsItem);
+                    
+                    // 画像の確認と修正
+                    ensureNewsImages();
+                    
+                    // フィルタリングを適用
+                    filterNews();
+                }
+                
+                // カテゴリーのCSSクラスを取得
+                function getCategoryClass(category) {
+                    const classes = {
+                        'event': 'tag-event',
+                        'notice': 'tag-notice',
+                        'service': 'tag-service',
+                        'pressrelease': 'tag-pressrelease',
+                        'award': 'tag-award'
+                    };
+                    return classes[category] || 'tag-notice';
+                }
+                
+                // カテゴリーのラベルを取得
+                function getCategoryLabel(category) {
+                    const labels = {
+                        'event': 'イベント',
+                        'notice': 'お知らせ',
+                        'service': 'サービスニュース',
+                        'pressrelease': 'プレスリリース',
+                        'award': '受賞・認定'
+                    };
+                    return labels[category] || 'お知らせ';
+                }
+                
+                // 日付のフォーマット
+                function formatDate(dateStr) {
+                    try {
+                        const date = new Date(dateStr);
+                        if (isNaN(date)) return dateStr;
+                        
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        
+                        return `${year}.${month}.${day}`;
+                    } catch (e) {
+                        return dateStr;
+                    }
+                }
+                
+                // レスポンシブ対応のための調整
+                function adjustForMobile() {
+                    const isMobile = window.innerWidth <= 768;
+                    const isSmallMobile = window.innerWidth <= 480;
+                    
+                    // カード表示の調整
+                    if (isMobile) {
+                        // モバイル向けのカードスタイル調整
+                        document.querySelectorAll('.news-card').forEach(card => {
+                            card.classList.add('mobile-card');
+                        });
+                        
+                        // 検索ボックスの幅調整
+                        const searchContainer = document.querySelector('.news-search-container');
+                        if (searchContainer) {
+                            searchContainer.style.width = '100%';
+                        }
+                    } else {
+                        // デスクトップ向けのスタイルに戻す
+                        document.querySelectorAll('.news-card').forEach(card => {
+                            card.classList.remove('mobile-card');
+                        });
+                        
+                        const searchContainer = document.querySelector('.news-search-container');
+                        if (searchContainer) {
+                            searchContainer.style.width = '';
+                        }
+                    }
+                    
+                    // 年別タグの表示調整
+                    if (isSmallMobile) {
+                        document.querySelectorAll('.year-tag').forEach(tag => {
+                            tag.style.padding = '0.25rem 0.5rem';
+                            tag.style.fontSize = '0.75rem';
+                        });
+                    } else {
+                        document.querySelectorAll('.year-tag').forEach(tag => {
+                            tag.style.padding = '';
+                            tag.style.fontSize = '';
+                        });
+                    }
+    </main>
+    <div id="footer-include"></div>
+</body>
+</html> 

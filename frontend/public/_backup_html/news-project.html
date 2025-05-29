@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学生団体ニュース配信プロジェクト | UNION</title>
+  <link rel="stylesheet" href="dist/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="UNION-icon.png">
+  <style>
+    #header-include {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    body { padding-top: 60px; }
+    [id] { scroll-margin-top: 60px; }
+  </style>
+</head>
+<body class="bg-white text-gray-900">
+  <div id="header-include"></div>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <section class="mb-12 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4 text-gradient-primary flex items-center justify-center"><i class="fas fa-broadcast-tower mr-3"></i>学生団体ニュース配信プロジェクト</h1>
+      <p class="text-lg text-gray-700 mb-2">学生の声を、社会へ届ける。</p>
+      <p class="text-base text-gray-600 mb-4">UNIONでは、加盟団体や全国の学生団体の活動を、縦型動画コンテンツとして発信するニュース企画を立ち上げました。毎週のショートニュースとして、若者のリアルな挑戦やアクションを、社会とつなぎます。</p>
+    </section>
+    <section class="mb-12 grid md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-xl p-6 shadow flex flex-col items-center border border-gray-100">
+        <i class="fas fa-bullhorn text-3xl text-blue-500 mb-3"></i>
+        <div class="font-bold text-lg mb-1">学生団体の活動発信</div>
+        <div class="text-sm text-gray-600 text-center">学生団体のリアルな挑戦を社会へ</div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow flex flex-col items-center border border-gray-100">
+        <i class="fas fa-user-graduate text-3xl text-pink-500 mb-3"></i>
+        <div class="font-bold text-lg mb-1">アナウンサー育成</div>
+        <div class="text-sm text-gray-600 text-center">現場経験を学生に提供</div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow flex flex-col items-center border border-gray-100">
+        <i class="fas fa-chart-line text-3xl text-purple-500 mb-3"></i>
+        <div class="font-bold text-lg mb-1">メディア成長</div>
+        <div class="text-sm text-gray-600 text-center">投稿頻度・視聴回数UP</div>
+      </div>
+    </section>
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-bullseye mr-2 text-blue-500"></i>プロジェクトの目的</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3"><i class="fas fa-bullhorn text-blue-400 mt-1"></i><span>学生団体の活動を社会に向けて発信</span></li>
+          <li class="flex items-start gap-3"><i class="fas fa-user-graduate text-pink-400 mt-1"></i><span>アナウンサー志望の学生に現場経験を提供</span></li>
+        </ul>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3"><i class="fas fa-chart-line text-purple-400 mt-1"></i><span>UNIONメディアの投稿頻度・視聴回数の向上</span></li>
+          <li class="flex items-start gap-3"><i class="fas fa-link text-green-400 mt-1"></i><span>学生団体同士・社会との接点を可視化し、加盟促進にもつなげる</span></li>
+        </ul>
+      </div>
+    </section>
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-tv mr-2 text-pink-500"></i>配信内容</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-blue-50 rounded-xl p-6 flex flex-col gap-2 border border-blue-200">
+          <div class="flex items-center mb-1"><i class="fas fa-video text-blue-500 mr-2"></i><span class="font-bold">形式</span></div>
+          <div class="text-gray-800 font-medium">縦型ショート動画（〜60秒）</div>
+        </div>
+        <div class="bg-pink-50 rounded-xl p-6 flex flex-col gap-2 border border-pink-200">
+          <div class="flex items-center mb-1"><i class="fas fa-calendar-week text-pink-500 mr-2"></i><span class="font-bold">頻度</span></div>
+          <div class="text-gray-800 font-medium">週1〜3本を定期更新</div>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-6 flex flex-col gap-2 border border-purple-200">
+          <div class="flex items-center mb-1"><i class="fas fa-share-alt text-purple-500 mr-2"></i><span class="font-bold">媒体</span></div>
+          <div class="text-gray-800 font-medium">Instagram / TikTok / YouTube Shorts</div>
+        </div>
+        <div class="bg-green-50 rounded-xl p-6 flex flex-col gap-2 border border-green-200">
+          <div class="flex items-center mb-1"><i class="fas fa-users text-green-500 mr-2"></i><span class="font-bold">出演・編集</span></div>
+          <div class="text-gray-800 font-medium">学生アナウンサー（UNIONメンバー）、UNIONコンテンツ制作部</div>
+        </div>
+      </div>
+    </section>
+    <section class="mb-16">
+      <div class="rounded-xl bg-gradient-primary p-8 flex flex-col items-center shadow-lg">
+        <h2 class="text-xl font-bold mb-4 flex items-center text-white">
+          <i class="fas fa-pen-nib mr-2 text-green-200"></i>ニュースを投稿する
+        </h2>
+        <p class="mb-4 text-white">UNIONでは、すべての学生団体からニュース投稿を受け付けています。下記のフォームよりご応募ください（選定制・掲載保証はありません）。</p>
+        <div class="flex flex-col md:flex-row gap-6 justify-center items-center w-full">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdz2xNwK65-MV0ud2C2mLoxEjIA5vY0okKeNeLxzWJCvMM2Zw/viewform?usp=dialog"
+             class="w-full md:w-auto px-12 py-6 border-2 border-white text-white rounded-full text-2xl font-extrabold shadow-lg hover:shadow-xl transition hover:opacity-90 flex items-center justify-center mb-4 md:mb-0 bg-transparent"
+             style="backdrop-filter: blur(2px);"
+             target="_blank">
+            加盟団体フォーム
+          </a>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSed8VZ6kBqvBHkMKLHIc1LirU1zdJ_L8lNYElqZS-P8MMbjnQ/viewform?usp=sharing"
+             class="w-full md:w-auto px-12 py-6 border-2 border-white text-white rounded-full text-2xl font-extrabold shadow-lg hover:shadow-xl transition hover:opacity-90 flex items-center justify-center bg-transparent"
+             style="backdrop-filter: blur(2px);"
+             target="_blank">
+            一般団体フォーム
+          </a>
+        </div>
+        <div class="text-sm mt-4 text-white text-center opacity-80">※UNION加盟団体からの投稿を優先的に取り上げています。内容により掲載されない場合があります。</div>
+      </div>
+    </section>
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fas fa-question-circle mr-2 text-blue-400"></i>よくある質問</h2>
+      <div class="space-y-2">
+        <details class="bg-gray-50 rounded-lg p-4">
+          <summary class="font-bold cursor-pointer">掲載条件は？</summary>
+          <div class="mt-2 text-gray-700 text-sm">学生団体の活動内容・社会性・独自性などをもとに選定しています。すべての投稿が掲載されるわけではありません。</div>
+        </details>
+        <details class="bg-gray-50 rounded-lg p-4">
+          <summary class="font-bold cursor-pointer">UNION加盟団体でなくても投稿できますか？</summary>
+          <div class="mt-2 text-gray-700 text-sm">はい、全国の学生団体から投稿可能です。ただし加盟団体を優先的に掲載します。</div>
+        </details>
+        <details class="bg-gray-50 rounded-lg p-4">
+          <summary class="font-bold cursor-pointer">運用体制は？</summary>
+          <div class="mt-2 text-gray-700 text-sm">UNIONコンテンツ制作部が編集・運用を担当し、Slack・Notionで管理しています。</div>
+        </details>
+      </div>
+    </section>
+  </main>
+  <div id="footer-include"></div>
+  <script>
+    fetch('header.html').then(r => r.text()).then(html => { document.getElementById('header-include').innerHTML = html; });
+    fetch('footer.html').then(r => r.text()).then(html => { document.getElementById('footer-include').innerHTML = html; });
+  </script>
+</body>
+</html> 

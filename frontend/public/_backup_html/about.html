@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | UNION</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="UNION-icon.png">
+    <script defer src="scripts/header-loader.js"></script>
+    <script defer src="scripts/footer-loader.js"></script>
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 4rem 0 2rem;
+        }
+        .section-divider-line {
+            height: 2px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+            flex-grow: 1;
+        }
+        .section-divider-text {
+            padding: 0 1.5rem;
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+        .mission-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+        }
+        .mission-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .mission-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .value-card {
+            transition: all 0.3s ease;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .hero-section {
+            position: relative;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 7rem 0;
+            margin-bottom: 3rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        .pmvv-card {
+            background-color: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .pmvv-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .pmvv-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            height: 60px;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+        }
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* 新しいスタイル */
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 1;
+            filter: blur(40px);
+            opacity: 0.15;
+        }
+        .section-title {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, rgba(6, 111, 242, 0.1) 0%, rgba(236, 79, 175, 0.1) 100%);
+            border-radius: 2rem;
+            color: #333;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        .animated-border {
+            position: relative;
+        }
+        .animated-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            padding: 3px;
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .animated-border:hover::before {
+            opacity: 1;
+        }
+        .vision-item {
+            position: relative;
+            padding-left: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .vision-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+        .vision-item::after {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 1rem;
+            width: 0.5rem;
+            height: 0.5rem;
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            border-radius: 50%;
+        }
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+        .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .wave-divider {
+            height: 100px;
+            overflow: hidden;
+            margin-top: -1px;
+        }
+        .wave-divider svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <div id="header-include"></div>
+    
+    <!-- ヒーロセクション -->
+    <section class="hero-section">
+        <div class="floating-shape bg-blue-500 w-96 h-96 -top-48 -left-48 animate-pulse"></div>
+        <div class="floating-shape bg-pink-500 w-64 h-64 -bottom-32 -right-32 animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="hero-content max-w-5xl mx-auto px-4">
+            <div class="section-title mb-4 inline-block">UNION Philosophy</div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">理念・ビジョン・戦略</h1>
+            <p class="text-xl max-w-3xl mx-auto leading-relaxed">
+                学生の声を社会に響かせ<br class="hidden md:block">
+                ムーブメントを起こす
+            </p>
+        </div>
+    </section>
+
+    <div class="wave-divider bg-white">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
+            <path fill="#f8fafc" d="M0,32L60,42.7C120,53,240,75,360,74.7C480,75,600,53,720,48C840,43,960,53,1080,58.7C1200,64,1320,64,1380,64L1440,64L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
+        </svg>
+    </div>
+
+    <main class="max-w-5xl mx-auto px-4 pb-16">
+        <!-- Purpose セクション -->
+        <section class="mb-20 scroll-reveal">
+            <div class="section-divider">
+                <div class="section-divider-line"></div>
+                <h2 class="section-divider-text">Purpose</h2>
+                <div class="section-divider-line"></div>
+            </div>
+            
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 md:p-12 mt-10 shadow-sm overflow-hidden relative animated-border">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-primary opacity-5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-primary opacity-5 rounded-full translate-y-1/3 -translate-x-1/3"></div>
+                
+                <div class="flex flex-col md:flex-row items-start gap-8 relative z-10">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-md">
+                            <i class="fas fa-star text-white text-xl"></i>
+                        </div>
+                        <span class="text-2xl text-gradient-primary font-medium">Why we need</span>
+                    </div>
+                    
+                    <div class="flex-grow">
+                        <h3 class="text-3xl font-bold mb-6 text-gray-900">学生から熱狂を生み出せる世界を作る。</h3>
+                        <div class="space-y-4 text-gray-700 leading-relaxed">
+                            <p>今の日本社会は自分の行動で、国や社会を変えられると思うことができる若者が少ない。</p>
+                            <p>そんな社会の中で、学生団体は社会を動かすタネを秘めていると思う。しかし課題として、情報伝達手段がない。そこで我々UNIONが学生活動の旗振り役・広告塔として、学生のサポートを行うことで、『<span class="font-bold">学生から変えようとする空気感・世界観を作り出す</span>』未来を目指す。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Mission セクション -->
+        <section class="mb-20 scroll-reveal">
+            <div class="section-divider">
+                <div class="section-divider-line"></div>
+                <h2 class="section-divider-text">Mission</h2>
+                <div class="section-divider-line"></div>
+            </div>
+            
+            <div class="bg-gradient-to-br from-pink-50 to-pink-100 rounded-3xl p-8 md:p-12 mt-10 shadow-sm overflow-hidden relative animated-border">
+                <div class="absolute top-0 left-0 w-64 h-64 bg-gradient-primary opacity-5 rounded-full -translate-y-1/2 -translate-x-1/2"></div>
+                <div class="absolute bottom-0 right-0 w-48 h-48 bg-gradient-primary opacity-5 rounded-full translate-y-1/3 translate-x-1/3"></div>
+                
+                <div class="flex flex-col md:flex-row items-start gap-8 relative z-10">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-md">
+                            <i class="fas fa-bullhorn text-white text-xl"></i>
+                        </div>
+                        <span class="text-2xl text-gradient-primary font-medium">What we do</span>
+                    </div>
+                    
+                    <div class="flex-grow">
+                        <h3 class="text-3xl font-bold mb-6 text-gray-900">学生の声を社会に響かせる。</h3>
+                        <div class="space-y-4 text-gray-700 leading-relaxed">
+                            <p>学生団体連合UNIONは、このMissionを通して、学生・学生団体同士の連携を強化し、情報共有や共同イベントの開催、人材育成を促進します。また、学生・学生団体の影響力を集約し、イベントの告知や広報を我々のメディアを通して行うことで学生の声を多くの人に届けます。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Vision セクション -->
+        <section class="mb-20">
+            <div class="section-divider">
+                <div class="section-divider-line"></div>
+                <h2 class="section-divider-text">Vision</h2>
+                <div class="section-divider-line"></div>
+            </div>
+            
+            <div class="bg-gradient-to-br from-purple-50 to-indigo-100 rounded-3xl p-8 md:p-12 mt-10 shadow-sm overflow-hidden relative">
+                <div class="absolute center-0 right-0 w-64 h-64 bg-gradient-primary opacity-5 rounded-full -translate-x-1/4 -translate-y-1/4"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-primary opacity-5 rounded-full translate-y-1/3 translate-x-1/3"></div>
+                
+                <div class="flex flex-col md:flex-row items-start gap-8 relative z-10">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-md">
+                            <i class="fas fa-binoculars text-white text-lg"></i>
+                        </div>
+                        <span class="text-lg text-gradient-primary font-medium">Where we go</span>
+                    </div>
+                    
+                    <div class="flex-grow">
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100">
+                                <h4 class="text-xl font-bold mb-3 text-indigo-900">大ゴール(10年)</h4>
+                                <p class="text-gray-700 leading-relaxed">
+                                    学生発のムーブメントが、世の中を動かす『時代』をつくる。
+                                </p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100">
+                                <h4 class="text-xl font-bold mb-3 text-indigo-700">中ゴール(5年)</h4>
+                                <p class="text-gray-700 leading-relaxed">
+                                    学生の挑戦が、社会の中で当たり前に受け入れられる『文化』をつくる。
+                                </p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-100">
+                                <h4 class="text-xl font-bold mb-3 text-indigo-500">小ゴール(1年)</h4>
+                                <p class="text-gray-700 leading-relaxed">
+                                    学生同士がつながり、互いに影響を与え合う『場』をつくる。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Values セクション -->
+        <section class="mb-20">
+            <div class="section-divider">
+                <div class="section-divider-line"></div>
+                <h2 class="section-divider-text">Values</h2>
+                <div class="section-divider-line"></div>
+            </div>
+            
+            <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-3xl p-8 md:p-12 mt-10 shadow-sm overflow-hidden relative">
+                <div class="absolute top-0 left-0 w-64 h-64 bg-gradient-primary opacity-5 rounded-full -translate-y-1/2 -translate-x-1/2"></div>
+                <div class="absolute bottom-0 right-0 w-48 h-48 bg-gradient-primary opacity-5 rounded-full translate-y-1/3 translate-x-1/3"></div>
+                
+                <div class="flex flex-col md:flex-row items-start gap-8 relative z-10">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-md">
+                            <i class="fas fa-compass text-white text-lg"></i>
+                        </div>
+                        <span class="text-lg text-gradient-primary font-medium">How to do</span>
+                    </div>
+                    
+                    <div class="flex-grow">
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 rounded-2xl shadow-sm relative border-t-4 border-blue-500 hover:transform hover:scale-105 transition-all duration-300">
+                                <span class="absolute text-8xl opacity-10 font-bold right-4 bottom-0 text-blue-500">C</span>
+                                <h4 class="text-xl font-bold mb-3 text-blue-600">Collaboration</h4>
+                                <p class="text-gray-700 leading-relaxed relative z-10">
+                                    学生団体同士の連携を深め、共に成長し合う環境を作ります。
+                                </p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-2xl shadow-sm relative border-t-4 border-pink-500 hover:transform hover:scale-105 transition-all duration-300">
+                                <span class="absolute text-8xl opacity-10 font-bold right-4 bottom-0 text-pink-500">I</span>
+                                <h4 class="text-xl font-bold mb-3 text-pink-600">Impact</h4>
+                                <p class="text-gray-700 leading-relaxed relative z-10">
+                                    学生の声を広く届けることで、社会にポジティブな変化をもたらします。
+                                </p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-2xl shadow-sm relative border-t-4 border-purple-500 hover:transform hover:scale-105 transition-all duration-300">
+                                <span class="absolute text-8xl opacity-10 font-bold right-4 bottom-0 text-purple-500">S</span>
+                                <h4 class="text-xl font-bold mb-3 text-purple-600">Synergy</h4>
+                                <p class="text-gray-700 leading-relaxed relative z-10">
+                                    活躍する若者や団体が集い「熱狂」が生まれる場所を創出する。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- UNIONについて -->
+        <section class="mb-20">
+            <div class="section-divider">
+                <div class="section-divider-line"></div>
+                <h2 class="section-divider-text">About Us</h2>
+                <div class="section-divider-line"></div>
+            </div>
+            
+            <div class="bg-gray-50 rounded-2xl p-8 md:p-12 mt-12">
+                <div class="md:flex gap-12 items-center">
+                    <div class="md:w-1/2 mb-8 md:mb-0">
+                        <h3 class="text-2xl font-bold mb-6 text-gradient-primary">学生団体連合UNIONとは</h3>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            UNIONは「学生のリアルな声を届ける」を軸に立ち上がった学生団体連合体です。
+                            学生向けにメディア型コミュニティを運営し、学生・学生団体の活動や活躍する若者を紹介・情報発信しています。
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            学生の輪を広めていくことで、「学生の力で社会を変えていく」そのためのハブ団体として活動しています。
+                            公式Podcast、YouTubeチャンネル、各種SNSなどのメディアを通じて情報発信を行い、学生の声を社会に届けています。
+                        </p>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="union-logotype2.png" alt="UNION" class="w-full rounded-lg shadow-md">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 主な活動内容 -->
+        <section>
+            <div class="section-divider">
+                <div class="section-divider-line"></div>
+                <h2 class="section-divider-text">Activities</h2>
+                <div class="section-divider-line"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mt-12">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 flex items-start gap-4">
+                    <div class="activity-icon flex-shrink-0 rounded-full bg-gradient-primary flex items-center justify-center text-white">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-2">メディア発信</h3>
+                        <p class="text-gray-700">
+                            学生・学生団体の活動紹介、Podcast配信、YouTube動画、SNS発信など
+                            複数のチャネルを通じて学生の声を届けます。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 flex items-start gap-4">
+                    <div class="activity-icon flex-shrink-0 rounded-full bg-gradient-primary flex items-center justify-center text-white">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-2">コミュニティ運営</h3>
+                        <p class="text-gray-700">
+                            学生団体同士の交流・マッチング支援、Slackコミュニティの運営、
+                            定期ミートアップの開催などを通じて学生の輪を広げます。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 flex items-start gap-4">
+                    <div class="activity-icon flex-shrink-0 rounded-full bg-gradient-primary flex items-center justify-center text-white">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-2">企業・団体連携</h3>
+                        <p class="text-gray-700">
+                            企業・団体とのコラボイベント企画、学生と企業のマッチング、
+                            共同プロジェクトなどを通じて学生と社会をつなぎます。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 flex items-start gap-4">
+                    <div class="activity-icon flex-shrink-0 rounded-full bg-gradient-primary flex items-center justify-center text-white">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-2">人材育成</h3>
+                        <p class="text-gray-700">
+                            学生向けインターン・プロジェクト紹介、リーダー向け1on1カウンセリング、
+                            スキルアップ支援など、学生の成長を促進する機会を提供します。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 flex items-start gap-4">
+                    <div class="activity-icon flex-shrink-0 rounded-full bg-gradient-primary flex items-center justify-center text-white">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-2">情報発信</h3>
+                        <p class="text-gray-700">
+                            学生に関連するニュース・トピックの発信、学内外の情報提供、
+                            公式SNSやポッドキャストを通じた学生の声の拡散を行います。
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 flex items-start gap-4">
+                    <div class="activity-icon flex-shrink-0 rounded-full bg-gradient-primary flex items-center justify-center text-white">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold mb-2">コミュニティ形成</h3>
+                        <p class="text-gray-700">
+                            Slackコミュニティの運営、定期ミートアップの開催、団体間交流の促進など、
+                            学生同士がつながり影響を与え合う場を提供します。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="join.html" class="inline-block bg-gradient-primary text-white px-8 py-4 rounded-full hover:shadow-lg transition transform hover:-translate-y-1 duration-300">
+                    <i class="fas fa-arrow-right-to-bracket mr-2"></i>
+                    UNIONに参加する
+                </a>
+            </div>
+        </section>
+    </main>
+    
+    <div id="footer-include"></div>
+
+    <script>
+        fetch('footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-include').innerHTML = html;
+        });
+        
+        // スクロールアニメーションの実装
+        document.addEventListener('DOMContentLoaded', function() {
+            const revealElements = document.querySelectorAll('.scroll-reveal');
+            
+            function checkReveal() {
+                const windowHeight = window.innerHeight;
+                const revealPoint = 150;
+                
+                revealElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    
+                    if (elementTop < windowHeight - revealPoint) {
+                        element.classList.add('reveal');
+                    }
+                });
+            }
+            
+            // 初回チェック
+            checkReveal();
+            
+            // スクロール時にチェック
+            window.addEventListener('scroll', checkReveal);
+        });
+    </script>
+</body>
+</html> 

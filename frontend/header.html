@@ -1,0 +1,119 @@
+<nav class="fixed w-full bg-white/95 backdrop-blur-md shadow-sm z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold text-primary transition-transform hover:scale-105 duration-300 bg-transparent">
+                    <img src="union-logotype2.png" alt="UNIONロゴ" class="h-10 w-auto">
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="about.html" class="text-gray-700 hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary transition-all duration-300 relative group py-2">
+                    About
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="services.html" class="text-gray-700 hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary transition-all duration-300 relative group py-2">
+                    Services
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="media.html" class="text-gray-700 hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary transition-all duration-300 relative group py-2">
+                    Media
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="news.html" class="text-gray-700 hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary transition-all duration-300 relative group py-2">
+                    News
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="community.html" class="text-gray-700 hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary transition-all duration-300 relative group py-2">
+                    Community
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="join.html" class="text-gray-700 hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary transition-all duration-300 relative group py-2">
+                    Join Us
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="board.html" class="text-gray-700 hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary transition-all duration-300 relative group py-2">
+                    UNION掲示板
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="contact.html" class="text-gray-700 hover:text-transparent hover:bg-clip-text hover:bg-gradient-primary transition-all duration-300 relative group py-2">
+                    Contact
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="mobile-menu-button focus:outline-none">
+                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- モバイルメニュー -->
+    <div class="mobile-menu hidden md:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 bg-white/95 backdrop-blur-md">
+            <a href="about.html" class="block px-3 py-2 text-gray-700 hover:bg-gradient-primary hover:text-white rounded-lg transition-all duration-300">About</a>
+            <a href="services.html" class="block px-3 py-2 text-gray-700 hover:bg-gradient-primary hover:text-white rounded-lg transition-all duration-300">Services</a>
+            <a href="media.html" class="block px-3 py-2 text-gray-700 hover:bg-gradient-primary hover:text-white rounded-lg transition-all duration-300">Media</a>
+            <a href="news.html" class="block px-3 py-2 text-gray-700 hover:bg-gradient-primary hover:text-white rounded-lg transition-all duration-300">News</a>
+            <a href="community.html" class="block px-3 py-2 text-gray-700 hover:bg-gradient-primary hover:text-white rounded-lg transition-all duration-300">Community</a>
+            <a href="join.html" class="block px-3 py-2 text-gray-700 hover:bg-gradient-primary hover:text-white rounded-lg transition-all duration-300">Join Us</a>
+            <a href="board.html" class="block px-3 py-2 text-gray-700 hover:bg-gradient-primary hover:text-white rounded-lg transition-all duration-300">UNION掲示板</a>
+            <a href="contact.html" class="block px-3 py-2 text-gray-700 hover:bg-gradient-primary hover:text-white rounded-lg transition-all duration-300">Contact</a>
+        </div>
+    </div>
+</nav>
+<script>
+// この関数はヘッダーがロードされたときに実行されます
+function initializeHeader() {
+    // モバイルメニューの制御
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    // スムーズスクロール（#アンカーリンク用）
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href !== '#') { // # だけのリンクは除外
+                e.preventDefault();
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
+
+    // 現在のページをナビゲーションでハイライト
+    const currentPage = window.location.pathname.split('/').pop();
+    document.querySelectorAll('nav a').forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (linkHref === currentPage) {
+            // テキストグラデーションのみを適用し、背景は透明に保つ
+            link.classList.add('font-medium');
+            link.style.color = 'transparent';
+            link.style.backgroundImage = 'linear-gradient(135deg, #066ff2 0%, #ec4faf 100%)';
+            link.style.webkitBackgroundClip = 'text';
+            link.style.backgroundClip = 'text';
+            // 下線を表示
+            const span = link.querySelector('span');
+            if (span) {
+                span.classList.add('w-full');
+            }
+        }
+    });
+}
+
+// ヘッダーが読み込まれたらすぐに初期化
+initializeHeader();
+
+// DOMContentLoadedイベントで再度初期化（ページ全体が読み込まれたとき）
+document.addEventListener('DOMContentLoaded', initializeHeader);
+</script> 

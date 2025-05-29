@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNION掲示板 | UNION</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="UNION-icon.png">
+    <script defer src="scripts/header-loader.js"></script>
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .category-btn {
+            transition: all 0.3s ease;
+        }
+        .category-btn.active {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            color: white;
+        }
+        .category-btn:hover:not(.active) {
+            background-color: #f3f4f6;
+        }
+        .board-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 1;
+            transform: translateY(0);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        .board-card.hidden-card {
+            opacity: 0;
+            transform: translateY(20px);
+            display: none;
+        }
+        .board-card.appear {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .post-detail-transition {
+            transition: all 0.3s ease;
+        }
+        .category-tile {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .category-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .category-tile.active {
+            border: 2px solid #066ff2;
+            box-shadow: 0 0 15px rgba(6, 111, 242, 0.3);
+        }
+        .hero-section {
+            position: relative;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 7rem 0;
+            margin-bottom: 3rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 4rem 0 2rem;
+        }
+        .section-divider-line {
+            height: 2px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+            flex-grow: 1;
+        }
+        .section-divider-text {
+            padding: 0 1.5rem;
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+        /* 画像スタイリングを統一 */
+        .board-image-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9のアスペクト比 */
+            overflow: hidden;
+        }
+        @media (min-width: 768px) {
+            .board-image-container {
+                height: 100%;
+                padding-bottom: 0;
+                min-height: 220px;
+            }
+        }
+        .board-image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .default-board-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+        }
+        /* アニメーション効果を追加 */
+        .board-card-content {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        /* レスポンシブデザイン強化のためのスタイル追加 */
+        @media (max-width: 768px) {
+            .news-container {
+                padding: 1rem;
+            }
+            
+            .category-tiles {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .category-tile {
+                padding: 0.5rem;
+                font-size: 0.875rem;
+            }
+            
+            .board-search-box {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .board-search-box .search-input {
+                width: 100%;
+                margin-bottom: 0.75rem;
+            }
+            
+            .board-search-box .category-dropdown {
+                width: 100%;
+            }
+            
+            .board-item {
+                flex-direction: column;
+            }
+            
+            .board-image-container {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            
+            .board-image {
+                height: 200px;
+            }
+            
+            .board-content {
+                width: 100%;
+            }
+            
+            .board-title {
+                font-size: 1.25rem;
+            }
+            
+            .board-description {
+                font-size: 0.875rem;
+            }
+            
+            .board-meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .board-meta .board-date {
+                margin-top: 0.5rem;
+            }
+            
+            .board-pagination {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .category-tiles {
+                grid-template-columns: repeat(1, 1fr);
+            }
+            
+            .board-group-tabs {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .board-group-tab {
+                margin-bottom: 0.5rem;
+            }
+            
+            .board-title {
+                font-size: 1.1rem;
+            }
+            
+            .category-tags {
+                flex-wrap: wrap;
+            }
+            
+            .category-tag {
+                margin-bottom: 0.25rem;
+            }
+            
+            .board-pagination .page-numbers {
+                display: none;
+            }
+            
+            .board-pagination .prev-page,
+            .board-pagination .next-page {
+                display: inline-flex;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <div id="header-include"></div>
+
+    <!-- ヒーローセクション -->
+    <section class="hero-section">
+        <div class="hero-content max-w-5xl mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">UNION掲示板</h1>
+            <p class="text-xl max-w-3xl mx-auto leading-relaxed">
+                学生団体の活動や情報、募集、イベントなどを発信するUNIONの掲示板です。<br>
+                学生生活を豊かにする情報や繋がりを見つけましょう。
+            </p>
+            <div class="mt-8">
+                <a href="#board-section" class="inline-block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-8 py-3 rounded-full transition duration-300">
+                    掲示板を見る
+                    <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-5xl mx-auto px-4 py-10" id="board-section">
+        <!-- 検索・フィルターセクション -->
+        <div class="bg-white p-6 rounded-xl shadow-sm mb-8 sticky top-20 z-10">
+            <div class="flex flex-col md:flex-row gap-4 items-center mb-6">
+                <div class="w-full md:w-2/3">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="キーワードで検索" class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/3">
+                    <select id="sortSelect" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
+                        <option value="newest">新着順</option>
+                        <option value="oldest">古い順</option>
+                        <option value="popular">人気順</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <div class="flex space-x-4 pb-2" id="categoryButtons">
+                    <button class="category-btn active whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium" data-category="all">すべて</button>
+                    <button class="category-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-category="event">イベント</button>
+                    <button class="category-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-category="recruit">メンバー募集</button>
+                    <button class="category-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-category="report">実績報告</button>
+                    <button class="category-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-category="collab">コラボ募集</button>
+                    <button class="category-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-category="intern">インターン情報</button>
+                    <button class="category-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-category="announcement">お知らせ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- タグ/カテゴリーリスト -->
+        <div class="bg-white p-6 rounded-xl shadow-sm mb-8">
+            <h2 class="text-xl font-bold mb-4">カテゴリー別</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="categoryTiles">
+                <div class="category-tile bg-gradient-to-r from-blue-100 to-blue-200 p-3 rounded-lg text-center hover:shadow-md transition" data-category="academic">
+                    <i class="fas fa-graduation-cap text-blue-600 text-xl mb-2"></i>
+                    <p class="font-medium">学術系団体</p>
+                </div>
+                <div class="category-tile bg-gradient-to-r from-green-100 to-green-200 p-3 rounded-lg text-center hover:shadow-md transition" data-category="environment">
+                    <i class="fas fa-leaf text-green-600 text-xl mb-2"></i>
+                    <p class="font-medium">環境系団体</p>
+                </div>
+                <div class="category-tile bg-gradient-to-r from-red-100 to-red-200 p-3 rounded-lg text-center hover:shadow-md transition" data-category="volunteer">
+                    <i class="fas fa-heart text-red-600 text-xl mb-2"></i>
+                    <p class="font-medium">ボランティア系</p>
+                </div>
+                <div class="category-tile bg-gradient-to-r from-yellow-100 to-yellow-200 p-3 rounded-lg text-center hover:shadow-md transition" data-category="culture">
+                    <i class="fas fa-music text-yellow-600 text-xl mb-2"></i>
+                    <p class="font-medium">文化系団体</p>
+                </div>
+                <div class="category-tile bg-gradient-to-r from-purple-100 to-purple-200 p-3 rounded-lg text-center hover:shadow-md transition" data-category="startup">
+                    <i class="fas fa-lightbulb text-purple-600 text-xl mb-2"></i>
+                    <p class="font-medium">起業系団体</p>
+                </div>
+                <div class="category-tile bg-gradient-to-r from-pink-100 to-pink-200 p-3 rounded-lg text-center hover:shadow-md transition" data-category="art">
+                    <i class="fas fa-paint-brush text-pink-600 text-xl mb-2"></i>
+                    <p class="font-medium">アート系団体</p>
+                </div>
+                <div class="category-tile bg-gradient-to-r from-indigo-100 to-indigo-200 p-3 rounded-lg text-center hover:shadow-md transition" data-category="international">
+                    <i class="fas fa-globe text-indigo-600 text-xl mb-2"></i>
+                    <p class="font-medium">国際交流系</p>
+                </div>
+                <div class="category-tile bg-gradient-to-r from-gray-100 to-gray-200 p-3 rounded-lg text-center hover:shadow-md transition" data-category="other">
+                    <i class="fas fa-ellipsis-h text-gray-600 text-xl mb-2"></i>
+                    <p class="font-medium">その他</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 掲示板記事リスト -->
+        <div id="boardList" class="space-y-6">
+            <!-- サンプル記事 - イベント情報 -->
+            <div class="board-card bg-white rounded-xl shadow-sm p-0 card-hover border border-gray-100" data-category="event" data-group="environment">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/3">
+                        <div class="board-image-container h-full">
+                            <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="イベント画像" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="board-card-content md:w-2/3">
+                        <div class="flex space-x-2 mb-2">
+                            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">イベント情報</span>
+                            <span class="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">環境系団体</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">学生環境フォーラム2025開催のお知らせ</h3>
+                            <span class="text-xs text-white bg-gradient-primary px-2 py-1 rounded">注目</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">投稿日: 2025年5月20日 | 団体名: グリーンキャンパスプロジェクト</p>
+                        <p class="text-gray-600 mb-4">
+                            持続可能な環境に関心のある学生が集まり、環境問題の解決策やアイデアを議論する「学生環境フォーラム2025」を開催します。全国の大学から環境活動に取り組む学生団体や個人が集結し、パネルディスカッションやワークショップを実施予定です。
+                        </p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="text-sm">
+                                <span class="text-gray-600">開催日時:</span> 2025年6月15日(日) 13:00-17:00<br>
+                                <span class="text-gray-600">場所:</span> 東京都内会議ホール（詳細は後日発表）
+                            </div>
+                            <a href="board-detail.html?id=event1" class="post-link inline-flex items-center text-blue-600 hover:text-blue-800">
+                                詳細を見る <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- サンプル記事 - メンバー募集 -->
+            <div class="board-card bg-white rounded-xl shadow-sm p-0 card-hover border border-gray-100" data-category="recruit" data-group="startup">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/3">
+                        <div class="board-image-container h-full">
+                            <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="メンバー募集" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="board-card-content md:w-2/3">
+                        <div class="flex space-x-2 mb-2">
+                            <span class="inline-block bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">メンバー募集</span>
+                            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">起業系団体</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">学生起業家コミュニティ「StartupCampus」メンバー募集中</h3>
+                            <div></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">投稿日: 2025年5月15日 | 団体名: StartupCampus</p>
+                        <p class="text-gray-600 mb-4">
+                            学生起業家を支援するコミュニティ「StartupCampus」では、新メンバーを募集しています。ビジネスアイデアの実現や起業に関心のある学生、マーケティングやエンジニアリングなどのスキルを活かしたい方を歓迎します。毎週のミーティングやワークショップを通じて、実践的なスキルを身につけることができます。
+                        </p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="text-sm">
+                                <span class="text-gray-600">募集人数:</span> 5名程度<br>
+                                <span class="text-gray-600">応募期限:</span> 2025年6月10日
+                            </div>
+                            <a href="board-detail.html?id=recruit1" class="post-link inline-flex items-center text-blue-600 hover:text-blue-800">
+                                詳細を見る <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- サンプル記事 - コラボ募集 (画像なし) -->
+            <div class="board-card bg-white rounded-xl shadow-sm p-0 card-hover border border-gray-100" data-category="collab" data-group="culture">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/3">
+                        <div class="board-image-container h-full">
+                            <div class="default-board-image">
+                                <img src="UNION-icon.png" alt="UNION" style="max-width: 50%; max-height: 50%; object-fit: contain;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="board-card-content md:w-2/3">
+                        <div class="flex space-x-2 mb-2">
+                            <span class="inline-block bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full">コラボ募集</span>
+                            <span class="inline-block bg-pink-100 text-pink-800 text-xs px-3 py-1 rounded-full">文化系団体</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">学園祭に向けたコラボレーション団体を募集します</h3>
+                            <div></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">投稿日: 2025年5月10日 | 団体名: アートファクトリー</p>
+                        <p class="text-gray-600 mb-4">
+                            夏の学園祭に向けて、共同でイベントやワークショップを開催する団体を募集しています。アートファクトリーは主に創作活動（絵画、写真、デザインなど）を行う団体ですが、音楽、ダンス、演劇などの団体とコラボレーションし、総合的な文化イベントを企画したいと考えています。
+                        </p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="text-sm">
+                                <span class="text-gray-600">学園祭開催日:</span> 2025年7月20日-21日<br>
+                                <span class="text-gray-600">連絡先:</span> artfactory@example.com
+                            </div>
+                            <a href="board-detail.html?id=collab1" class="post-link inline-flex items-center text-blue-600 hover:text-blue-800">
+                                詳細を見る <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 追加サンプル記事4 - インターン情報 -->
+            <div class="board-card bg-white rounded-xl shadow-sm p-0 card-hover border border-gray-100" data-category="intern" data-group="startup">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/3">
+                        <div class="board-image-container h-full">
+                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="インターン情報" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="board-card-content md:w-2/3">
+                        <div class="flex space-x-2 mb-2">
+                            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">インターン情報</span>
+                            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">起業系団体</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">夏季インターンシッププログラム参加者募集</h3>
+                            <span class="text-xs text-white bg-gradient-primary px-2 py-1 rounded">注目</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">投稿日: 2025年5月5日 | 団体名: テックイノベーション学生連盟</p>
+                        <p class="text-gray-600 mb-4">
+                            IT企業と連携した夏季インターンシッププログラムの参加者を募集しています。プログラミング、デザイン、マーケティングなど様々な職種での実務経験を積むことができます。プログラム修了後は、参加企業への推薦状発行も可能です。
+                        </p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="text-sm">
+                                <span class="text-gray-600">期間:</span> 2025年8月1日〜8月31日<br>
+                                <span class="text-gray-600">応募締切:</span> 2025年6月30日
+                            </div>
+                            <a href="board-detail.html?id=intern1" class="post-link inline-flex items-center text-blue-600 hover:text-blue-800">
+                                詳細を見る <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 追加サンプル記事5 - 実績報告 -->
+            <div class="board-card bg-white rounded-xl shadow-sm p-0 card-hover border border-gray-100" data-category="report" data-group="volunteer">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/3">
+                        <div class="board-image-container h-full">
+                            <img src="https://images.unsplash.com/photo-1536749342509-4f7cb6de631b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="実績報告" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="board-card-content md:w-2/3">
+                        <div class="flex space-x-2 mb-2">
+                            <span class="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">実績報告</span>
+                            <span class="inline-block bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full">ボランティア系</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">春季地域清掃活動の実施報告</h3>
+                            <div></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">投稿日: 2025年4月30日 | 団体名: 学生地域貢献隊</p>
+                        <p class="text-gray-600 mb-4">
+                            4月15日に実施した春季地域清掃活動について報告します。今回は、50名を超える学生ボランティアが参加し、地域の公園と河川敷の清掃を行いました。地域住民の方々からも感謝の声をいただき、地域との絆を深めることができました。
+                        </p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="text-sm">
+                                <span class="text-gray-600">活動日:</span> 2025年4月15日<br>
+                                <span class="text-gray-600">参加人数:</span> 53名
+                            </div>
+                            <a href="board-detail.html?id=report1" class="post-link inline-flex items-center text-blue-600 hover:text-blue-800">
+                                詳細を見る <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 追加サンプル記事6 - お知らせ -->
+            <div class="board-card bg-white rounded-xl shadow-sm p-0 card-hover border border-gray-100" data-category="announcement" data-group="international">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/3">
+                        <div class="board-image-container h-full">
+                            <div class="default-board-image">
+                                <img src="UNION-icon.png" alt="UNION" style="max-width: 50%; max-height: 50%; object-fit: contain;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="board-card-content md:w-2/3">
+                        <div class="flex space-x-2 mb-2">
+                            <span class="inline-block bg-gray-100 text-gray-800 text-xs px-3 py-1 rounded-full">お知らせ</span>
+                            <span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-3 py-1 rounded-full">国際交流系</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">国際学生交流プログラム 参加申込受付開始</h3>
+                            <div></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">投稿日: 2025年4月25日 | 団体名: グローバル学生ネットワーク</p>
+                        <p class="text-gray-600 mb-4">
+                            今年度の国際学生交流プログラムの参加申込受付を開始しました。オンラインと対面のハイブリッド形式で実施し、世界各国の学生との交流機会を提供します。語学力向上や異文化理解に興味のある学生は、ぜひご参加ください。
+                        </p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="text-sm">
+                                <span class="text-gray-600">申込期間:</span> 2025年4月25日〜5月31日<br>
+                                <span class="text-gray-600">プログラム実施:</span> 2025年7月〜12月
+                            </div>
+                            <a href="board-detail.html?id=announcement1" class="post-link inline-flex items-center text-blue-600 hover:text-blue-800">
+                                詳細を見る <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 追加サンプル記事7 - イベント情報 -->
+            <div class="board-card bg-white rounded-xl shadow-sm p-0 card-hover border border-gray-100" data-category="event" data-group="academic">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/3">
+                        <div class="board-image-container h-full">
+                            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="イベント画像" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="board-card-content md:w-2/3">
+                        <div class="flex space-x-2 mb-2">
+                            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">イベント情報</span>
+                            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full">学術系団体</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">学術シンポジウム「AI時代の倫理と社会」開催</h3>
+                            <div></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">投稿日: 2025年4月20日 | 団体名: 未来研究会</p>
+                        <p class="text-gray-600 mb-4">
+                            人工知能技術の発展に伴う倫理的課題と社会的影響を考える学術シンポジウムを開催します。AI研究者、哲学者、社会学者をパネリストに招き、技術発展と人間社会の関係性について多角的に議論します。学部・学科を問わず、関心のある学生の参加を歓迎します。
+                        </p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="text-sm">
+                                <span class="text-gray-600">開催日時:</span> 2025年6月5日(木) 14:00-17:00<br>
+                                <span class="text-gray-600">会場:</span> 大学中央講堂
+                            </div>
+                            <a href="board-detail.html?id=event2" class="post-link inline-flex items-center text-blue-600 hover:text-blue-800">
+                                詳細を見る <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 追加サンプル記事8 - メンバー募集 -->
+            <div class="board-card bg-white rounded-xl shadow-sm p-0 card-hover border border-gray-100" data-category="recruit" data-group="art">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/3">
+                        <div class="board-image-container h-full">
+                            <img src="https://images.unsplash.com/photo-1560421683-6856ea585c78?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="メンバー募集" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="board-card-content md:w-2/3">
+                        <div class="flex space-x-2 mb-2">
+                            <span class="inline-block bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">メンバー募集</span>
+                            <span class="inline-block bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">アート系団体</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">デジタルアート制作チーム 新メンバー募集</h3>
+                            <div></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">投稿日: 2025年4月15日 | 団体名: デジタルクリエイティブラボ</p>
+                        <p class="text-gray-600 mb-4">
+                            デジタルアートの制作・発表活動を行うサークル「デジタルクリエイティブラボ」では、新メンバーを募集しています。イラスト、3DCG、モーションデザイン、サウンドデザインなど様々な分野の学生を歓迎します。初心者も経験者も、創作に情熱を持つ方をお待ちしています。
+                        </p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="text-sm">
+                                <span class="text-gray-600">募集人数:</span> 10名程度<br>
+                                <span class="text-gray-600">応募締切:</span> 2025年5月15日
+                            </div>
+                            <a href="board-detail.html?id=recruit2" class="post-link inline-flex items-center text-blue-600 hover:text-blue-800">
+                                詳細を見る <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 追加サンプル記事9 - 実績報告 -->
+            <div class="board-card bg-white rounded-xl shadow-sm p-0 card-hover border border-gray-100" data-category="report" data-group="startup">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-1/3">
+                        <div class="board-image-container h-full">
+                            <img src="https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="実績報告" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="board-card-content md:w-2/3">
+                        <div class="flex space-x-2 mb-2">
+                            <span class="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">実績報告</span>
+                            <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">起業系団体</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold">全国学生ビジネスコンテストで優勝しました</h3>
+                            <span class="text-xs text-white bg-gradient-primary px-2 py-1 rounded">注目</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-3">投稿日: 2025年4月10日 | 団体名: イノベーションサークル</p>
+                        <p class="text-gray-600 mb-4">
+                            先日開催された全国学生ビジネスコンテストにおいて、本団体のプロジェクトチームが優勝しました。地域の高齢者と学生をマッチングするアプリケーションのアイデアが高く評価され、今後は実際の開発・リリースに向けて進めていきます。
+                        </p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <div class="text-sm">
+                                <span class="text-gray-600">コンテスト:</span> 第10回全国学生ビジネスコンテスト<br>
+                                <span class="text-gray-600">受賞:</span> 最優秀賞・企業賞
+                            </div>
+                            <a href="board-detail.html?id=report2" class="post-link inline-flex items-center text-blue-600 hover:text-blue-800">
+                                詳細を見る <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ページネーション -->
+        <div class="mt-10 flex justify-center">
+            <nav class="flex items-center space-x-2" id="pagination">
+                <button id="prevPageBtn" class="px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">前へ</button>
+                <!-- ページ番号ボタンはJavaScriptで動的に生成します -->
+                <button id="nextPageBtn" class="px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">次へ</button>
+            </nav>
+        </div>
+
+        <!-- 投稿フォームリンク -->
+        <div class="mt-12 text-center">
+            <a href="contact.html" class="inline-block bg-gradient-primary text-white px-6 py-3 rounded-full hover:shadow-lg transition">
+                <i class="fas fa-edit mr-2"></i>掲示板に投稿する
+            </a>
+        </div>
+    </main>
+
+    <div id="footer-include"></div>
+    <script>
+        fetch('footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-include').innerHTML = html;
+        });
+
+        // カテゴリーボタンの選択とフィルタリング
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryButtons = document.querySelectorAll('#categoryButtons .category-btn');
+            const categoryTiles = document.querySelectorAll('#categoryTiles .category-tile');
+            const boardCards = document.querySelectorAll('.board-card');
+            const searchInput = document.getElementById('searchInput');
+            
+            let activeCategory = 'all';
+            let activeGroup = null;
+            
+            // ページネーション関連の変数
+            let currentPage = 1;
+            const itemsPerPage = 3; // 1ページに表示する件数を3に変更（デモのため、本番は5程度が適切）
+            let filteredCards = []; // フィルター適用後の表示対象カード
+            
+            // ページネーション用の要素
+            const prevPageBtn = document.getElementById('prevPageBtn');
+            const nextPageBtn = document.getElementById('nextPageBtn');
+            const paginationContainer = document.getElementById('pagination');
+            
+            // 画像がない場合にUNIONロゴを表示する処理
+            const boardImageContainers = document.querySelectorAll('.board-image-container');
+            boardImageContainers.forEach(container => {
+                const img = container.querySelector('img');
+                if (!img || !img.getAttribute('src') || img.getAttribute('src') === '') {
+                    // 画像がないか空の場合
+                    container.innerHTML = `
+                        <div class="default-board-image">
+                            <img src="UNION-icon.png" alt="UNION" style="max-width: 50%; max-height: 50%; object-fit: contain;">
+                        </div>
+                    `;
+                }
+            });
+            
+            // フィルタリング機能
+            function filterCards() {
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                // フィルター対象のカードをリセット
+                filteredCards = [];
+                
+                boardCards.forEach(card => {
+                    card.classList.add('hidden-card');
+                    
+                    const cardCategory = card.dataset.category;
+                    const cardGroup = card.dataset.group;
+                    const cardText = card.textContent.toLowerCase();
+                    
+                    const matchesCategory = activeCategory === 'all' || cardCategory === activeCategory;
+                    const matchesGroup = !activeGroup || cardGroup === activeGroup;
+                    const matchesSearch = !searchTerm || cardText.includes(searchTerm);
+                    
+                    if (matchesCategory && matchesGroup && matchesSearch) {
+                        // フィルター条件に一致するカードを配列に追加
+                        filteredCards.push(card);
+                    }
+                });
+                
+                // ページネーション更新
+                currentPage = 1; // フィルター適用時は1ページ目に戻る
+                updatePagination();
+                displayPage();
+            }
+            
+            // カテゴリーボタンのイベント
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeCategory = btn.dataset.category;
+                    activeGroup = null;
+                    categoryTiles.forEach(tile => tile.classList.remove('active'));
+                    filterCards();
+                });
+            });
+            
+            // カテゴリータイルのイベント
+            categoryTiles.forEach(tile => {
+                tile.addEventListener('click', () => {
+                    categoryTiles.forEach(t => t.classList.remove('active'));
+                    tile.classList.add('active');
+                    activeGroup = tile.dataset.category;
+                    activeCategory = 'all';
+                    categoryButtons.forEach(btn => {
+                        if (btn.dataset.category === 'all') {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                    filterCards();
+                });
+            });
+            
+            // 検索機能
+            searchInput.addEventListener('input', filterCards);
+
+            // ソート機能の実装
+            const sortSelect = document.getElementById('sortSelect');
+            sortSelect.addEventListener('change', () => {
+                const sortValue = sortSelect.value;
+                
+                // ソート時にはAPIに並べ替え条件を送信
+                if (typeof fetchBoardDataFromAPI === 'function') {
+                    fetchBoardDataFromAPI(activeCategory, activeGroup, searchInput.value, sortValue);
+                } else {
+                    // API連携前の挙動（クライアントサイドでソート）
+                    const boardCards = Array.from(document.querySelectorAll('.board-card'));
+                    
+                    boardCards.sort((a, b) => {
+                        // 投稿日を取得 (フォーマットは "投稿日: YYYY年MM月DD日")
+                        const dateA = a.querySelector('p.text-sm.text-gray-500').textContent.match(/\d{4}年\d{1,2}月\d{1,2}日/)[0];
+                        const dateB = b.querySelector('p.text-sm.text-gray-500').textContent.match(/\d{4}年\d{1,2}月\d{1,2}日/)[0];
+                        
+                        // 日付を標準形式に変換
+                        const parseDateString = (dateStr) => {
+                            const [year, month, day] = dateStr.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/).slice(1);
+                            return new Date(year, month - 1, day);
+                        };
+                        
+                        const dateObjA = parseDateString(dateA);
+                        const dateObjB = parseDateString(dateB);
+                        
+                        // ソート順の適用
+                        if (sortValue === 'newest') {
+                            return dateObjB - dateObjA; // 新しい順
+                        } else if (sortValue === 'oldest') {
+                            return dateObjA - dateObjB; // 古い順
+                        } else if (sortValue === 'popular') {
+                            // 「注目」タグがある投稿を優先
+                            const hasHighlightA = a.querySelector('.bg-gradient-primary') !== null;
+                            const hasHighlightB = b.querySelector('.bg-gradient-primary') !== null;
+                            
+                            if (hasHighlightA && !hasHighlightB) return -1;
+                            if (!hasHighlightA && hasHighlightB) return 1;
+                            return dateObjB - dateObjA; // 同じ場合は新しい順
+                        }
+                        
+                        return 0;
+                    });
+                    
+                    // DOMの並び替え
+                    const boardList = document.getElementById('boardList');
+                    boardCards.forEach(card => {
+                        boardList.appendChild(card);
+                    });
+                }
+            });
+
+            // API連携用関数
+            async function fetchBoardDataFromAPI(category = 'all', group = null, searchTerm = '', sortBy = 'newest', page = 1) {
+                try {
+                    // 掲示板リストにローディング表示
+                    const boardList = document.getElementById('boardList');
+                    boardList.innerHTML = '<div class="text-center py-12"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div><p class="mt-2 text-gray-500">記事を読み込み中...</p></div>';
+                    
+                    // APIエンドポイントのURL（本番環境では適切なURLに変更）
+                    const apiBaseUrl = '/api';
+                    
+                    // クエリパラメータの構築
+                    const params = new URLSearchParams();
+                    if (category !== 'all') params.append('category', category);
+                    if (group) params.append('group', group);
+                    if (searchTerm) params.append('search', searchTerm);
+                    params.append('sort', sortBy);
+                    params.append('page', page);
+                    params.append('perPage', itemsPerPage); // 1ページあたりの表示件数
+                    
+                    // APIリクエスト
+                    const response = await fetch(`${apiBaseUrl}/board?${params.toString()}`);
+                    
+                    if (!response.ok) {
+                        throw new Error('APIリクエストに失敗しました');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // データからCMS連携用の形式に変換
+                    const formattedData = data.posts.map(post => ({
+                        id: post.id,
+                        title: post.title,
+                        date: formatDate(post.published_at),
+                        author: post.author_name,
+                        image: post.featured_image || '',
+                        category: post.category_slug,
+                        group: post.group_slug,
+                        content: post.excerpt || post.content.substring(0, 150) + '...',
+                        highlight: post.is_featured,
+                        details: [
+                            // 必要に応じて詳細情報を追加
+                            ...Object.entries(post.details || {}).map(([key, value]) => ({
+                                label: key,
+                                value: value
+                            }))
+                        ]
+                    }));
+                    
+                    // ページネーション情報の更新
+                    currentPage = data.current_page || 1;
+                    const totalPages = data.total_pages || Math.ceil(data.total / itemsPerPage);
+                    
+                    // CMS連携用関数を呼び出してUIを更新
+                    initializeBoardFromCMS(formattedData);
+                    
+                    // ページネーション更新
+                    updatePaginationWithAPI(currentPage, totalPages, data.total);
+                    
+                } catch (error) {
+                    console.error('記事の取得中にエラーが発生しました:', error);
+                    const boardList = document.getElementById('boardList');
+                    boardList.innerHTML = '<div class="text-center py-12 text-gray-500">データの取得に失敗しました。再読み込みしてください。</div>';
+                }
+            }
+            
+            // API連携用ページネーション更新関数
+            function updatePaginationWithAPI(currentPage, totalPages, totalItems) {
+                // 前へ・次へボタンの状態を更新
+                prevPageBtn.disabled = currentPage <= 1;
+                nextPageBtn.disabled = currentPage >= totalPages;
+                
+                // ページ番号ボタンを生成
+                const pageButtons = paginationContainer.querySelectorAll('.page-btn');
+                pageButtons.forEach(btn => btn.remove());
+                
+                // 最大表示ページ数
+                const maxPageButtons = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+                let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+                
+                // 表示ページ数が最大に満たない場合は調整
+                if (endPage - startPage + 1 < maxPageButtons && startPage > 1) {
+                    startPage = Math.max(1, endPage - maxPageButtons + 1);
+                }
+                
+                // 最初のページへのリンク
+                if (startPage > 1) {
+                    const firstPageBtn = document.createElement('button');
+                    firstPageBtn.className = 'page-btn px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50';
+                    firstPageBtn.textContent = '1';
+                    firstPageBtn.addEventListener('click', () => {
+                        fetchBoardDataFromAPI(activeCategory, activeGroup, searchInput.value, sortSelect.value, 1);
+                    });
+                    paginationContainer.insertBefore(firstPageBtn, nextPageBtn);
+                    
+                    if (startPage > 2) {
+                        const ellipsis = document.createElement('span');
+                        ellipsis.className = 'px-3 py-2 text-gray-500';
+                        ellipsis.textContent = '...';
+                        paginationContainer.insertBefore(ellipsis, nextPageBtn);
+                    }
+                }
+                
+                // ページ番号ボタンを生成
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `page-btn px-3 py-2 rounded-md ${i === currentPage ? 'bg-gradient-primary text-white' : 'border border-gray-300 text-gray-600 hover:bg-gray-50'}`;
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', () => {
+                        fetchBoardDataFromAPI(activeCategory, activeGroup, searchInput.value, sortSelect.value, i);
+                    });
+                    paginationContainer.insertBefore(pageBtn, nextPageBtn);
+                }
+                
+                // 最後のページへのリンク
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        const ellipsis = document.createElement('span');
+                        ellipsis.className = 'px-3 py-2 text-gray-500';
+                        ellipsis.textContent = '...';
+                        paginationContainer.insertBefore(ellipsis, nextPageBtn);
+                    }
+                    
+                    const lastPageBtn = document.createElement('button');
+                    lastPageBtn.className = 'page-btn px-3 py-2 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50';
+                    lastPageBtn.textContent = totalPages;
+                    lastPageBtn.addEventListener('click', () => {
+                        fetchBoardDataFromAPI(activeCategory, activeGroup, searchInput.value, sortSelect.value, totalPages);
+                    });
+                    paginationContainer.insertBefore(lastPageBtn, nextPageBtn);
+                }
+                
+                // 全体件数表示の追加
+                const totalCountElement = document.getElementById('totalCount') || document.createElement('div');
+                totalCountElement.id = 'totalCount';
+                totalCountElement.className = 'text-sm text-gray-500 mt-2 text-center';
+                totalCountElement.textContent = `全${totalItems}件中 ${(currentPage - 1) * itemsPerPage + 1}〜${Math.min(currentPage * itemsPerPage, totalItems)}件を表示`;
+                
+                if (!document.getElementById('totalCount')) {
+                    paginationContainer.parentNode.appendChild(totalCountElement);
+                }
+            }
+            
+            // 日付フォーマット関数
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+            }
+
+            // ページネーションボタンのイベント設定
+            prevPageBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    if (typeof fetchBoardDataFromAPI === 'function') {
+                        fetchBoardDataFromAPI(activeCategory, activeGroup, searchInput.value, sortSelect.value, currentPage - 1);
+                    } else {
+                        goToPage(currentPage - 1);
+                    }
+                }
+            });
+            
+            nextPageBtn.addEventListener('click', () => {
+                const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
+                if (currentPage < totalPages) {
+                    if (typeof fetchBoardDataFromAPI === 'function') {
+                        fetchBoardDataFromAPI(activeCategory, activeGroup, searchInput.value, sortSelect.value, currentPage + 1);
+                    } else {
+                        goToPage(currentPage + 1);
+                    }
+                }
+            });
+
+            // カテゴリーボタンのイベント更新
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeCategory = btn.dataset.category;
+                    activeGroup = null;
+                    categoryTiles.forEach(tile => tile.classList.remove('active'));
+                    
+                    if (typeof fetchBoardDataFromAPI === 'function') {
+                        fetchBoardDataFromAPI(activeCategory, activeGroup, searchInput.value, sortSelect.value);
+                    } else {
+                        filterCards();
+                    }
+                });
+            });
+            
+            // 検索機能の更新
+            searchInput.addEventListener('input', debounce(() => {
+                if (typeof fetchBoardDataFromAPI === 'function') {
+                    fetchBoardDataFromAPI(activeCategory, activeGroup, searchInput.value, sortSelect.value);
+                } else {
+                    filterCards();
+                }
+            }, 500)); // 500ms遅延で検索実行
+            
+            // デバウンス関数
+            function debounce(func, wait) {
+                let timeout;
+                return function() {
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        func.apply(context, args);
+                    }, wait);
+                };
+            }
+            
+            // 初期化時はAPIが実装されていなければクライアントサイドで処理
+            if (typeof fetchBoardDataFromAPI !== 'function') {
+                boardCards.forEach(card => {
+                    filteredCards.push(card);
+                });
+                updatePagination();
+                displayPage();
+            } else {
+                // API連携が実装されていれば初回データ取得
+                fetchBoardDataFromAPI();
+            }
+            
+            // 管理モードの検出と切り替え
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true') {
+                // 管理者モード (認証が必要な場合はここで処理)
+                const adminActions = document.createElement('div');
+                adminActions.className = 'bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8';
+                adminActions.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-lock text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                管理者モードで表示しています。この表示は一般ユーザーには見えません。
+                            </p>
+                        </div>
+                        <div class="ml-auto">
+                            <a href="admin/posts/new" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700 transition ease-in-out duration-150">
+                                <i class="fas fa-plus mr-2"></i>新規投稿
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                // 管理者モードバーを追加
+                const boardSection = document.getElementById('board-section');
+                boardSection.insertBefore(adminActions, boardSection.firstChild);
+                
+                // 各カードに編集ボタンを追加
+                document.querySelectorAll('.board-card').forEach(card => {
+                    const cardActions = document.createElement('div');
+                    cardActions.className = 'absolute top-2 right-2 flex space-x-1';
+                    cardActions.innerHTML = `
+                        <a href="admin/posts/edit/${card.dataset.postId || 'unknown'}" class="p-1 bg-blue-600 text-white rounded-full hover:bg-blue-700">
+                            <i class="fas fa-edit text-xs"></i>
+                        </a>
+                        <button class="p-1 bg-red-600 text-white rounded-full hover:bg-red-700 delete-post-btn">
+                            <i class="fas fa-trash text-xs"></i>
+                        </button>
+                    `;
+                    
+                    // 投稿カードに相対位置設定
+                    card.style.position = 'relative';
+                    card.appendChild(cardActions);
+                    
+                    // 削除ボタンのイベント
+                    const deleteBtn = cardActions.querySelector('.delete-post-btn');
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        if (confirm('本当にこの投稿を削除しますか？この操作は元に戻せません。')) {
+                            // 削除APIを呼び出す（実装時に追加）
+                            console.log('投稿ID:', card.dataset.postId, 'の削除をリクエスト');
+                            // deletePostAPI(card.dataset.postId);
+                        }
+                    });
+                });
+            }
+
+            // モバイル向けの調整を追加
+            function adjustForMobile() {
+                const isMobile = window.innerWidth <= 768;
+                const isSmallMobile = window.innerWidth <= 480;
+                
+                // カード表示の調整
+                const boardItems = document.querySelectorAll('.board-item');
+                boardItems.forEach(item => {
+                    if (isMobile) {
+                        // モバイル表示では縦長レイアウトに
+                        item.classList.add('mobile-layout');
+                    } else {
+                        item.classList.remove('mobile-layout');
+                    }
+                });
+                
+                // ページネーションの調整
+                const pageNumbers = document.querySelectorAll('.page-numbers');
+                if (isSmallMobile) {
+                    // 小さな画面ではページ番号を非表示に
+                    pageNumbers.forEach(num => {
+                        num.style.display = 'none';
+                    });
+                } else {
+                    pageNumbers.forEach(num => {
+                        num.style.display = 'inline-flex';
+                    });
+                }
+                
+                // カテゴリータイルのサイズ調整
+                const categoryTiles = document.querySelectorAll('.category-tile');
+                if (isMobile) {
+                    categoryTiles.forEach(tile => {
+                        tile.classList.add('mobile-tile');
+                    });
+                } else {
+                    categoryTiles.forEach(tile => {
+                        tile.classList.remove('mobile-tile');
+                    });
+                }
+            }
+            
+            // 初期調整
+            adjustForMobile();
+            
+            // ウィンドウサイズ変更時に再調整
+            window.addEventListener('resize', adjustForMobile);
+        });
+    </script>
+</body>
+</html> 

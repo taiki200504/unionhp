@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理画面 | UNION</title>
+    <link rel="stylesheet" href="../dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../UNION-icon.png">
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .admin-sidebar {
+            width: 250px;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            color: #4a5568;
+            transition: all 0.3s;
+            border-right: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        .admin-sidebar.collapsed {
+            width: 60px;
+        }
+        .admin-content {
+            margin-left: 250px;
+            transition: all 0.3s;
+        }
+        .admin-content.expanded {
+            margin-left: 60px;
+        }
+        .admin-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s;
+            color: #4a5568;
+        }
+        .admin-menu-item:hover {
+            background-color: rgba(6, 111, 242, 0.05);
+            color: #066ff2;
+        }
+        .admin-menu-item.active {
+            background-color: rgba(6, 111, 242, 0.1);
+            color: #066ff2;
+            border-left: 3px solid #066ff2;
+        }
+        .admin-menu-item i {
+            margin-right: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 60px;
+            }
+            .admin-sidebar.expanded {
+                width: 250px;
+            }
+            .admin-content {
+                margin-left: 60px;
+            }
+            .admin-content.collapsed {
+                margin-left: 250px;
+            }
+        }
+        .menu-text {
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .admin-sidebar.collapsed .menu-text {
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+        }
+        @media (max-width: 768px) {
+            .admin-sidebar .menu-text {
+                opacity: 0;
+                visibility: hidden;
+                position: absolute;
+            }
+            .admin-sidebar.expanded .menu-text {
+                opacity: 1;
+                visibility: visible;
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- サイドバー -->
+    <div class="admin-sidebar" id="adminSidebar">
+        <div class="p-4 flex items-center justify-between">
+            <a href="index.html" class="text-xl font-bold text-gradient-primary">
+                <img src="../UNION-icon.png" alt="UNION" class="w-8 h-8 inline-block" /> <span class="menu-text">管理画面</span>
+            </a>
+            <button id="toggleSidebar" class="text-gray-600 hover:text-gray-800">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <hr class="border-gray-200">
+        <div class="mt-4">
+            <a href="index.html" class="admin-menu-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span class="menu-text">ダッシュボード</span>
+            </a>
+            <a href="posts/index.html" class="admin-menu-item">
+                <i class="fas fa-clipboard-list"></i>
+                <span class="menu-text">掲示板管理</span>
+            </a>
+            <a href="news/index.html" class="admin-menu-item">
+                <i class="fas fa-newspaper"></i>
+                <span class="menu-text">ニュース管理</span>
+            </a>
+            <a href="media/index.html" class="admin-menu-item">
+                <i class="fas fa-photo-video"></i>
+                <span class="menu-text">メディア管理</span>
+            </a>
+            <a href="users/index.html" class="admin-menu-item">
+                <i class="fas fa-users"></i>
+                <span class="menu-text">ユーザー管理</span>
+            </a>
+            <a href="settings/index.html" class="admin-menu-item">
+                <i class="fas fa-cog"></i>
+                <span class="menu-text">設定</span>
+            </a>
+            <hr class="border-gray-200 my-4">
+            <a href="../index.html" class="admin-menu-item">
+                <i class="fas fa-home"></i>
+                <span class="menu-text">フロントページ</span>
+            </a>
+            <a href="#" id="logoutButton" class="admin-menu-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span class="menu-text">ログアウト</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="admin-content" id="adminContent">
+        <header class="bg-white shadow-sm">
+            <div class="mx-auto px-4 py-3 flex justify-between items-center">
+                <h1 class="text-lg font-semibold">ダッシュボード</h1>
+                <div class="flex items-center">
+                    <div class="mr-4 relative" id="notificationDropdown">
+                        <button class="p-1 text-gray-600 hover:text-gray-800 focus:outline-none" id="notificationButton">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                        <div class="hidden absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-10" id="notificationMenu">
+                            <div class="p-3 border-b">
+                                <h3 class="text-sm font-semibold">通知</h3>
+                            </div>
+                            <div class="max-h-64 overflow-y-auto">
+                                <a href="#" class="block p-3 hover:bg-gray-50 border-b">
+                                    <p class="text-sm font-medium">新規投稿が承認待ちです</p>
+                                    <p class="text-xs text-gray-500">30分前</p>
+                                </a>
+                                <a href="#" class="block p-3 hover:bg-gray-50 border-b">
+                                    <p class="text-sm font-medium">システムアップデートのお知らせ</p>
+                                    <p class="text-xs text-gray-500">2時間前</p>
+                                </a>
+                                <a href="#" class="block p-3 hover:bg-gray-50">
+                                    <p class="text-sm font-medium">新規ユーザー登録がありました</p>
+                                    <p class="text-xs text-gray-500">昨日</p>
+                                </a>
+                            </div>
+                            <div class="p-2 border-t text-center">
+                                <a href="#" class="text-xs text-blue-600 hover:text-blue-800">すべての通知を見る</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative" id="userDropdown">
+                        <button class="flex items-center focus:outline-none" id="userButton">
+                            <img src="https://via.placeholder.com/32" alt="User" class="w-8 h-8 rounded-full mr-2">
+                            <span class="hidden md:block font-medium">管理者</span>
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10" id="userMenu">
+                            <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">プロフィール</a>
+                            <a href="settings/index.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">設定</a>
+                            <div class="border-t"></div>
+                            <a href="#" id="menuLogoutButton" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ログアウト</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="mx-auto px-4 py-6">
+            <!-- サマリーカード -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-blue-500"></div>
+                    <div class="flex items-center">
+                        <div class="p-4 rounded-full bg-blue-100 text-blue-600 relative z-10">
+                            <i class="fas fa-clipboard-list fa-2x"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-500 mb-1">掲示板投稿数</p>
+                            <p class="text-2xl font-semibold">24</p>
+                            <p class="text-xs text-green-600 flex items-center"><i class="fas fa-arrow-up mr-1"></i> 先週比 +3</p>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-16 h-16 opacity-10">
+                        <i class="fas fa-clipboard-list fa-4x text-blue-500"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-green-500"></div>
+                    <div class="flex items-center">
+                        <div class="p-4 rounded-full bg-green-100 text-green-600 relative z-10">
+                            <i class="fas fa-newspaper fa-2x"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-500 mb-1">ニュース記事数</p>
+                            <p class="text-2xl font-semibold">12</p>
+                            <p class="text-xs text-green-600 flex items-center"><i class="fas fa-arrow-up mr-1"></i> 先週比 +2</p>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-16 h-16 opacity-10">
+                        <i class="fas fa-newspaper fa-4x text-green-500"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-yellow-500"></div>
+                    <div class="flex items-center">
+                        <div class="p-4 rounded-full bg-yellow-100 text-yellow-600 relative z-10">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-500 mb-1">登録団体数</p>
+                            <p class="text-2xl font-semibold">18</p>
+                            <p class="text-xs text-green-600 flex items-center"><i class="fas fa-arrow-up mr-1"></i> 先週比 +1</p>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-16 h-16 opacity-10">
+                        <i class="fas fa-users fa-4x text-yellow-500"></i>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6 card-hover relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-red-500"></div>
+                    <div class="flex items-center">
+                        <div class="p-4 rounded-full bg-red-100 text-red-600 relative z-10">
+                            <i class="fas fa-eye fa-2x"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm text-gray-500 mb-1">月間閲覧数</p>
+                            <p class="text-2xl font-semibold">1,280</p>
+                            <p class="text-xs text-green-600 flex items-center"><i class="fas fa-arrow-up mr-1"></i> 先月比 +12%</p>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-16 h-16 opacity-10">
+                        <i class="fas fa-eye fa-4x text-red-500"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最近の活動と未承認コンテンツ -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-semibold text-gray-800">最近の活動</h2>
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">すべて見る <i class="fas fa-chevron-right ml-1 text-xs"></i></a>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="p-2 rounded-full bg-blue-100 text-blue-600">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm">
+                                    <span class="font-medium">環境系団体</span> が新しい投稿 <a href="#" class="text-blue-600 hover:underline">「環境フォーラム開催のお知らせ」</a> を作成しました
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">2時間前</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="p-2 rounded-full bg-green-100 text-green-600">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm">
+                                    <span class="font-medium">管理者</span> がニュース記事 <a href="#" class="text-blue-600 hover:underline">「UNION活動報告2025」</a> を編集しました
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">昨日</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="p-2 rounded-full bg-purple-100 text-purple-600">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm">
+                                    <span class="font-medium">起業系団体</span> が新しく登録されました
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">2日前</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="p-2 rounded-full bg-yellow-100 text-yellow-600">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm">
+                                    <span class="font-medium">ボランティア系団体</span> が投稿 <a href="#" class="text-blue-600 hover:underline">「メンバー募集」</a> を更新しました
+                                </p>
+                                <p class="text-xs text-gray-500 mt-1">3日前</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-semibold text-gray-800">承認待ちコンテンツ</h2>
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-800 hover:underline flex items-center">すべて見る <i class="fas fa-chevron-right ml-1 text-xs"></i></a>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border rounded-lg p-4 hover:bg-gray-50 transition-all hover:border-blue-200 hover:shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-medium">学術団体新規メンバー募集</h3>
+                                    <div class="flex items-center mt-1">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 mr-1.5"></span>
+                                            承認待ち
+                                        </span>
+                                        <span class="text-sm text-gray-500 ml-2">学術系団体 | 2時間前</span>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-1">
+                                    <button class="p-1.5 rounded-full text-green-600 hover:text-green-800 hover:bg-green-50" title="承認する">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="p-1.5 rounded-full text-red-600 hover:text-red-800 hover:bg-red-50" title="拒否する">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <button class="p-1.5 rounded-full text-blue-600 hover:text-blue-800 hover:bg-blue-50" title="プレビュー">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border rounded-lg p-4 hover:bg-gray-50 transition-all hover:border-blue-200 hover:shadow-sm">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-medium">環境保護イベント開催レポート</h3>
+                                    <div class="flex items-center mt-1">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 mr-1.5"></span>
+                                            承認待ち
+                                        </span>
+                                        <span class="text-sm text-gray-500 ml-2">環境系団体 | 昨日</span>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-1">
+                                    <button class="p-1.5 rounded-full text-green-600 hover:text-green-800 hover:bg-green-50" title="承認する">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="p-1.5 rounded-full text-red-600 hover:text-red-800 hover:bg-red-50" title="拒否する">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <button class="p-1.5 rounded-full text-blue-600 hover:text-blue-800 hover:bg-blue-50" title="プレビュー">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- クイックアクセス -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-8 hover:shadow-md transition-shadow">
+                <h2 class="text-lg font-semibold mb-6 text-gray-800">クイックアクセス</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <a href="posts/new.html" class="flex flex-col items-center p-5 rounded-lg border border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-all">
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-600 mb-3">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">新規掲示板投稿</span>
+                    </a>
+                    <a href="news/new.html" class="flex flex-col items-center p-5 rounded-lg border border-gray-200 hover:bg-green-50 hover:border-green-200 transition-all">
+                        <div class="p-3 rounded-full bg-green-100 text-green-600 mb-3">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">新規ニュース作成</span>
+                    </a>
+                    <a href="media/upload.html" class="flex flex-col items-center p-5 rounded-lg border border-gray-200 hover:bg-purple-50 hover:border-purple-200 transition-all">
+                        <div class="p-3 rounded-full bg-purple-100 text-purple-600 mb-3">
+                            <i class="fas fa-photo-video"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">メディアアップロード</span>
+                    </a>
+                    <a href="users/new.html" class="flex flex-col items-center p-5 rounded-lg border border-gray-200 hover:bg-yellow-50 hover:border-yellow-200 transition-all">
+                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 mb-3">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">ユーザー追加</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- システム情報 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+                <h2 class="text-lg font-semibold mb-6 text-gray-800">システム情報</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-sm font-medium mb-4 text-gray-700">システムステータス</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg">
+                                <span class="text-sm text-gray-600">サーバー状態</span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+                                    正常
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg">
+                                <span class="text-sm text-gray-600">データベース接続</span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+                                    正常
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg">
+                                <span class="text-sm text-gray-600">最終バックアップ</span>
+                                <span class="text-sm font-medium">今日 03:00</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg">
+                                <span class="text-sm text-gray-600">システムバージョン</span>
+                                <span class="text-sm font-medium">v1.0.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium mb-4 text-gray-700">ストレージ使用状況</h3>
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs text-gray-600 mb-1">
+                                <span>35% 使用中</span>
+                                <span>3.5GB / 10GB</span>
+                            </div>
+                            <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-primary rounded-full" style="width: 35%"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 grid grid-cols-3 gap-2">
+                            <div class="p-3 border rounded-lg text-center hover:bg-gray-50">
+                                <p class="text-xs text-gray-500">画像</p>
+                                <p class="font-medium text-sm">1.8GB</p>
+                            </div>
+                            <div class="p-3 border rounded-lg text-center hover:bg-gray-50">
+                                <p class="text-xs text-gray-500">動画</p>
+                                <p class="font-medium text-sm">1.2GB</p>
+                            </div>
+                            <div class="p-3 border rounded-lg text-center hover:bg-gray-50">
+                                <p class="text-xs text-gray-500">その他</p>
+                                <p class="font-medium text-sm">0.5GB</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-white border-t p-4 text-center text-sm text-gray-600">
+            <p>&copy; 2025 UNION. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // サイドバーの折りたたみ機能
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            const adminSidebar = document.getElementById('adminSidebar');
+            const adminContent = document.getElementById('adminContent');
+            
+            // モバイル向けの初期状態設定
+            function setInitialState() {
+                if (window.innerWidth <= 768) {
+                    adminSidebar.classList.remove('expanded');
+                } else {
+                    adminSidebar.classList.remove('collapsed');
+                    adminContent.classList.remove('expanded');
+                }
+            }
+            
+            setInitialState();
+            
+            toggleSidebar.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    adminSidebar.classList.toggle('expanded');
+                } else {
+                    adminSidebar.classList.toggle('collapsed');
+                    adminContent.classList.toggle('expanded');
+                }
+            });
+            
+            // リサイズ時の処理
+            window.addEventListener('resize', setInitialState);
+            
+            // ドロップダウンメニュー
+            const userButton = document.getElementById('userButton');
+            const userMenu = document.getElementById('userMenu');
+            const notificationButton = document.getElementById('notificationButton');
+            const notificationMenu = document.getElementById('notificationMenu');
+            
+            userButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                userMenu.classList.toggle('hidden');
+                notificationMenu.classList.add('hidden');
+            });
+            
+            notificationButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                notificationMenu.classList.toggle('hidden');
+                userMenu.classList.add('hidden');
+            });
+            
+            document.addEventListener('click', function() {
+                userMenu.classList.add('hidden');
+                notificationMenu.classList.add('hidden');
+            });
+            
+            // ログアウト処理
+            const logoutButton = document.getElementById('logoutButton');
+            const menuLogoutButton = document.getElementById('menuLogoutButton');
+            
+            function handleLogout() {
+                if (confirm('ログアウトしますか？')) {
+                    // TODO: ログアウト処理を実装
+                    // サーバーサイドでセッションを破棄した後、ログインページにリダイレクト
+                    window.location.href = 'login.html';
+                }
+            }
+            
+            logoutButton.addEventListener('click', handleLogout);
+            menuLogoutButton.addEventListener('click', handleLogout);
+            
+            // APIからデータを取得する関数
+            async function fetchDashboardData() {
+                try {
+                    // TODO: 実際のAPIエンドポイントに置き換える
+                    const response = await fetch('/api/admin/dashboard');
+                    
+                    if (!response.ok) {
+                        throw new Error('データの取得に失敗しました');
+                    }
+                    
+                    const data = await response.json();
+                    updateDashboardUI(data);
+                    
+                } catch (error) {
+                    console.error('ダッシュボードデータの取得中にエラーが発生しました:', error);
+                    // エラーメッセージを表示するなどの対応
+                }
+            }
+            
+            // ダッシュボードUIを更新する関数
+            function updateDashboardUI(data) {
+                // TODO: APIから取得したデータでUIを更新する処理
+                // 例: document.querySelector('.post-count').textContent = data.posts.count;
+            }
+            
+            // 初期データ取得（実際のAPI実装時にコメントを外す）
+            // fetchDashboardData();
+        });
+    </script>
+</body>
+</html> 

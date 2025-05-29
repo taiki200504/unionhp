@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News | UNION</title>
+    <link rel="stylesheet" href="../../public/dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="UNION-icon.png">
+    <script defer src="../../src/scripts/header-loader.js"></script>
+    <script defer src="../../src/scripts/footer-loader.js"></script>
+    <script src="../../script.js"></script>
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .filter-pill {
+            transition: all 0.3s ease;
+        }
+        .filter-pill.active {
+            background: linear-gradient(135deg, #066ff2, #ec4faf);
+            color: white;
+        }
+        .year-pill.active {
+            background: linear-gradient(135deg, #066ff2, #ec4faf);
+            color: white;
+        }
+        .news-item {
+            transition: all 0.3s ease;
+            height: 100%;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+        }
+        .news-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+        .news-item-image {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9のアスペクト比 */
+            overflow: hidden;
+        }
+        .news-item-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .default-news-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+        }
+        .default-news-image img {
+            max-width: 50%;
+            max-height: 50%;
+            object-fit: contain;
+        }
+        .news-content {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .news-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #000; /* すべてのタグテキストを黒に統一 */
+        }
+        .tag-event {
+            background-color: #e6f7ff;
+        }
+        .tag-notice {
+            background-color: #f0f0f0;
+        }
+        .tag-service {
+            background-color: #f5f7ff;
+        }
+        .tag-pressrelease {
+            background-color: #f0fff4;
+        }
+        .tag-award {
+            background-color: #fffbe6;
+        }
+        .news-date {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .news-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .news-excerpt {
+            color: #666;
+            font-size: 0.875rem;
+            margin-top: auto;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .hero-section {
+            position: relative;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 7rem 0;
+            margin-bottom: 3rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 4rem 0 2rem;
+        }
+        .section-divider-line {
+            height: 2px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+            flex-grow: 1;
+        }
+        .section-divider-text {
+            padding: 0 1.5rem;
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+        .skeleton {
+            animation: skeleton-loading 1.5s infinite;
+        }
+        @keyframes skeleton-loading {
+            0% {
+                background-color: rgba(226, 232, 240, 0.5);
+            }
+            100% {
+                background-color: rgba(226, 232, 240, 0.8);
+            }
+        }
+        .news-hidden {
+            display: none;
+        }
+        .news-visible {
+            display: flex;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* CyberAgent風のニュース記事スタイル */
+        .news-list {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .news-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .news-list {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        /* News grid layout for consistent 3-column display */
+        #news-container {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            #news-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            #news-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        /* レスポンシブデザイン強化のためのスタイル追加 */
+        @media (max-width: 1024px) {
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .news-container {
+                padding: 1rem;
+            }
+            
+            .news-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .news-header-title {
+                margin-bottom: 1rem;
+            }
+            
+            .news-filter-container {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .news-grid {
+                grid-template-columns: repeat(1, 1fr);
+                gap: 1.5rem;
+            }
+            
+            .year-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .news-card {
+                min-height: auto;
+            }
+            
+            .news-card-image {
+                height: 180px;
+            }
+            
+            .news-card-title {
+                font-size: 1.1rem;
+            }
+            
+            .news-card-meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .news-card-date {
+                margin-top: 0.5rem;
+            }
+            
+            .news-search-container {
+                width: 100%;
+            }
+            
+            .news-search-input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <div id="header-include"></div>
+    
+    <!-- ヒーロセクション -->
+    <section class="hero-section">
+        <div class="hero-content max-w-5xl mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">UNION News</h1>
+            <p class="text-xl max-w-3xl mx-auto leading-relaxed">
+                学生団体の最新情報を発信。<br class="hidden md:block">
+                プレスリリース、お知らせ、イベント情報などをお届けします。
+            </p>
+            <div class="mt-8">
+                <a href="#news-section" class="inline-block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-8 py-3 rounded-full transition duration-300">
+                    ニュース一覧へ
+                    <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <main class="max-w-6xl mx-auto px-4 py-16" id="news-section">
+        <div class="section-divider">
+            <div class="section-divider-line"></div>
+            <h2 class="section-divider-text">ニュース一覧</h2>
+            <div class="section-divider-line"></div>
+        </div>
+
+        <!-- フィルターセクション -->
+        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm sticky top-20 z-10">
+            <div class="w-full mb-4">
+                <div class="relative">
+                    <input type="text" id="news-search" placeholder="ニュースを検索" class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-4 justify-center md:justify-start">
+                <button class="filter-pill active whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium" data-filter="all">すべて</button>
+                <button class="filter-pill whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-filter="event">イベント</button>
+                <button class="filter-pill whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-filter="notice">お知らせ</button>
+                <button class="filter-pill whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-filter="service">サービス</button>
+                <button class="filter-pill whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-filter="pressrelease">プレスリリース</button>
+                <button class="filter-pill whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium border border-gray-200" data-filter="award">受賞・認定</button>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-4 justify-center md:justify-start">
+                <button class="year-pill active whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium border border-gray-200" data-year="latest">最新</button>
+                <button class="year-pill whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium border border-gray-200" data-year="2025">2025年</button>
+                <button class="year-pill whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium border border-gray-200" data-year="2024">2024年</button>
+            </div>
+        </div>
+        
+        <!-- ニュースグリッド -->
+        <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- ニュースアイテム1 -->
+            <a href="news-detail.html?id=1" class="news-item news-visible" data-category="notice" data-year="2025" data-index="1">
+                <div class="news-item-image">
+                    <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="新たな加盟団体">
+                </div>
+                <div class="news-content">
+                    <span class="news-tag tag-notice">お知らせ</span>
+                    <time datetime="2025-05-01" class="news-date">2025.05.01</time>
+                    <h3 class="news-title text-lg">新たな加盟団体を迎えました</h3>
+                    <p class="news-excerpt">3つの新しい学生団体がUNIONに加盟しました。環境保全活動「Green Campus」、プログラミング教育「Code for Students」、芸術活動「Art Connect」です。</p>
+                </div>
+            </a>
+            
+            <!-- ニュースアイテム2 -->
+            <a href="news-detail.html?id=2" class="news-item news-visible" data-category="pressrelease" data-year="2025" data-index="2">
+                <div class="news-item-image">
+                    <img src="https://images.unsplash.com/photo-1560439514-e960a3ef5019?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="学生団体支援プログラム">
+                </div>
+                <div class="news-content">
+                    <span class="news-tag tag-pressrelease">プレスリリース</span>
+                    <time datetime="2025-04-15" class="news-date">2025.04.15</time>
+                    <h3 class="news-title text-lg">学生団体支援プログラム「UNION BOOST」開始のお知らせ</h3>
+                    <p class="news-excerpt">UNIONは学生団体の活動を加速させる支援プログラム「UNION BOOST」を開始します。資金援助、メンタリング、広報支援など総合的なサポートを提供します。</p>
+                </div>
+            </a>
+            
+            <!-- ニュースアイテム3 -->
+            <a href="news-detail.html?id=3" class="news-item news-visible" data-category="service" data-year="2025" data-index="3">
+                <div class="news-item-image">
+                    <img src="https://images.unsplash.com/photo-1565022536102-f7645c84354a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="新サービス発表">
+                </div>
+                <div class="news-content">
+                    <span class="news-tag tag-service">サービスニュース</span>
+                    <time datetime="2025-03-20" class="news-date">2025.03.20</time>
+                    <h3 class="news-title text-lg">学生団体向けウェブサイト制作サポートサービスを開始</h3>
+                    <p class="news-excerpt">学生団体の情報発信力を強化するため、ウェブサイト制作・運用支援サービスを開始します。専門スタッフによる設計からメンテナンスまでをサポートします。</p>
+                </div>
+            </a>
+            
+            <!-- ニュースアイテム4 -->
+            <a href="news-detail.html?id=4" class="news-item news-visible" data-category="award" data-year="2024" data-index="4">
+                <div class="news-item-image">
+                    <div class="default-news-image">
+                        <img src="../../public/photo/union.about.png" alt="UNION" style="max-width: 50%; max-height: 50%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="news-content">
+                    <span class="news-tag tag-award">受賞・認定</span>
+                    <time datetime="2024-12-10" class="news-date">2024.12.10</time>
+                    <h3 class="news-title text-lg">UNION、学生支援活動で「ソーシャルインパクト賞」受賞</h3>
+                    <p class="news-excerpt">当団体の学生支援活動が評価され、全国学生団体コンテストにて「ソーシャルインパクト賞」を受賞しました。</p>
+                </div>
+            </a>
+            
+            <!-- ニュースアイテム5 -->
+            <a href="news-detail.html?id=5" class="news-item news-visible" data-category="notice" data-year="2024" data-index="5">
+                <div class="news-item-image">
+                    <div class="default-news-image">
+                        <img src="../../public/photo/union.about.png" alt="UNION" style="max-width: 50%; max-height: 50%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="news-content">
+                    <span class="news-tag tag-notice">お知らせ</span>
+                    <time datetime="2024-11-25" class="news-date">2024.11.25</time>
+                    <h3 class="news-title text-lg">冬季休業のお知らせ</h3>
+                    <p class="news-excerpt">2024年12月28日から2025年1月5日まで冬季休業とさせていただきます。お問い合わせは1月6日以降にご連絡ください。</p>
+                </div>
+            </a>
+            
+            <!-- ニュースアイテム6 -->
+            <a href="news-detail.html?id=6" class="news-item news-visible" data-category="service" data-year="2024" data-index="6">
+                <div class="news-item-image">
+                    <div class="default-news-image">
+                        <img src="../../public/photo/union.about.png" alt="UNION" style="max-width: 50%; max-height: 50%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="news-content">
+                    <span class="news-tag tag-service">サービスニュース</span>
+                    <time datetime="2024-10-15" class="news-date">2024.10.15</time>
+                    <h3 class="news-title text-lg">新番組「学生キャリアラボ」配信開始のお知らせ</h3>
+                    <p class="news-excerpt">様々な分野で活躍する若手社会人をゲストに迎える新番組「学生キャリアラボ」の配信を10月より開始します。</p>
+                </div>
+            </a>
+            
+            <!-- 追加のニュースアイテム (初期状態では非表示) -->
+            <a href="news-detail.html?id=7" class="news-item news-hidden" data-category="notice" data-year="2024" data-index="7">
+                <div class="news-item-image">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="学生イベントの様子">
+                </div>
+                <div class="news-content">
+                    <span class="news-tag tag-notice">お知らせ</span>
+                    <time datetime="2024-10-01" class="news-date">2024.10.01</time>
+                    <h3 class="news-title text-lg">秋学期の活動スケジュールを公開しました</h3>
+                    <p class="news-excerpt">2024年秋学期のUNION活動スケジュールを公開しました。加盟団体向けイベントや一般参加可能なワークショップなど多数の企画を予定しています。</p>
+                </div>
+            </a>
+            
+            <a href="news-detail.html?id=8" class="news-item news-hidden" data-category="pressrelease" data-year="2024" data-index="8">
+                <div class="news-item-image">
+                    <div class="default-news-image">
+                        <img src="../../public/photo/union.about.png" alt="UNION" style="max-width: 50%; max-height: 50%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="news-content">
+                    <span class="news-tag tag-pressrelease">プレスリリース</span>
+                    <time datetime="2024-09-15" class="news-date">2024.09.15</time>
+                    <h3 class="news-title text-lg">学生キャリアフォーラム開催のお知らせ</h3>
+                    <p class="news-excerpt">業界をリードする企業と学生が交流する「学生キャリアフォーラム2024」を10月に開催します。就職活動中の学生だけでなく、低学年からのキャリア形成を支援するイベントです。</p>
+                </div>
+            </a>
+            
+            <a href="news-detail.html?id=9" class="news-item news-hidden" data-category="award" data-year="2024" data-index="9">
+                <div class="news-item-image">
+                    <img src="https://images.unsplash.com/photo-1546531130-0f3d47c9d799?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="表彰式の様子">
+                </div>
+                <div class="news-content">
+                    <span class="news-tag tag-award">受賞・認定</span>
+                    <time datetime="2024-09-01" class="news-date">2024.09.01</time>
+                    <h3 class="news-title text-lg">加盟団体が全国学生コンテストで最優秀賞を受賞</h3>
+                    <p class="news-excerpt">UNIONの加盟団体「Technovation」が全国学生テクノロジーコンテストで最優秀賞を受賞しました。AI技術を活用した地域課題解決プロジェクトが高く評価されました。</p>
+                </div>
+            </a>
+        </div>
+        
+        <!-- ページネーション -->
+        <div class="flex justify-center mt-10">
+            <div class="inline-flex rounded-md shadow">
+                <button id="load-more" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-primary hover:opacity-90 transition">
+                    もっと見る
+                    <i class="fas fa-chevron-down ml-2"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- JavaScript -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // 画像なしのニュース項目にUNIONロゴを表示
+                ensureNewsImages();
+            
+                // カテゴリーフィルター
+                const filterPills = document.querySelectorAll('.filter-pill');
+                filterPills.forEach(pill => {
+                    pill.addEventListener('click', function() {
+                        // アクティブクラスの切り替え
+                        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        filterNews();
+                    });
+                });
+                
+                // 年号フィルター
+                const yearPills = document.querySelectorAll('.year-pill');
+                yearPills.forEach(pill => {
+                    pill.addEventListener('click', function() {
+                        // アクティブクラスの切り替え
+                        document.querySelectorAll('.year-pill').forEach(p => p.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        filterNews();
+                    });
+                });
+                
+                // 検索機能
+                const searchInput = document.getElementById('news-search');
+                searchInput.addEventListener('input', function() {
+                    filterNews();
+                });
+
+                // もっと見るボタン
+                const loadMoreBtn = document.getElementById('load-more');
+                loadMoreBtn.addEventListener('click', function() {
+                    const hiddenNews = document.querySelectorAll('.news-item.news-hidden');
+                    let count = 0;
+                    
+                    hiddenNews.forEach(item => {
+                        if (count < 3) { // 一度に3つずつ表示
+                            item.classList.remove('news-hidden');
+                            item.classList.add('news-visible');
+                            count++;
+                        }
+                    });
+                    
+                    // すべて表示したらボタンを非表示にする
+                    if (document.querySelectorAll('.news-item.news-hidden').length === 0) {
+                        this.style.display = 'none';
+                    }
+                    
+                    // フィルタリングを再適用
+                    filterNews();
+                });
+                
+                // フィルタリング関数
+                function filterNews() {
+                    const activeCategory = document.querySelector('.filter-pill.active').getAttribute('data-filter');
+                    const activeYear = document.querySelector('.year-pill.active').getAttribute('data-year');
+                    const searchTerm = document.getElementById('news-search').value.toLowerCase();
+                    
+                    const newsItems = document.querySelectorAll('.news-item');
+                    let visibleCount = 0;
+                    
+                    newsItems.forEach(item => {
+                        const category = item.getAttribute('data-category');
+                        const year = item.getAttribute('data-year');
+                        const content = item.textContent.toLowerCase();
+                        
+                        // カテゴリーチェック
+                        const categoryMatch = activeCategory === 'all' || category === activeCategory;
+                        
+                        // 年号チェック
+                        const yearMatch = activeYear === 'latest' || year === activeYear;
+                        
+                        // 検索語句チェック
+                        const searchMatch = searchTerm === '' || content.includes(searchTerm);
+                        
+                        // 最新15件チェック (activeYear === 'latest' の場合)
+                        const indexCheck = activeYear !== 'latest' || (parseInt(item.getAttribute('data-index')) <= 15);
+                        
+                        // すべての条件を満たす場合のみ表示
+                        if (categoryMatch && yearMatch && searchMatch && (item.classList.contains('news-visible') || activeYear !== 'latest')) {
+                            item.style.display = 'flex';
+                            visibleCount++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    // 表示結果が0件の場合のメッセージ
+                    const noResultsMessage = document.getElementById('no-results-message');
+                    if (visibleCount === 0) {
+                        if (!noResultsMessage) {
+                            const message = document.createElement('div');
+                            message.id = 'no-results-message';
+                            message.className = 'text-center py-8 text-gray-500';
+                            message.textContent = '該当するニュースが見つかりませんでした。';
+                            document.getElementById('news-container').after(message);
+                        }
+                    } else if (noResultsMessage) {
+                        noResultsMessage.remove();
+                    }
+                    
+                    // もっと見るボタンの表示/非表示
+                    const loadMoreBtn = document.getElementById('load-more');
+                    const hiddenNewsExists = Array.from(newsItems).some(item => {
+                        const category = item.getAttribute('data-category');
+                        const year = item.getAttribute('data-year');
+                        const content = item.textContent.toLowerCase();
+                        
+                        const categoryMatch = activeCategory === 'all' || category === activeCategory;
+                        const yearMatch = activeYear === 'latest' || year === activeYear;
+                        const searchMatch = searchTerm === '' || content.includes(searchTerm);
+                        
+                        return categoryMatch && yearMatch && searchMatch && item.classList.contains('news-hidden');
+                    });
+                    
+                    loadMoreBtn.style.display = hiddenNewsExists ? 'flex' : 'none';
+                }
+
+                // 画像がない場合のUNIONロゴ表示を確実に適用する関数
+                function ensureNewsImages() {
+                    const newsItems = document.querySelectorAll('.news-item');
+                    
+                    newsItems.forEach(item => {
+                        const imageContainer = item.querySelector('.news-item-image');
+                        const img = imageContainer.querySelector('img');
+                        
+                        // 画像がない、またはsrc属性が空または無効な場合
+                        if (!img || !img.getAttribute('src') || img.getAttribute('src') === '' || img.getAttribute('src') === 'undefined') {
+                            // すでにdefault-news-imageがあるか確認
+                            let defaultContainer = imageContainer.querySelector('.default-news-image');
+                            
+                            if (!defaultContainer) {
+                                // default-news-imageがなければ作成
+                                defaultContainer = document.createElement('div');
+                                defaultContainer.className = 'default-news-image';
+                                
+                                const logoImg = document.createElement('img');
+                                logoImg.src = '../../public/photo/union.about.png';
+                                logoImg.alt = 'UNION';
+                                logoImg.style.maxWidth = '50%';
+                                logoImg.style.maxHeight = '50%';
+                                logoImg.style.objectFit = 'contain';
+                                
+                                defaultContainer.appendChild(logoImg);
+                                
+                                // 既存のコンテンツをクリアして新しいコンテナを追加
+                                imageContainer.innerHTML = '';
+                                imageContainer.appendChild(defaultContainer);
+                            }
+                        }
+                    });
+                }
+                
+                // 動的な年号タグを追加する関数 (CMS連携用)
+                function addYearFilterTag(year) {
+                    // 既に同じ年号のタグが存在するか確認
+                    const existingYearPill = document.querySelector(`.year-pill[data-year="${year}"]`);
+                    if (existingYearPill) {
+                        return; // 既に存在する場合は何もしない
+                    }
+                    
+                    // 年号が数値であることを確認
+                    const yearNum = parseInt(year);
+                    if (isNaN(yearNum)) {
+                        return; // 有効な数値でない場合は何もしない
+                    }
+                    
+                    // 年号タグを作成
+                    const yearPill = document.createElement('button');
+                    yearPill.className = 'year-pill whitespace-nowrap px-4 py-2 rounded-full text-xs font-medium border border-gray-200';
+                    yearPill.setAttribute('data-year', year);
+                    yearPill.textContent = `${year}年`;
+                    
+                    // クリックイベントを追加
+                    yearPill.addEventListener('click', function() {
+                        document.querySelectorAll('.year-pill').forEach(p => p.classList.remove('active'));
+                        this.classList.add('active');
+                        filterNews();
+                    });
+                    
+                    // 年号フィルターのコンテナに追加（年の新しい順に）
+                    const yearPillsContainer = document.querySelector('.year-pill').parentNode;
+                    
+                    // 2番目の要素（「最新」タグの次）の後に追加
+                    const firstYearPill = document.querySelector('.year-pill[data-year="latest"]');
+                    if (firstYearPill) {
+                        yearPillsContainer.insertBefore(yearPill, firstYearPill.nextSibling);
+                    } else {
+                        yearPillsContainer.appendChild(yearPill);
+                    }
+                }
+                
+                // ニュースを追加する関数 (CMS連携用)
+                function addNewsItem(newsData) {
+                    // newsData = {id, title, date, category, image, excerpt, year}
+                    
+                    // 年号タグがまだなければ追加
+                    if (newsData.year) {
+                        addYearFilterTag(newsData.year);
+                    }
+                    
+                    // ニュース要素を作成
+                    const newsItem = document.createElement('a');
+                    newsItem.href = `news-detail.html?id=${newsData.id}`;
+                    newsItem.className = 'news-item news-visible';
+                    newsItem.setAttribute('data-category', newsData.category);
+                    newsItem.setAttribute('data-year', newsData.year || '');
+                    newsItem.setAttribute('data-index', newsData.index || '999');
+                    
+                    // カテゴリーのCSS用クラスを取得
+                    const categoryClass = getCategoryClass(newsData.category);
+                    
+                    // 日付をフォーマット
+                    const formattedDate = formatDate(newsData.date);
+                    
+                    // HTML構造を生成
+                    let newsHTML = `
+                        <div class="news-item-image">
+                    `;
+                    
+                    // 画像があれば表示、なければUNIONロゴを表示
+                    if (newsData.image && newsData.image !== '') {
+                        newsHTML += `<img src="${newsData.image}" alt="${newsData.title || 'ニュース画像'}">`;
+                    } else {
+                        newsHTML += `
+                            <div class="default-news-image">
+                                <img src="../../public/photo/union.about.png" alt="UNION" style="max-width: 50%; max-height: 50%; object-fit: contain;">
+                            </div>
+                        `;
+                    }
+                    
+                    newsHTML += `
+                        </div>
+                        <div class="news-content">
+                            <span class="news-tag ${categoryClass}">${getCategoryLabel(newsData.category)}</span>
+                            <time datetime="${newsData.date}" class="news-date">${formattedDate}</time>
+                            <h3 class="news-title text-lg">${newsData.title || 'タイトルなし'}</h3>
+                            <p class="news-excerpt">${newsData.excerpt || ''}</p>
+                        </div>
+                    `;
+                    
+                    newsItem.innerHTML = newsHTML;
+                    
+                    // ニュースコンテナに追加
+                    const newsContainer = document.getElementById('news-container');
+                    newsContainer.appendChild(newsItem);
+                    
+                    // 画像の確認と修正
+                    ensureNewsImages();
+                    
+                    // フィルタリングを適用
+                    filterNews();
+                }
+                
+                // カテゴリーのCSSクラスを取得
+                function getCategoryClass(category) {
+                    const classes = {
+                        'event': 'tag-event',
+                        'notice': 'tag-notice',
+                        'service': 'tag-service',
+                        'pressrelease': 'tag-pressrelease',
+                        'award': 'tag-award'
+                    };
+                    return classes[category] || 'tag-notice';
+                }
+                
+                // カテゴリーのラベルを取得
+                function getCategoryLabel(category) {
+                    const labels = {
+                        'event': 'イベント',
+                        'notice': 'お知らせ',
+                        'service': 'サービスニュース',
+                        'pressrelease': 'プレスリリース',
+                        'award': '受賞・認定'
+                    };
+                    return labels[category] || 'お知らせ';
+                }
+                
+                // 日付のフォーマット
+                function formatDate(dateStr) {
+                    try {
+                        const date = new Date(dateStr);
+                        if (isNaN(date)) return dateStr;
+                        
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        
+                        return `${year}.${month}.${day}`;
+                    } catch (e) {
+                        return dateStr;
+                    }
+                }
+                
+                // レスポンシブ対応のための調整
+                function adjustForMobile() {
+                    const isMobile = window.innerWidth <= 768;
+                    const isSmallMobile = window.innerWidth <= 480;
+                    
+                    // カード表示の調整
+                    if (isMobile) {
+                        // モバイル向けのカードスタイル調整
+                        document.querySelectorAll('.news-card').forEach(card => {
+                            card.classList.add('mobile-card');
+                        });
+                        
+                        // 検索ボックスの幅調整
+                        const searchContainer = document.querySelector('.news-search-container');
+                        if (searchContainer) {
+                            searchContainer.style.width = '100%';
+                        }
+                    } else {
+                        // デスクトップ向けのスタイルに戻す
+                        document.querySelectorAll('.news-card').forEach(card => {
+                            card.classList.remove('mobile-card');
+                        });
+                        
+                        const searchContainer = document.querySelector('.news-search-container');
+                        if (searchContainer) {
+                            searchContainer.style.width = '';
+                        }
+                    }
+                    
+                    // 年別タグの表示調整
+                    if (isSmallMobile) {
+                        document.querySelectorAll('.year-tag').forEach(tag => {
+                            tag.style.padding = '0.25rem 0.5rem';
+                            tag.style.fontSize = '0.75rem';
+                        });
+                    } else {
+                        document.querySelectorAll('.year-tag').forEach(tag => {
+                            tag.style.padding = '';
+                            tag.style.fontSize = '';
+                        });
+                    }
+                }
+                
+                // 初期調整
+                adjustForMobile();
+                
+                // ウィンドウサイズ変更時に再調整
+                window.addEventListener('resize', adjustForMobile);
+            });
+        </script>
+    </main>
+    <div id="footer-include"></div>
+</body>
+</html> 

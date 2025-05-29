@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>掲示板管理 | UNION</title>
+    <link rel="stylesheet" href="../../dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../../UNION-icon.png">
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .admin-sidebar {
+            width: 250px;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            color: #4a5568;
+            transition: all 0.3s;
+            border-right: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        .admin-sidebar.collapsed {
+            width: 60px;
+        }
+        .admin-content {
+            margin-left: 250px;
+            transition: all 0.3s;
+        }
+        .admin-content.expanded {
+            margin-left: 60px;
+        }
+        .admin-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s;
+            color: #4a5568;
+        }
+        .admin-menu-item:hover {
+            background-color: rgba(6, 111, 242, 0.05);
+            color: #066ff2;
+        }
+        .admin-menu-item.active {
+            background-color: rgba(6, 111, 242, 0.1);
+            color: #066ff2;
+            border-left: 3px solid #066ff2;
+        }
+        .admin-menu-item i {
+            margin-right: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+        .menu-text {
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .admin-sidebar.collapsed .menu-text {
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+        .status-tag::before {
+            content: "";
+            display: inline-block;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        .status-published {
+            background-color: #DEF7EC;
+            color: #03543E;
+            border-color: #C6F6D5;
+        }
+        .status-published::before {
+            background-color: #0E9F6E;
+        }
+        .status-draft {
+            background-color: #E1EFFE;
+            color: #1E429F;
+            border-color: #C3DDFD;
+        }
+        .status-draft::before {
+            background-color: #3F83F8;
+        }
+        .status-pending {
+            background-color: #FEF3C7;
+            color: #92400E;
+            border-color: #FDE68A;
+        }
+        .status-pending::before {
+            background-color: #F59E0B;
+        }
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 60px;
+            }
+            .admin-sidebar.expanded {
+                width: 250px;
+            }
+            .admin-content {
+                margin-left: 60px;
+            }
+            .admin-content.collapsed {
+                margin-left: 250px;
+            }
+            .admin-sidebar .menu-text {
+                opacity: 0;
+                visibility: hidden;
+                position: absolute;
+            }
+            .admin-sidebar.expanded .menu-text {
+                opacity: 1;
+                visibility: visible;
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- サイドバー -->
+    <div class="admin-sidebar" id="adminSidebar">
+        <div class="p-4 flex items-center justify-between">
+            <a href="../index.html" class="text-xl font-bold text-gradient-primary">
+                <img src="../../UNION-icon.png" alt="UNION" class="w-8 h-8 inline-block" /> <span class="menu-text">管理画面</span>
+            </a>
+            <button id="toggleSidebar" class="text-gray-600 hover:text-gray-800">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <hr class="border-gray-200">
+        <div class="mt-4">
+            <a href="../index.html" class="admin-menu-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span class="menu-text">ダッシュボード</span>
+            </a>
+            <a href="index.html" class="admin-menu-item active">
+                <i class="fas fa-clipboard-list"></i>
+                <span class="menu-text">掲示板管理</span>
+            </a>
+            <a href="../news/index.html" class="admin-menu-item">
+                <i class="fas fa-newspaper"></i>
+                <span class="menu-text">ニュース管理</span>
+            </a>
+            <a href="../media/index.html" class="admin-menu-item">
+                <i class="fas fa-photo-video"></i>
+                <span class="menu-text">メディア管理</span>
+            </a>
+            <a href="../users/index.html" class="admin-menu-item">
+                <i class="fas fa-users"></i>
+                <span class="menu-text">ユーザー管理</span>
+            </a>
+            <a href="../settings/index.html" class="admin-menu-item">
+                <i class="fas fa-cog"></i>
+                <span class="menu-text">設定</span>
+            </a>
+            <hr class="border-gray-200 my-4">
+            <a href="../../index.html" class="admin-menu-item">
+                <i class="fas fa-home"></i>
+                <span class="menu-text">フロントページ</span>
+            </a>
+            <a href="#" id="logoutButton" class="admin-menu-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span class="menu-text">ログアウト</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="admin-content" id="adminContent">
+        <header class="bg-white shadow-sm">
+            <div class="mx-auto px-4 py-3 flex justify-between items-center">
+                <h1 class="text-lg font-semibold">掲示板管理</h1>
+                <div class="flex items-center">
+                    <div class="mr-4 relative" id="notificationDropdown">
+                        <button class="p-1 text-gray-600 hover:text-gray-800 focus:outline-none" id="notificationButton">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                        <div class="hidden absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-10" id="notificationMenu">
+                            <!-- 通知メニューの内容 -->
+                        </div>
+                    </div>
+                    <div class="relative" id="userDropdown">
+                        <button class="flex items-center focus:outline-none" id="userButton">
+                            <img src="https://via.placeholder.com/32" alt="User" class="w-8 h-8 rounded-full mr-2">
+                            <span class="hidden md:block font-medium">管理者</span>
+                            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10" id="userMenu">
+                            <!-- ユーザーメニューの内容 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">掲示板投稿一覧</h2>
+                    <p class="text-gray-600 mt-1">掲示板の投稿を管理・編集できます</p>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <a href="new.html" class="bg-gradient-primary text-white px-4 py-2 rounded-lg inline-flex items-center">
+                        <i class="fas fa-plus mr-2"></i> 新規投稿
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+                <div class="p-4 border-b">
+                    <div class="flex flex-col md:flex-row md:items-center gap-4">
+                        <div class="flex-1 md:max-w-md">
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <input type="text" id="searchInput" placeholder="タイトル、内容で検索" 
+                                    class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <div>
+                                <select id="categoryFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
+                                    <option value="">カテゴリー</option>
+                                    <option value="event">イベント情報</option>
+                                    <option value="recruit">メンバー募集</option>
+                                    <option value="report">実績報告</option>
+                                    <option value="collab">コラボ募集</option>
+                                    <option value="intern">インターン情報</option>
+                                    <option value="announcement">お知らせ</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select id="statusFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
+                                    <option value="">ステータス</option>
+                                    <option value="published">公開中</option>
+                                    <option value="draft">下書き</option>
+                                    <option value="pending">承認待ち</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button id="filterButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                                    フィルター適用
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    タイトル
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    カテゴリー
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    団体名
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    ステータス
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    公開日
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    アクション
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="postsTable" class="bg-white divide-y divide-gray-200">
+                            <!-- APIからデータを取得して表示 -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="px-6 py-3 border-t flex flex-col md:flex-row items-center justify-between">
+                    <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                        <select id="bulkActions" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">一括操作</option>
+                            <option value="publish">公開</option>
+                            <option value="draft">下書きに設定</option>
+                            <option value="delete">削除</option>
+                        </select>
+                        <button id="applyBulkAction" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                            適用
+                        </button>
+                    </div>
+                    <div class="flex items-center" id="pagination">
+                        <span class="text-sm text-gray-700 mr-4">
+                            <span id="currentRange">1-10</span> / <span id="totalItems">24</span> 件
+                        </span>
+                        <button id="prevPage" class="px-3 py-1 border border-gray-300 rounded-md mr-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="nextPage" class="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-white border-t p-4 text-center text-sm text-gray-600">
+            <p>&copy; 2025 UNION. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- 削除確認モーダル -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-lg font-bold mb-4">投稿の削除</h3>
+            <p>選択した投稿を削除してもよろしいですか？この操作は元に戻せません。</p>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="cancelDelete" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
+                    キャンセル
+                </button>
+                <button id="confirmDelete" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                    削除する
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // サイドバートグル
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            const adminSidebar = document.getElementById('adminSidebar');
+            const adminContent = document.getElementById('adminContent');
+            
+            toggleSidebar.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    adminSidebar.classList.toggle('expanded');
+                } else {
+                    adminSidebar.classList.toggle('collapsed');
+                    adminContent.classList.toggle('expanded');
+                }
+            });
+
+            // ユーザーメニュー
+            const userButton = document.getElementById('userButton');
+            const userMenu = document.getElementById('userMenu');
+            
+            userButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                userMenu.classList.toggle('hidden');
+            });
+            
+            document.addEventListener('click', function() {
+                userMenu.classList.add('hidden');
+            });
+
+            // 通知メニュー
+            const notificationButton = document.getElementById('notificationButton');
+            const notificationMenu = document.getElementById('notificationMenu');
+            
+            notificationButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                notificationMenu.classList.toggle('hidden');
+            });
+            
+            document.addEventListener('click', function() {
+                notificationMenu.classList.add('hidden');
+            });
+
+            // 全選択チェックボックス
+            const selectAll = document.getElementById('selectAll');
+            selectAll.addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+
+            // 削除モーダル
+            const deleteModal = document.getElementById('deleteModal');
+            const cancelDelete = document.getElementById('cancelDelete');
+            const confirmDelete = document.getElementById('confirmDelete');
+            
+            function showDeleteModal() {
+                deleteModal.classList.remove('hidden');
+            }
+            
+            function hideDeleteModal() {
+                deleteModal.classList.add('hidden');
+            }
+            
+            cancelDelete.addEventListener('click', hideDeleteModal);
+            
+            // ページ読み込み時に投稿データを取得
+            fetchPosts();
+            
+            // 投稿データを取得して表示する関数
+            async function fetchPosts(page = 1, filters = {}) {
+                const postsTable = document.getElementById('postsTable');
+                
+                // ローディング表示
+                postsTable.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="px-6 py-4 text-center">
+                            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                            <p class="mt-2 text-gray-500">データを読み込み中...</p>
+                        </td>
+                    </tr>
+                `;
+                
+                try {
+                    // 実際のAPIエンドポイントから投稿を取得（ダミーデータを使用）
+                    // const response = await fetch(`/api/admin/posts?page=${page}&${new URLSearchParams(filters)}`);
+                    // const data = await response.json();
+                    
+                    // ダミーデータ（本番環境ではAPIから取得）
+                    const data = {
+                        posts: [
+                            {
+                                id: 1,
+                                title: '学生環境フォーラム2025開催のお知らせ',
+                                category: 'event',
+                                category_name: 'イベント情報',
+                                author: 'グリーンキャンパスプロジェクト',
+                                status: 'published',
+                                published_at: '2025-05-20'
+                            },
+                            {
+                                id: 2,
+                                title: '学生起業家コミュニティ「StartupCampus」メンバー募集中',
+                                category: 'recruit',
+                                category_name: 'メンバー募集',
+                                author: 'StartupCampus',
+                                status: 'published',
+                                published_at: '2025-05-15'
+                            },
+                            {
+                                id: 3,
+                                title: '学園祭に向けたコラボレーション団体を募集します',
+                                category: 'collab',
+                                category_name: 'コラボ募集',
+                                author: 'アートファクトリー',
+                                status: 'published',
+                                published_at: '2025-05-10'
+                            },
+                            {
+                                id: 4,
+                                title: '夏季インターンシッププログラム参加者募集',
+                                category: 'intern',
+                                category_name: 'インターン情報',
+                                author: 'テックイノベーション学生連盟',
+                                status: 'published',
+                                published_at: '2025-05-05'
+                            },
+                            {
+                                id: 5,
+                                title: '春季地域清掃活動の実施報告',
+                                category: 'report',
+                                category_name: '実績報告',
+                                author: '学生地域貢献隊',
+                                status: 'published',
+                                published_at: '2025-04-30'
+                            },
+                            {
+                                id: 6,
+                                title: '国際学生交流プログラム 参加申込受付開始',
+                                category: 'announcement',
+                                category_name: 'お知らせ',
+                                author: 'グローバル学生ネットワーク',
+                                status: 'published',
+                                published_at: '2025-04-25'
+                            },
+                            {
+                                id: 7,
+                                title: '学術シンポジウム「AI時代の倫理と社会」開催',
+                                category: 'event',
+                                category_name: 'イベント情報',
+                                author: '未来研究会',
+                                status: 'draft',
+                                published_at: null
+                            },
+                            {
+                                id: 8,
+                                title: 'デジタルアート制作チーム 新メンバー募集',
+                                category: 'recruit',
+                                category_name: 'メンバー募集',
+                                author: 'デジタルクリエイティブラボ',
+                                status: 'pending',
+                                published_at: null
+                            },
+                            {
+                                id: 9,
+                                title: '全国学生ビジネスコンテストで優勝しました',
+                                category: 'report',
+                                category_name: '実績報告',
+                                author: 'イノベーションサークル',
+                                status: 'published',
+                                published_at: '2025-04-10'
+                            },
+                            {
+                                id: 10,
+                                title: '新規サークル設立のお知らせ',
+                                category: 'announcement',
+                                category_name: 'お知らせ',
+                                author: '大学公式サークル連合',
+                                status: 'pending',
+                                published_at: null
+                            }
+                        ],
+                        pagination: {
+                            current_page: 1,
+                            total_pages: 3,
+                            total_items: 24,
+                            items_per_page: 10
+                        }
+                    };
+                    
+                    // 投稿がない場合
+                    if (data.posts.length === 0) {
+                        postsTable.innerHTML = `
+                            <tr>
+                                <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+                                    表示する投稿がありません
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    // 投稿データを表に表示
+                    postsTable.innerHTML = '';
+                    data.posts.forEach(post => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="post-checkbox rounded border-gray-300 text-blue-600 focus:ring-blue-500" data-id="${post.id}">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">${post.title}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">${post.category_name}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-500">${post.author}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="status-tag status-${post.status}">${getStatusLabel(post.status)}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-500">${post.published_at ? formatDate(post.published_at) : '-'}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="edit.html?id=${post.id}" class="text-blue-600 hover:text-blue-900">編集</a>
+                                <span class="mx-1">|</span>
+                                <a href="../../board-detail.html?id=${post.id}" class="text-gray-600 hover:text-gray-900" target="_blank">表示</a>
+                                <span class="mx-1">|</span>
+                                <a href="#" class="text-red-600 hover:text-red-900 delete-post" data-id="${post.id}">削除</a>
+                            </td>
+                        `;
+                        postsTable.appendChild(row);
+                    });
+                    
+                    // ページネーション情報を更新
+                    updatePagination(data.pagination);
+                    
+                    // 削除ボタンのイベントリスナー
+                    document.querySelectorAll('.delete-post').forEach(button => {
+                        button.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const postId = this.getAttribute('data-id');
+                            // 削除確認モーダルを表示
+                            showDeleteModal();
+                            
+                            // 確認ボタンのイベントリスナー
+                            confirmDelete.onclick = async function() {
+                                try {
+                                    // 削除APIを呼び出す
+                                    // await fetch(`/api/admin/posts/${postId}`, { method: 'DELETE' });
+                                    console.log(`投稿ID: ${postId} を削除しました`);
+                                    hideDeleteModal();
+                                    // 投稿リストを更新
+                                    fetchPosts();
+                                } catch (error) {
+                                    console.error('削除中にエラーが発生しました:', error);
+                                    alert('削除中にエラーが発生しました。もう一度お試しください。');
+                                    hideDeleteModal();
+                                }
+                            };
+                        });
+                    });
+                    
+                    // チェックボックスがクリックされたときの全選択チェックボックスの状態更新
+                    document.querySelectorAll('.post-checkbox').forEach(checkbox => {
+                        checkbox.addEventListener('change', function() {
+                            const allChecked = document.querySelectorAll('.post-checkbox:checked').length === document.querySelectorAll('.post-checkbox').length;
+                            selectAll.checked = allChecked;
+                        });
+                    });
+                    
+                } catch (error) {
+                    console.error('投稿データの取得中にエラーが発生しました:', error);
+                    postsTable.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="px-6 py-4 text-center text-red-500">
+                                データの取得中にエラーが発生しました。再読み込みしてください。
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+            
+            // ページネーション情報を更新する関数
+            function updatePagination(pagination) {
+                const currentRange = document.getElementById('currentRange');
+                const totalItems = document.getElementById('totalItems');
+                const prevPage = document.getElementById('prevPage');
+                const nextPage = document.getElementById('nextPage');
+                
+                const start = (pagination.current_page - 1) * pagination.items_per_page + 1;
+                const end = Math.min(pagination.current_page * pagination.items_per_page, pagination.total_items);
+                
+                currentRange.textContent = `${start}-${end}`;
+                totalItems.textContent = pagination.total_items;
+                
+                prevPage.disabled = pagination.current_page <= 1;
+                nextPage.disabled = pagination.current_page >= pagination.total_pages;
+                
+                // ページ変更ボタンのイベントリスナー
+                prevPage.onclick = function() {
+                    if (pagination.current_page > 1) {
+                        fetchPosts(pagination.current_page - 1, getFilters());
+                    }
+                };
+                
+                nextPage.onclick = function() {
+                    if (pagination.current_page < pagination.total_pages) {
+                        fetchPosts(pagination.current_page + 1, getFilters());
+                    }
+                };
+            }
+            
+            // フィルター適用ボタン
+            const filterButton = document.getElementById('filterButton');
+            filterButton.addEventListener('click', function() {
+                fetchPosts(1, getFilters());
+            });
+            
+            // 現在のフィルター設定を取得
+            function getFilters() {
+                const searchInput = document.getElementById('searchInput');
+                const categoryFilter = document.getElementById('categoryFilter');
+                const statusFilter = document.getElementById('statusFilter');
+                
+                const filters = {};
+                if (searchInput.value) filters.search = searchInput.value;
+                if (categoryFilter.value) filters.category = categoryFilter.value;
+                if (statusFilter.value) filters.status = statusFilter.value;
+                
+                return filters;
+            }
+            
+            // 一括操作適用ボタン
+            const applyBulkAction = document.getElementById('applyBulkAction');
+            applyBulkAction.addEventListener('click', function() {
+                const action = document.getElementById('bulkActions').value;
+                if (!action) return;
+                
+                const selectedIds = [];
+                document.querySelectorAll('.post-checkbox:checked').forEach(checkbox => {
+                    selectedIds.push(checkbox.getAttribute('data-id'));
+                });
+                
+                if (selectedIds.length === 0) {
+                    alert('操作を適用する投稿を選択してください。');
+                    return;
+                }
+                
+                if (action === 'delete') {
+                    // 削除確認モーダルを表示
+                    showDeleteModal();
+                    
+                    // 確認ボタンのイベントリスナー
+                    confirmDelete.onclick = async function() {
+                        try {
+                            // 削除APIを呼び出す
+                            // await fetch(`/api/admin/posts/bulk-delete`, { 
+                            //     method: 'POST',
+                            //     headers: { 'Content-Type': 'application/json' },
+                            //     body: JSON.stringify({ ids: selectedIds })
+                            // });
+                            console.log(`投稿ID: ${selectedIds.join(', ')} を削除しました`);
+                            hideDeleteModal();
+                            // 投稿リストを更新
+                            fetchPosts();
+                        } catch (error) {
+                            console.error('削除中にエラーが発生しました:', error);
+                            alert('削除中にエラーが発生しました。もう一度お試しください。');
+                            hideDeleteModal();
+                        }
+                    };
+                } else {
+                    // その他の一括操作（公開/下書き設定など）
+                    bulkUpdate(selectedIds, action);
+                }
+            });
+            
+            // 一括更新を実行する関数
+            async function bulkUpdate(ids, action) {
+                try {
+                    // 一括更新APIを呼び出す
+                    // await fetch(`/api/admin/posts/bulk-update`, { 
+                    //     method: 'POST',
+                    //     headers: { 'Content-Type': 'application/json' },
+                    //     body: JSON.stringify({ ids, action })
+                    // });
+                    console.log(`投稿ID: ${ids.join(', ')} を ${action} に更新しました`);
+                    // 投稿リストを更新
+                    fetchPosts();
+                } catch (error) {
+                    console.error('更新中にエラーが発生しました:', error);
+                    alert('更新中にエラーが発生しました。もう一度お試しください。');
+                }
+            }
+            
+            // ステータスラベルを取得する関数
+            function getStatusLabel(status) {
+                const labels = {
+                    'published': '公開中',
+                    'draft': '下書き',
+                    'pending': '承認待ち'
+                };
+                return labels[status] || status;
+            }
+            
+            // 日付フォーマット関数
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
+            }
+            
+            // ログアウト処理
+            const logoutButton = document.getElementById('logoutButton');
+            logoutButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('ログアウトしますか？')) {
+                    // TODO: ログアウト処理を実装
+                    window.location.href = '../login.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

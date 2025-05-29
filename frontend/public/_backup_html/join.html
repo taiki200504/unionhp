@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Us | UNION</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="UNION-icon.png">
+    <script defer src="scripts/header-loader.js"></script>
+    <script defer src="scripts/footer-loader.js"></script>
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .hero-section {
+            position: relative;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 7rem 0;
+            margin-bottom: 3rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 4rem 0 2rem;
+        }
+        .section-divider-line {
+            height: 2px;
+            background: linear-gradient(90deg, #066ff2 0%, #ec4faf 100%);
+            flex-grow: 1;
+        }
+        .section-divider-text {
+            padding: 0 1.5rem;
+            font-weight: 700;
+            font-size: 1.75rem;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <div id="header-include"></div>
+    
+    <!-- ヒーローセクション -->
+    <section class="hero-section">
+        <div class="hero-content max-w-5xl mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">UNION Join Us</h1>
+            <p class="text-xl max-w-3xl mx-auto leading-relaxed">
+                UNIONは学生団体の加盟・参加を随時募集しています。<br class="hidden md:block">
+                共に学生の声を社会に響かせるパートナーになりませんか？
+            </p>
+            <div class="mt-8">
+                <a href="#join-section" class="inline-block bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-8 py-3 rounded-full transition duration-300">
+                    加盟方法を見る
+                    <i class="fas fa-arrow-down ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <main class="max-w-5xl mx-auto px-4 pb-16" id="join-section">
+        <!-- メインコンテンツをカード形式で表示 -->
+        <div class="section-divider">
+            <div class="section-divider-line"></div>
+            <h2 class="section-divider-text">参加方法</h2>
+            <div class="section-divider-line"></div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <!-- 学生団体・個人向け -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover border border-gray-100">
+                <div class="bg-gradient-primary h-2"></div>
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold mb-4">学生団体・個人の方</h2>
+                    <p class="text-gray-700 mb-6">UNIONでは、学生団体・個人の新規加盟を随時受け付けています。加盟していただくと様々なサポートやコミュニティへの参加が可能になります。</p>
+                    
+                    <h3 class="text-xl font-bold mb-3">参加メリット</h3>
+                    <ul class="list-disc pl-6 text-gray-700 mb-6 space-y-2">
+                        <li>メディア出演・告知サポートが受けられる</li>
+                        <li>Slackコミュニティで情報交換・交流ができる</li>
+                        <li>他団体・企業とのコラボやイベント参加の機会</li>
+                        <li>リーダー向け1on1カウンセリング</li>
+                        <li>インターン・プロジェクト紹介</li>
+                    </ul>
+                    
+                    <div class="text-center">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSffY_V_buYyNzGK2gg5cWV-0j0s_BMQqIjBi7ZucTdD_l2uEQ/viewform?usp=sf_link" target="_blank" class="bg-gradient-primary text-white px-6 py-3 rounded-full inline-block hover:opacity-90 transition">加盟申込フォーム</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 連携団体/企業向け -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover border border-gray-100">
+                <div class="bg-gradient-primary h-2"></div>
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold mb-4">連携団体/企業の方</h2>
+                    <p class="text-gray-700 mb-6">UNIONでは、学生と社会をつなぐ架け橋として、企業や外部団体との連携も積極的に行っています。様々な形での協業が可能です。</p>
+                    
+                    <h3 class="text-xl font-bold mb-3">連携メリット</h3>
+                    <ul class="list-disc pl-6 text-gray-700 mb-6 space-y-2">
+                        <li>Z世代とのコネクション構築</li>
+                        <li>学生団体とのコラボレーション機会</li>
+                        <li>学生メディアを通じた情報発信</li>
+                        <li>学生向けイベント企画・運営のサポート</li>
+                        <li>採用・インターンシップのPR</li>
+                    </ul>
+                    
+                    <div class="text-center">
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdUR_v_l38b0abzhnaEqsA58zRjeS6z72s0SSwb4OWoZouZ6g/viewform?usp=sf_link" target="_blank" class="bg-gradient-primary text-white px-6 py-3 rounded-full inline-block hover:opacity-90 transition">連携申込フォーム</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 現在の連携状況 -->
+        <section class="mb-12">
+            <div class="section-divider">
+                <div class="section-divider-line"></div>
+                <h2 class="section-divider-text">UNION連携コミュニティ</h2>
+                <div class="section-divider-line"></div>
+            </div>
+            
+            <div class="bg-gray-50 rounded-xl p-8">
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4">加盟団体</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/200x100/066ff2/FFFFFF?text=団体A" alt="学生団体A" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-3">
+                                <p class="font-medium text-sm">学生団体A</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/200x100/ec4faf/FFFFFF?text=団体B" alt="学生団体B" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-pink-50 to-pink-100 p-3">
+                                <p class="font-medium text-sm">学生団体B</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/200x100/34d399/FFFFFF?text=団体C" alt="学生団体C" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-green-50 to-green-100 p-3">
+                                <p class="font-medium text-sm">学生団体C</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/200x100/f59e0b/FFFFFF?text=団体D" alt="学生団体D" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 p-3">
+                                <p class="font-medium text-sm">学生団体D</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/200x100/8b5cf6/FFFFFF?text=団体E" alt="学生団体E" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-purple-50 to-purple-100 p-3">
+                                <p class="font-medium text-sm">学生団体E</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/200x100/3b82f6/FFFFFF?text=団体F" alt="学生団体F" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-3">
+                                <p class="font-medium text-sm">学生団体F</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/200x100/10b981/FFFFFF?text=団体G" alt="学生団体G" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-green-50 to-green-100 p-3">
+                                <p class="font-medium text-sm">学生団体G</p>
+                            </div>
+                        </div>
+                        <a href="affiliates.html" class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4 relative bg-gradient-to-r from-blue-500 to-purple-500">
+                                <div class="absolute inset-0 bg-black opacity-10"></div>
+                                <span class="text-xl font-bold text-white relative z-10">すべて見る</span>
+                            </div>
+                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-3">
+                                <p class="font-medium text-sm">加盟団体一覧</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">連携企業・団体</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/300x150/333333/FFFFFF?text=企業A" alt="企業A" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-3">
+                                <p class="font-medium text-sm">企業A</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/300x150/333333/FFFFFF?text=企業B" alt="企業B" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-3">
+                                <p class="font-medium text-sm">企業B</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/300x150/333333/FFFFFF?text=企業C" alt="企業C" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-3">
+                                <p class="font-medium text-sm">企業C</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/300x150/444444/FFFFFF?text=団体D" alt="団体D" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-3">
+                                <p class="font-medium text-sm">団体D</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4">
+                                <img src="https://placehold.co/300x150/444444/FFFFFF?text=団体E" alt="団体E" class="max-h-full max-w-full object-contain">
+                            </div>
+                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-3">
+                                <p class="font-medium text-sm">団体E</p>
+                            </div>
+                        </div>
+                        <a href="partners.html" class="bg-white rounded-lg shadow-sm overflow-hidden text-center group hover:shadow-md transition">
+                            <div class="h-32 flex items-center justify-center p-4 relative bg-gradient-to-r from-gray-700 to-gray-900">
+                                <div class="absolute inset-0 bg-black opacity-10"></div>
+                                <span class="text-xl font-bold text-white relative z-10">すべて見る</span>
+                            </div>
+                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 p-3">
+                                <p class="font-medium text-sm">連携企業・団体一覧</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQ -->
+        <section>
+            <h2 class="text-2xl font-bold mb-6 text-center">よくある質問</h2>
+            
+            <div class="space-y-4">
+                <div class="border border-gray-200 rounded-lg">
+                    <button class="flex justify-between items-center w-full px-4 py-3 text-left font-semibold focus:outline-none">
+                        <span>加盟に費用はかかりますか？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="px-4 pb-4">
+                        <p class="text-gray-700">現在、学生団体・個人の加盟には費用はかかりません。ただし、一部の特別なサービスやイベントでは、実費相当の費用をいただく場合があります。</p>
+                    </div>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg">
+                    <button class="flex justify-between items-center w-full px-4 py-3 text-left font-semibold focus:outline-none">
+                        <span>どのような学生団体が加盟できますか？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="px-4 pb-4">
+                        <p class="text-gray-700">分野・活動内容を問わず、学生が主体となって活動している団体であれば加盟可能です。学術、文化、スポーツ、社会活動など、様々な団体が参加しています。</p>
+                    </div>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg">
+                    <button class="flex justify-between items-center w-full px-4 py-3 text-left font-semibold focus:outline-none">
+                        <span>個人でも加盟できますか？</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="px-4 pb-4">
+                        <p class="text-gray-700">slackへの参加であれば個人からでも参加いただけますが、加盟については2名以上の学生団体を条件としております。UNIONは個人での活動や、これから何かを始めたい方も歓迎します。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div id="footer-include"></div>
+    <script>
+        fetch('footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-include').innerHTML = html;
+        });
+        
+        // FAQのアコーディオン機能
+        document.querySelectorAll('.border.border-gray-200.rounded-lg').forEach(item => {
+            const button = item.querySelector('button');
+            const content = item.querySelector('div:not(button)');
+            
+            // 最初は非表示
+            content.style.display = 'none';
+            
+            button.addEventListener('click', () => {
+                const isOpen = content.style.display === 'block';
+                content.style.display = isOpen ? 'none' : 'block';
+                button.querySelector('i').className = isOpen ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+            });
+        });
+    </script>
+</body>
+</html> 

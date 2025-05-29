@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理画面ログイン | UNION</title>
+    <link rel="stylesheet" href="../dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../UNION-icon.png">
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+            background-image: linear-gradient(135deg, rgba(6, 111, 242, 0.03) 0%, rgba(236, 79, 175, 0.03) 100%);
+        }
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+        }
+        .login-button {
+            background: linear-gradient(135deg, #066ff2 0%, #ec4faf 100%);
+            transition: all 0.3s;
+            border-radius: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-button:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(6, 111, 242, 0.2);
+        }
+        .login-button:active {
+            transform: translateY(1px);
+        }
+        .login-button::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%);
+            pointer-events: none;
+        }
+        .form-control {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 3rem 0.75rem 3rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f8fafc;
+        }
+        .form-input:focus {
+            border-color: #066ff2;
+            box-shadow: 0 0 0 3px rgba(6, 111, 242, 0.2);
+            background-color: white;
+            outline: none;
+        }
+        .form-label {
+            position: absolute;
+            left: 3rem;
+            top: 0.75rem;
+            color: #94a3b8;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            transform: translateY(-0.6rem) scale(0.8);
+            color: #066ff2;
+        }
+        .form-icon {
+            position: absolute;
+            left: 1rem;
+            top: 0.75rem;
+            color: #94a3b8;
+            transition: color 0.3s;
+        }
+        .form-input:focus ~ .form-icon {
+            color: #066ff2;
+        }
+        .eye-icon {
+            position: absolute;
+            right: 1rem;
+            top: 0.75rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .eye-icon:hover {
+            color: #066ff2;
+        }
+        .forgot-password {
+            color: #066ff2;
+            font-size: 0.75rem;
+            transition: color 0.3s;
+        }
+        .forgot-password:hover {
+            color: #ec4faf;
+            text-decoration: underline;
+        }
+        .remember-checkbox {
+            appearance: none;
+            width: 1.1rem;
+            height: 1.1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.25rem;
+            margin-right: 0.5rem;
+            position: relative;
+            cursor: pointer;
+            vertical-align: middle;
+            transition: all 0.3s;
+        }
+        .remember-checkbox:checked {
+            border-color: #066ff2;
+            background-color: #066ff2;
+        }
+        .remember-checkbox:checked::after {
+            content: "✓";
+            position: absolute;
+            color: white;
+            font-size: 0.8rem;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .remember-checkbox:focus {
+            box-shadow: 0 0 0 3px rgba(6, 111, 242, 0.2);
+            outline: none;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #64748b;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #0f172a;
+        }
+        .login-error {
+            background-color: #FEE2E2;
+            border-left: 4px solid #EF4444;
+            color: #B91C1C;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .login-error i {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container p-4">
+        <div class="login-form">
+            <div class="text-center mb-8">
+                <img src="../UNION-icon.png" alt="UNION" class="w-16 h-16 mx-auto mb-2">
+                <h1 class="text-3xl font-bold text-gradient-primary">UNION 管理画面</h1>
+                <p class="text-gray-500 mt-2">ログインして管理機能にアクセス</p>
+            </div>
+            
+            <div class="login-card p-8">
+                <div id="loginError" class="login-error hidden">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span><!-- エラーメッセージがここに表示されます --></span>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-control">
+                        <input type="email" id="email" name="email" class="form-input" placeholder=" " required>
+                        <label for="email" class="form-label">メールアドレス</label>
+                        <i class="fas fa-envelope form-icon"></i>
+                    </div>
+                    
+                    <div class="form-control">
+                        <input type="password" id="password" name="password" class="form-input" placeholder=" " required>
+                        <label for="password" class="form-label">パスワード</label>
+                        <i class="fas fa-lock form-icon"></i>
+                        <button type="button" id="togglePassword" class="eye-icon">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember" name="remember" class="remember-checkbox">
+                            <label for="remember" class="text-sm text-gray-700">
+                                ログイン情報を保存
+                            </label>
+                        </div>
+                        <a href="forgot-password.html" class="forgot-password">
+                            パスワードをお忘れですか？
+                        </a>
+                    </div>
+                    
+                    <button type="submit" class="login-button w-full py-3 px-4 text-white font-medium focus:outline-none">
+                        ログイン
+                    </button>
+                </form>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <a href="../index.html" class="back-link">
+                    <i class="fas fa-arrow-left mr-1"></i> フロントページに戻る
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginError = document.getElementById('loginError');
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            
+            // パスワード表示/非表示の切り替え
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // アイコンの切り替え
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+            
+            // フォーム送信時の処理
+            loginForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                
+                // ログインボタンを無効化して処理中表示
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> ログイン中...';
+                
+                // フォームデータの取得
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked;
+                
+                try {
+                    // TODO: 実際のAPIエンドポイントに切り替える
+                    const response = await fetch('/api/admin/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            password: password,
+                            remember: remember
+                        }),
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        // ログイン成功 - アニメーションを追加
+                        submitButton.innerHTML = '<i class="fas fa-check mr-2"></i> ログイン成功';
+                        
+                        // 少し遅延を入れてからリダイレクト
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 500);
+                    } else {
+                        // ログイン失敗
+                        loginError.textContent = data.message || 'メールアドレスまたはパスワードが正しくありません。';
+                        loginError.classList.remove('hidden');
+                        
+                        // エラー時にフォームを少し揺らすアニメーション
+                        const loginCard = document.querySelector('.login-card');
+                        loginCard.animate([
+                            { transform: 'translateX(-5px)' },
+                            { transform: 'translateX(5px)' },
+                            { transform: 'translateX(-5px)' },
+                            { transform: 'translateX(5px)' },
+                            { transform: 'translateX(0)' }
+                        ], {
+                            duration: 400,
+                            easing: 'ease-in-out'
+                        });
+                    }
+                } catch (error) {
+                    console.error('ログイン処理中にエラーが発生しました:', error);
+                    loginError.innerHTML = '<i class="fas fa-exclamation-circle"></i><span>ログイン処理中にエラーが発生しました。しばらくしてからもう一度お試しください。</span>';
+                    loginError.classList.remove('hidden');
+                } finally {
+                    // ボタンを元に戻す
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalButtonText;
+                }
+                
+                // 開発段階でのモック機能（本番環境では削除）
+                // 以下の認証情報を使用してスキップ可能にする
+                if (email === 'admin@union.com' && password === 'admin123') {
+                    console.log('開発者モードでログイン');
+                    submitButton.innerHTML = '<i class="fas fa-check mr-2"></i> 開発者モードでログイン';
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 500);
+                    return;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

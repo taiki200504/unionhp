@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記事詳細 | UNION</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="UNION-icon.png">
+</head>
+<body class="bg-white text-gray-900">
+    <nav class="w-full bg-white/90 backdrop-blur-sm shadow-sm z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="index.html" class="text-2xl font-bold text-primary">UNION</a>
+                <a href="index.html" class="text-gray-700 hover:text-primary">トップへ戻る</a>
+            </div>
+        </div>
+    </nav>
+    <main class="max-w-3xl mx-auto p-4 pt-24">
+        <div id="postDetail" class="bg-white rounded-lg shadow-md p-6"></div>
+    </main>
+    <div id="footer-include"></div>
+    <script>
+        fetch('footer.html').then(r => r.text()).then(html => {
+            document.getElementById('footer-include').innerHTML = html;
+        });
+    </script>
+    <script>
+    // URLからidパラメータを取得
+    function getQueryParam(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+    }
+    async function fetchPostDetail() {
+        const id = getQueryParam('id');
+        if (!id) {
+            document.getElementById('postDetail').innerHTML = '<p class="text-red-600">記事IDが指定されていません。</p>';
+            return;
+        }
+        try {
+            const res = await fetch('http://localhost:3000/api/posts');
+            const posts = await res.json();
+            const post = posts.find(p => p._id === id);
+            if (!post) {
+                document.getElementById('postDetail').innerHTML = '<p class="text-red-600">記事が見つかりません。</p>';
+                return;
+            }
+            document.getElementById('postDetail').innerHTML = `
+                <h1 class="text-3xl font-bold mb-4">${post.title}</h1>
+                <p class="text-sm text-gray-600 mb-2">著者: ${post.author} | 投稿日: ${new Date(post.publishedAt).toLocaleDateString()}</p>
+                <div class="mb-6">${post.content.replace(/\n/g, '<br>')}</div>
+                <div class="text-xs text-gray-500 mb-2">カテゴリー: ${post.category || '-'} / タグ: ${(post.tags || []).join(', ')}</div>
+                <a href="index.html" class="text-primary hover:underline">← 記事一覧に戻る</a>
+            `;
+        } catch (error) {
+            document.getElementById('postDetail').innerHTML = '<p class="text-red-600">記事詳細の取得に失敗しました。</p>';
+        }
+    }
+    fetchPostDetail();
+    </script>
+</body>
+</html> 
